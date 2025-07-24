@@ -1,38 +1,32 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useEffect, useState } from "react";
+import { supabase } from "@/lib/supabaseClient";
+import type { Session } from "@supabase/supabase-js";
+import AuthScreen from "@/components/auth/Auth";
+import AppRouter from "@/router/Router";
 
-import Home from './pages/Home'
+/**
+ * App
+ *
+ * Root component of the Spinalith app. Handles Supabase auth session state.
+ * If a session exists, routes to the main application via <AppRouter />.
+ * Otherwise, renders the <AuthScreen /> for login/registration.
+ *
+ * @returns {JSX.Element} Authenticated or unauthenticated app entry point.
+ */
+export default function App() {
+  const [session, setSession] = useState<Session | null>(null);
 
-import { useEffect } from 'react';
-import { supabase } from '../supabase/supabaseClient';
-
-function App() {
   useEffect(() => {
-    const fetchTables = async () => {
-      const { data, error } = await supabase.rpc('list_tables');
-      if (error) {
-        console.error('Error calling list_tables:', error);
-      } else {
-        console.log('✅ Tables from Supabase:', data);
-      }
-    };
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+    });
 
-    fetchTables();
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
 
-  return (
-    <div className="p-6">
-      <h1 className="text-xl font-bold text-center">
-        Supabase Table List Test
-      </h1>
-      <p className="text-center text-gray-600">
-        Open the browser console to see the table names.
-      </p>
-    </div>
-  );
+  return session ? <AppRouter /> : <AuthScreen />;
 }
-
-export default App;
-
-
