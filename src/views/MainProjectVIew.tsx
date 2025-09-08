@@ -20,8 +20,8 @@ const MainProjectView = () => {
   const [projectTitle, setProjectTitle] = useState<string | null>(null);
   const [greetingText, setGreetingText] = useState("One sec, just reviewing your project!");
 
-
   useEffect(() => {
+    //Fetch project data to populate view
     const fetchProject = async () => {
       if (!projectId) return;
       const { data, error } = await supabase
@@ -35,15 +35,37 @@ const MainProjectView = () => {
       }
     };
 
+    //If projectId or user.id don't exist, early exit
+    if (!projectId) return;
 
+    //key used in setting greeting
+    const key = `mpv:greeting:${projectId}`;
+
+    // 1) Local cache check (respect hasRunGreeting)
+    if (!hasRunGreeting.current) {
+      const cached = loadGreetingFromCache(key);
+      const TTL_MS = 60 * 60 * 1000; //min * seconds * ms (update 1st number to desired threshold)
+
+      if (cached) {
+        const fresh = Date.now() - new Date(cached.cached_at).getTime() <= TTL_MS;
+        if (fresh) {
+          setGreetingText(cached.suggestion);
+          hasRunGreeting.current = true; // important: prevents any re-run on re-renders (stops runGreetingPrep)
+        }
+      }
+      // If not fresh/missing, runGreetingPrep path execute below
+    }
+
+    //If new greeting needed get one
     const runGreetingPrep = async () => {
     if (projectId && !hasRunGreeting.current) {
       hasRunGreeting.current = true;
-      console.log("projectId in prepGreetingPrompt:", projectId);
+      //console.log("projectId in prepGreetingPrompt:", projectId);
       const greetingData = await prepGreetingPrompt(projectId);
       if (greetingData) {
         setGreetingText(greetingData);
-        console.log("LLM Response Text:", greetingData);
+        saveGreetingToCache(key, greetingData);
+        //console.log("LLM Response Text:", greetingData);
       } else {
         console.warn("No greeting text returned from LLM.");
       }
@@ -137,7 +159,7 @@ async function prepGreetingPrompt (projectId: string){
       "refining the story concept, defining characters, crafting story arcs"
     );
 
-  console.log(`constructedPrompt: ${constructedPrompt}`);
+  //console.log(`constructedPrompt: ${constructedPrompt}`);
 
   let payload = { request_key: utilName,
                 request_prompt: constructedPrompt,
@@ -145,12 +167,12 @@ async function prepGreetingPrompt (projectId: string){
   }
   try{
     // Invoke the edge function via our generic runner
-    const { data } = await run_EF(efName, payload);
-    if (data?.response?.data?.choices?.[0]?.message?.content) {
-            console.log("LLM Response Data:", data);
-      return data.response.data.choices[0].message.content;
+    const response = await run_EF(efName, payload);
+    if (response?.response?.data?.choices?.[0]?.message?.content) {
+            //console.log("LLM Response Data:", response);
+      return response.response.data.choices[0].message.content;
     } else {
-      console.warn("Unexpected LLM response format:", data);
+      console.warn("Unexpected LLM response format:", response);
       return null;
     }
   } catch (err: any) {
@@ -159,3 +181,57 @@ async function prepGreetingPrompt (projectId: string){
       }
 
 }; //END OF prepGreetingPrompt
+
+
+
+/**
+ * Save a project greeting suggestion to localStorage.
+ *
+ * @param key - Unique cache key (e.g. "mpv:greeting:userId:projectId")
+ * @param suggestion - The text from the LLM to store
+ */
+export function saveGreetingToCache(key: string, suggestion: string): void {
+  try {
+    const entry = {
+      suggestion,
+      cached_at: new Date().toISOString(),
+    };
+    localStorage.setItem(key, JSON.stringify(entry));
+  } catch (err) {
+    console.error("❌ Failed to save greeting to localStorage:", err);
+  }
+} //END OF saveGreetingToCache
+
+
+
+/**
+ * Load a project greeting suggestion from localStorage.
+ *
+ * @param key - Unique cache key (e.g. "mpv:greeting:userId:projectId")
+ * @returns An object with { suggestion, cached_at } or null if not found/invalid
+ */
+export function loadGreetingFromCache(
+  key: string
+): { suggestion: string; cached_at: string } | null {
+  try {
+    const raw = localStorage.getItem(key);
+    if (!raw) return null;
+
+    const parsed = JSON.parse(raw);
+    if (typeof parsed.suggestion === "string" && typeof parsed.cached_at === "string") {
+      return parsed;
+    }
+
+    console.warn("⚠️ Invalid cache shape for greeting:", parsed);
+    return null;
+  } catch (err) {
+    console.error("❌ Failed to load greeting from localStorage:", err);
+    return null;
+  }
+} // END OF loadGreetingFromCache
+
+
+
+
+
+

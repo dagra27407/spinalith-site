@@ -165,7 +165,7 @@ serve(async (req) => {
    *********************************************************************/
 
     //Run Main Proccess flow
-    const mainProcess = await mainWorkflow({supabase, user, request_id});
+    const mainProcess = await mainWorkflow({supabase, user, request_id, token});
 
     //Final Completion Return
     return new Response(
@@ -241,38 +241,38 @@ async function mainWorkflow({
   supabase,
   user,
   request_id,
+  token,
 }: {
   supabase: any;
   user: any;
   request_id: string;
+  token: string;
 }) {
 
     /*******************************************************************************
      * Variable Declaration
      *******************************************************************************/
         const wf_table = "wf_assistant_automation_control";
+        const scriptMapping_table = "wf_script_mapping_warehouse";
         const sourceField = "iteration_json";
         const concatField = "concatenated_json"
         const outputField = "final_json";
         const splitMarker = "***SplitPoint***";
 
         // Get wf_record
-        let { wf_record, response: wf_record_response  } = await fetchWFAssistantRecord({supabase, user, request_id});
+        const wf_result = await fetchSingleRecord({
+        supabase,
+        user,
+        tableName: wf_table,
+        keyField: "id",
+        request_key: request_id
+        });
 
-        if (wf_record_response) {
-            return new Response(
-            JSON.stringify({
-                success: true,
-                message: "Failed to get wf_record",
-                request_id: request_id,
-                response: wf_record_response,
-                }),
-                {
-                status: 500,
-                headers: jsonHeaders,
-                }
-            );
+        // Validate and extract wf_record
+        if (!('returned_record' in wf_result)) {
+        return wf_result; // error Response object, pass it up
         }
+        let wf_record = wf_result.returned_record;
 
         let assistantName = wf_record.wf_assistant_name;
 
@@ -332,6 +332,11 @@ async function mainWorkflow({
                         }
 
                     await triggerNextBatch({supabase, user, request_id, tableName: wf_table, statusField: "status", statusValue: "Re-Send Last Response"});
+                    let jsonerror_efName = "ef_router_wf_assistant_automation_control";
+                    let jsonerror_payload = {
+                      "request_id": request_id,
+                    }
+                    let router = await callEdgeFunction(jsonerror_efName, jsonerror_payload, token);
                     return;
                     }
             }
@@ -361,7 +366,7 @@ async function mainWorkflow({
         // ✅ If is not last chunk - else is last chunk
         let keepBatching = await shouldContinueBatching(supabase, user, parsedJson, assistantName)
         if (keepBatching) {
-            // Trigger next view (e.g., set status to "Awaiting Next Batch")
+            // Trigger next view (e.g., set status to "Request Next Batch")
             console.log("isFinalChunk = False. Need another batch");
             
             // ✅ Add current batch to concatenatedJSON for storage
@@ -377,7 +382,7 @@ async function mainWorkflow({
             );
             
             // Flag table to enter view to get next batch
-            await triggerNextBatch({supabase, user, request_id, tableName: wf_table, statusField: "status", statusValue: "Awaiting Next Batch"});
+            await triggerNextBatch({supabase, user, request_id, tableName: wf_table, statusField: "status", statusValue: "Request Next Batch"});
 
         } else {
             // Move to recombine phase
@@ -397,27 +402,42 @@ async function mainWorkflow({
 
 
             //Get an updated copy of wf_record now that concatenated_json has been updated with the most recent run.
-            const { wf_record: updated_wf_record, response: updated_wf_record_response  } = await fetchWFAssistantRecord({supabase, user, request_id});
-            if (updated_wf_record_response) {
-                return new Response(
-                JSON.stringify({
-                    success: true,
-                    message: "Failed to get wf_record after concatenated_json was updated",
-                    request_id: request_id,
-                    response: wf_record_response,
-                    }),
-                    {
-                    status: 500,
-                    headers: jsonHeaders,
-                    }
-                );
-            }
-            wf_record = updated_wf_record;
+            const wf_result = await fetchSingleRecord({
+            supabase,
+            user,
+            tableName: wf_table,
+            keyField: "id",
+            request_key: request_id
+            });
 
-            // ✅ Merge chunks and save final output
-            const fullText = wf_record[concatField];
-            // 🔁 Get assistant name for routing
-            const mergedJson = await splitAndMergeJsonChunks(fullText, splitMarker, assistantName);
+            // Validate and extract wf_record
+            if (!('returned_record' in wf_result)) {
+            return wf_result; // error Response object, pass it up
+            }
+            let post_update_wf_record = wf_result.returned_record;
+
+
+            const fullText = post_update_wf_record[concatField];
+
+            // Get scriptMapping_record
+            const scriptMapping_result = await fetchSingleRecord({
+            supabase,
+            user,
+            tableName: scriptMapping_table,
+            keyField: "wf_assistant_name",
+            request_key: assistantName
+            });
+
+            // Validate and extract scriptMapping_record returned
+            if (!('returned_record' in scriptMapping_result)) {
+            return scriptMapping_result; // error Response object, pass it up
+            }
+            const scriptMapping_record = scriptMapping_result.returned_record;
+            const mergeMap = await parseJson(scriptMapping_record.batching_merge_map)
+
+
+            // ✅ Merge chunks
+            const mergedJson = await splitAndMergeJsonChunks(fullText, splitMarker, mergeMap);
 
             // ✅ Save to output field
                  const { data, error } = await supabase
@@ -434,8 +454,13 @@ async function mainWorkflow({
             // Flag status Parse Response
             await triggerNextBatch({supabase, user, request_id, tableName: wf_table, statusField: "status", statusValue: "Parse Response"});
         }
-
-
+        
+        let efName = "ef_router_wf_assistant_automation_control";
+        let payload = {
+          "request_id": request_id,
+        }
+        let router = await callEdgeFunction(efName, payload, token);
+        console.log(router);
 
         console.log("✅ Final GPT JSON merged and saved.");
 
@@ -444,64 +469,56 @@ async function mainWorkflow({
 
 
 /**
- * Fetches a single assistant automation control record from the Supabase table `wf_assistant_automation_control`
- * using the provided `request_id`. This is the initial data lookup used to drive downstream assistant logic.
+ * Fetches a single record from a Supabase table using a unique key field.
  *
- * If the record is found, it returns `{ wf_record }`.  
- * If the record is not found or an error occurs, it returns a formatted `Response` with an appropriate status code.
+ * Designed to be reusable across any table where a record can be uniquely identified
+ * by a single key (e.g. id, request_key, assistant_name, etc).
  *
  * @param {Object} params
  * @param {any} params.supabase - The Supabase client instance.
- * @param {any} params.user - The authenticated Supabase user (unused, but included for consistency).
- * @param {string} params.request_id - The ID of the `wf_assistant_automation_control` record to retrieve.
- * @returns {Promise<
- *   | { wf_record: any }
- *   | Response
- * >} - Returns the found record, or a Response object indicating an error.
+ * @param {any} params.user - The authenticated Supabase user (unused here but reserved for future RLS logic).
+ * @param {string} params.tableName - The name of the table to query.
+ * @param {string} params.keyField - The unique key field to filter by (e.g., 'id' or 'assistant_name').
+ * @param {string} params.request_key - The value to match in the keyField.
+ * @returns {Promise<{ returned_record: any } | Response>} The matched record, or a Response object if not found or error occurs.
  */
-async function fetchWFAssistantRecord({
+async function fetchSingleRecord({
   supabase,
   user,
-  request_id,
+  tableName,
+  keyField,
+  request_key,
 }: {
   supabase: any;
   user: any;
-  request_id: string;
+  tableName: string;
+  keyField: string;
+  request_key: string;
 }) {
-
-let wf_record;
   try {
     const { data, error } = await supabase
-      .from("wf_assistant_automation_control") // fixed spelling of "assistant"
+      .from(tableName)
       .select("*")
-      .eq("id", request_id)
+      .eq(keyField, request_key)
       .single();
 
     if (error || !data) {
-      console.error("fetchWFAssistantRecord: Failed to fetch wf_assistant_automation_control record:", error);
+      console.error(`${tableName}: Failed to fetch record with ${keyField}=${request_key}`, error);
       return new Response(
-        JSON.stringify({ error: `fetchWFAssistantRecord: Failed to fetch wf_assistant_automation_control record: ${request_id}` }),
-        {
-          status: 404,
-          headers: jsonHeaders,
-        }
+        JSON.stringify({ error: `${tableName}: Record not found using ${keyField} = ${request_key}` }),
+        { status: 404, headers: jsonHeaders }
       );
     }
 
-     return { wf_record: data}; // on success
-
-  } catch (error) {
-    console.error("fetchWFAssistantRecord: Unexpected error while fetching wf_assistant_automation_control:", error);
+    return { returned_record: data };
+  } catch (error: any) {
+    console.error(`${tableName}: Unexpected error during fetchSingleRecord:`, error);
     return new Response(
-      JSON.stringify({ error: `fetchWFAssistantRecord: Unexpected error: ${error.message}` }),
-      {
-        status: 500,
-        headers: jsonHeaders,
-      }
+      JSON.stringify({ error: `${tableName}: Unexpected error: ${error.message}` }),
+      { status: 500, headers: jsonHeaders }
     );
   }
-
-} //END OF fetchWFAssistantRecord
+} // END OF fetchSingleRecord
 
 
 
@@ -641,155 +658,69 @@ async function validateRawJson(rawJson: string): boolean {
 
 /**
  * splitAndMergeJsonChunks
- * Combine Split JSON Segments into Final Unified JSON
+ * Splits a concatenated string of JSON chunks by a delimiter and merges them into a final JSON object.
+ * The merge logic is controlled by a batching_merge_map per assistantName, which defines how each key should be handled.
  *
- * @param {string} concatenatedString - Full string from Airtable with ***SplitPoint*** delimiters.
- * @param {string} delimiter - The delimiter separating GPT JSON chunks.
- * @returns {Object} - Combined final JSON.
+ * @param {string} concatenatedString - The raw string containing multiple JSON segments.
+ * @param {string} delimiter - The delimiter used to split the chunks (e.g. '***SplitPoint***').
+ * @param {Object} mergeMap - The assistant-specific batching_merge_map defining merge strategies.
+ * @returns {Object} - A fully merged JSON object constructed according to the provided map.
  */
-async function splitAndMergeJsonChunks(concatenatedString, delimiter, assistantName) {
-    const parts = concatenatedString.split(delimiter).map(p => p.trim()).filter(Boolean);
-    let mergedJson;
+export function splitAndMergeJsonChunks(concatenatedString, delimiter, mergeMap) {
+  // Split and clean the chunk string
+  const parts = concatenatedString
+    .split(delimiter)
+    .map(p => p.trim())
+    .filter(Boolean);
 
-    switch (assistantName) {
-        case "WF_StoryArcCraftingAssistant":
-            mergedJson = {
-                storyArcs: [],
-                isFinalChunk: true
-            };
+  // Initialize the final merged object with isFinalChunk marker
+  const mergedJson = { isFinalChunk: true };
 
-            for (const part of parts) {
-                try {
-                            const obj = JSON.parse(part);
-                            if (Array.isArray(obj.storyArcs)) {
-                                mergedJson.storyArcs.push(...obj.storyArcs);
-                            }
-                } catch (err) {
-                    console.error("❌ Failed to parse segment:", err.message);
-                }
-            }
+  // Loop over each JSON chunk
+  for (const part of parts) {
+    try {
+      const obj = JSON.parse(part);
+      console.log(`mergemap keys: ${Object.keys(mergeMap)}`);
+      // Iterate over each key in the assistant's mergeMap
+      for (const key of Object.keys(mergeMap)) {
+        const config = mergeMap[key];
+
+        switch (config.strategy) {
+          case "flatArray": {
+            if (!Array.isArray(obj[key])) break;
+            if (!Array.isArray(mergedJson[key])) mergedJson[key] = [];
+            mergedJson[key].push(...obj[key]);
             break;
+          }
 
-        case "WF_ChapterCraftingAssistant":
-            mergedJson = {
-                chapterPlan: [], //List any array objects that need simple merge like this i.e. (Strategy 1)
-                observations: {}, //List any objects that need merging with special grouping like this (Strategy 2)
-                unadaptedBeats: [],
-                isFinalChunk: true
-            };
+          case "groupedObject": {
+            if (!Array.isArray(obj[key])) break;
 
-            for (const part of parts) {
-                try {
-                    const obj = JSON.parse(part);
-                    // Strategy 1: Flat array merge
-                    if (Array.isArray(obj.chapterPlan)) {
-                        mergedJson.chapterPlan.push(...obj.chapterPlan);
-                    }
-                    // Strategy 2: Grouped map merge (by chapterRange)
-                    // includes the object in each json(parts) that has the value you will group each entry of the array by
-                    if (Array.isArray(obj.observations)) {
-                        mergedJson.observations[obj.chapterRange || `UnknownRange`] = obj.observations;
-                    }
-                    // Strategy 1: Flat array merge
-                    if (Array.isArray(obj.unadaptedBeats)) {
-                        mergedJson.unadaptedBeats.push(...obj.unadaptedBeats);
-                    }
-                } catch (err) {
-                    console.error("❌ Failed to parse segment:", err.message);
-                }
-            }
+            const groupKey = config.groupKey || "chapterRange";
+            const groupValue = obj[groupKey] || "UnknownRange";
+
+            if (!mergedJson[key]) mergedJson[key] = {};
+            mergedJson[key][groupValue] = obj[key];
             break;
+          }
 
-        case "WF_Scene_ConceptCreation":
-            mergedJson = {
-                sceneConcepts: [],
-                observations: {},
-                isFinalChunk: true
-            };
-
-            for (const part of parts) {
-                try {
-                            const obj = JSON.parse(part);
-                            if (Array.isArray(obj.sceneConcepts)) {
-                                mergedJson.sceneConcepts.push(...obj.sceneConcepts);
-                            }
-                            if (Array.isArray(obj.observations)) {
-                                mergedJson.observations[obj.chapterRange || `UnknownRange`] = obj.observations;
-                            }
-                } catch (err) {
-                    console.error("❌ Failed to parse segment:", err.message);
-                }
-            }
+          case "singleObject": {
+            if (typeof obj[key] !== "object" || Array.isArray(obj[key])) break;
+            if (!mergedJson[key]) mergedJson[key] = {};
+            mergedJson[key] = { ...mergedJson[key], ...obj[key] };
             break;
-            
-        case "WF_CharacterAssignmentSceneReview":
-            mergedJson = {
-                characterAssignments: [],
-                newCharacterRoles: [],
-                observations: {},
-                isFinalChunk: true
-            };
+          }
 
-            for (const part of parts) {
-                try {
-                            const obj = JSON.parse(part);
-                            if (Array.isArray(obj.characterAssignments)) {
-                                mergedJson.characterAssignments.push(...obj.characterAssignments);
-                            }
-                            if (Array.isArray(obj.observations)) {
-                                mergedJson.observations[obj.chapterRange || `UnknownRange`] = obj.observations;
-                            }
-                            if (Array.isArray(obj.newCharacterRoles)) {
-                                mergedJson.newCharacterRoles.push(...obj.newCharacterRoles);
-                            }
-                } catch (err) {
-                    console.error("❌ Failed to parse segment:", err.message);
-                }
-            }
-            break;
-
-        case "WF_ChapterNarrativeFlowBuilder":
-            mergedJson = {
-                chapterDrafts: [],
-                isFinalChunk: true
-            };
-
-            for (const part of parts) {
-                try {
-                            const obj = JSON.parse(part);
-                            if (Array.isArray(obj.chapterDrafts)) {
-                                mergedJson.chapterDrafts.push(...obj.chapterDrafts);
-                            }
-                } catch (err) {
-                    console.error("❌ Failed to parse segment:", err.message);
-                }
-            }
-            break;
-        case "WF_ChapterKeyMomentsExtractionAssistant":
-            mergedJson = {
-                chapterKeyMoments: [],
-                isFinalChunk: true
-            };
-
-            for (const part of parts) {
-                try {
-                            const obj = JSON.parse(part);
-                            if (Array.isArray(obj.chapterKeyMoments)) {
-                                mergedJson.chapterKeyMoments.push(...obj.chapterKeyMoments);
-                            }
-                } catch (err) {
-                    console.error("❌ Failed to parse segment:", err.message);
-                }
-            }
-            break;
-
-        // 🔜 Add more assistant routes as needed
-        default:
-            throw new Error(`❌ Unrecognized assistant: ${assistantName}`);
+          default:
+            console.warn(`⚠️ Unknown merge strategy for key "${key}"`);
+        }
+      }
+    } catch (err) {
+      console.error("❌ Failed to parse chunk:", err.message);
     }
+  }
 
-    console.log("📦 Final merged JSON structure ready.");
-    return mergedJson;
+  return mergedJson;
 } // END OF splitAndMergeJsonChunks
 
 
@@ -813,7 +744,7 @@ async function triggerNextBatch({
     {
     supabase: any;
     user: any;
-    requst_id: string;
+    request_id: string;
     tableName: string;
     statusField: string;
     statusValue: string;
@@ -977,3 +908,88 @@ function formatMsToTime(ms) {
     String(milliseconds).padStart(3, '0')
   );
 } //END OF formatMsToTime
+
+
+
+/**
+ * 🔹 Parse GPT JSON Batch Response
+ *
+ * @description
+ * Safely parses a JSON string from provided string.
+ * Returns the parsed object or `null` if parsing fails.
+ *
+ * @param {string} rawJson - Raw JSON string from the GPT response field.
+ * @returns {Object|null} - Parsed JSON object or `null` if parsing failed.
+ */
+async function parseJson(rawJson) {
+    if (!rawJson || typeof rawJson !== "string") {
+        console.warn("⚠️ No GPT response string provided.");
+        return null;
+    }
+
+    try {
+        const parsed = JSON.parse(rawJson);
+        console.log("✅ GPT batch JSON successfully parsed.");
+        return parsed;
+    } catch (error) {
+        console.error(`❌ Failed to parse GPT response: ${error.message}`);
+        return null;
+    }
+} // END OF parseJson
+
+
+
+/**
+ * callEdgeFunction – Utility to call a Supabase Edge Function via POST
+ *
+ * @param {string} efName - The name of the Edge Function to call (without full URL).
+ * @param {Object} payload - The JSON object to send as the body of the POST request.
+ * @param {HeadersInit} [headers={}] - Optional headers for the request. Defaults to JSON content type.
+ * @returns {Promise<any>} - The parsed JSON response from the Edge Function, or error object if failed.
+ */
+export async function callEdgeFunction(
+  efName: string,
+  payload: Record<string, any>,
+  token
+): Promise<any> {
+  try {
+    // Construct the full URL using the project-wide EDGE_FUNCTIONS_URL (set in secrets .env)
+    const url = `${Deno.env.get("EDGE_FUNCTIONS_URL")}/${efName}`;
+
+  // Build Headers
+  let headers: HeadersInit = {
+    "Content-Type": "application/json",
+    "Authorization": `Bearer ${token}`
+  };
+
+
+    // Make the POST request to the Edge Function with payload and headers
+    const response = await fetch(url, {
+      method: "POST",
+      headers,
+      body: JSON.stringify(payload)
+    });
+
+    // If request is successful (status code 200–299), parse and return the response
+    if (response.ok) {
+      return await response.json();
+    }
+
+    // If not successful, capture status and error text
+    const errorText = await response.text();
+    console.error(`Edge Function POST failed [${response.status}]:`, errorText);
+    return {
+      success: false,
+      error: `Edge Function POST failed: ${errorText}`,
+      status: response.status
+    };
+
+  } catch (err: any) {
+    // If fetch throws due to network issues or other reasons
+    console.error("Edge Function POST error:", err.message || err);
+    return {
+      success: false,
+      error: err.message || "Unknown error"
+    };
+  }
+} //END OF callEdgeFunction

@@ -1,4 +1,4 @@
-// supabase/functions/ef_step_ChekLoopBatch.ts
+// supabase/functions/ef_step_assistant_Parser.ts
 // Last updated 07/21/2025
 /**
  * Check Loop Batch
@@ -536,6 +536,7 @@ async function processFinalJson(supabase, user, request_id, finalJson, scriptMap
 
     // Log context info for traceability
     console.log(`[${request_id}] 📄 Processing record:`, mappedFields);
+console.log(`[${request_id}] FK check → user_id:`, user?.id, ' narrative_project_id:', narrativeProjectID);
 
     if (operationType === "update") {
       const recordId = record[idFieldName];

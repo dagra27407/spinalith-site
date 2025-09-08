@@ -4,14 +4,14 @@ import { Label } from "@/components/ui/label";
 import { run_EF } from '@/lib/run_EF';
 import { useParams } from "react-router-dom";
 
-export default function StoryArcsView() {
+export default function StoryArcBeatsView() {
     const { projectId } = useParams();
     const [msg, setMsg] = useState('');
     const [status, setStatus] = useState('');
     const [success, setSuccess] = useState('');
     const [assistantName, setAssistantName] = useState('');
     const [record_id, setRecordId] = useState('');
-    let testAssistantName = "WF_StoryArcCraftingAssistant";
+    let testAssistantName = "WF_CharacterDesignAssistant";
     let testStatus = "Prep JSON";
 
     const callAssistant = async () => {
@@ -39,6 +39,7 @@ export default function StoryArcsView() {
         setMsg("Error calling edge function.");
       }
     };
+
     if(status != null){    
           useEffect(() => {
             console.log(`Message:${msg}`);
@@ -51,7 +52,7 @@ export default function StoryArcsView() {
     return (
     <div className="p-6">
       <div className="flex flex-col gap-1">
-        <h1 className="text-2xl font-semibold tracking-tight">Story Arcs</h1>
+        <h1 className="text-2xl font-semibold tracking-tight">Character Design</h1>
         <Button onClick={callAssistant}>Test</Button>
         <Label>Msg: {msg}</Label>
       </div>

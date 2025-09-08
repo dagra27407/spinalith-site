@@ -1,4 +1,4 @@
-// supabase/functions/ef_step_assistant_RequestNextBatch.ts
+// supabase/functions/ef_step_assistant_ReSendLastResponse.ts
 
 
 /*************************************
@@ -119,7 +119,7 @@ serve(async (req) => {
         } = body || {};
       
         if (!request_id) {
-          return new Response(JSON.stringify({ error: "ef_assistant_MultiPhaseRunner_http: Missing request_id" }), {
+          return new Response(JSON.stringify({ error: "ef_step_assistant_ReSendLastREsponse: Missing request_id" }), {
             status: 400,
             headers: jsonHeaders,
           });
@@ -391,7 +391,7 @@ async function requestNextBatch({
   supabase,
   user,
   wf_record,
-  phase: "RequestNextBatch", //Should match run_type of http record you want to use
+  phase: "ReSendLastMessage", //Should match run_type of http record you want to use
   multiPhaseIDs,
   ef_log_id,
   http_Request_Key,
@@ -920,6 +920,12 @@ try{
     prompt = request_prompt;
   }
 
+  if(run_type?.toLowerCase() === "resendlastmessage"){
+    prompt = prompt_record.resend_last_message;
+  } else {
+    prompt = request_prompt;
+  }
+
   //Build body of http call
   const http_body = {
     
@@ -961,6 +967,14 @@ try{
   }
 
   if (run_type?.toLowerCase() === "requestnextbatch") { 
+    //Update URL Template
+    request_url = request_url.replace("{{thread_id}}", multiPhaseIDs.thread_id);
+    //These parameters are not accepted in CreateTread Assistant API Calls
+    http_body.role = "user";
+    http_body.content = prompt;
+  }
+
+  if (run_type?.toLowerCase() === "resendlastmessage") { 
     //Update URL Template
     request_url = request_url.replace("{{thread_id}}", multiPhaseIDs.thread_id);
     //These parameters are not accepted in CreateTread Assistant API Calls
@@ -1094,6 +1108,7 @@ async function runHttpRequest({
   };
   supabase: any;
   user: any;
+  http_Request_Key: string;
   }): Promise<{ status: number; data: any; error?: string }> {
 
 //Scoped variables

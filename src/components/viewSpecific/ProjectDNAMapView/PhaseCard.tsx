@@ -46,7 +46,7 @@ export const PhaseCard = ({ title, description, status, view, projectId }: Phase
 
     const routeMap: Record<string, string> = {
       StoryArcsView: "story-arcs",
-      CharactersView: "characters",
+      CharactersView: "character-design",
       StoryArcBeatsView: "story-arc-beats",
       // Add more routes here
     };

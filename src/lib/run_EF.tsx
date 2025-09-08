@@ -14,6 +14,7 @@ export async function run_EF(endpoint: string,body_Payload: any) {
   let serializedBody: string;
   try {
     serializedBody = JSON.stringify(body_Payload);
+    //console.log("serializedBody: ", serializedBody)
   } catch (err) {
     throw new Error(`Invalid JSON provided run_EF(${endpoint}): ` + err.message);
   }
@@ -29,7 +30,7 @@ export async function run_EF(endpoint: string,body_Payload: any) {
     },
     body: serializedBody
   });
-
+  
   if (!res.ok) {
     let errorDetails;
     try {
@@ -42,8 +43,6 @@ export async function run_EF(endpoint: string,body_Payload: any) {
 
 
   //Return the data portion of the HTTP response
-  const data = await res.json();
-  return {
-    data
-  };
+  return await res.json();
+
 }

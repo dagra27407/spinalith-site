@@ -25,7 +25,7 @@ const location = useLocation();
 
 useEffect(() => {
   if (location.pathname === "/")  setActiveTab("Home");
-  else if (location.pathname.includes("/TestEdgeFunctionView")) setActiveTab("Dev Tools");
+  else if (location.pathname.includes("/devtools")) setActiveTab("Dev Tools");
 }, [location.pathname]);
 
 /**
@@ -40,7 +40,7 @@ const handleGoHome = () => {
  * Used in testing to navigate us to our TestView page
  */
 const handleTestView = () => {
-  navigate("/TestEdgeFunctionView");
+  navigate("/devtools");
 };
 
 
@@ -66,7 +66,7 @@ const handleTabChange = (tab: string) => {
       navigate("/");
       break;
     case "Dev Tools":
-      navigate("/TestEdgeFunctionView");
+      navigate("/devtools");
       break;
     default:
       break;

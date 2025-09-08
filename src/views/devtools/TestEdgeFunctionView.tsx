@@ -4,9 +4,6 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { run_EF } from "@/lib/run_EF";
-import { Tabs, TabsList, TabsTrigger, TabsContent} from "@/components/ui/tabs";
-import { toast } from 'sonner'
-import { supabase } from "@/lib/supabaseClient";
 
 
 /**
@@ -19,9 +16,6 @@ export default function TestEdgeFunctionView() {
   const [response, setResponse] = useState("");
   const [history, setHistory] = useState<{ efName: string; payload: string }[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [duplicateTable, setDuplicateTable] = useState("");
-  const [duplicateId, setDuplicateId] = useState("");
-  const [uniqueColumnToStrip, setUniqueColumnToStrip] = useState(""); // NEW
 
 
 
@@ -99,10 +93,13 @@ const commonFields: { key: string; value: string }[] = [
       setResponse("⏳ Request in process...");
       const parsed = JSON.parse(payload);
       saveToHistory({ efName, payload });
-      const { data } = await run_EF(efName, parsed);
-      setResponse(JSON.stringify(data, null, 2));
+      
+      const data = await run_EF(efName, parsed);
+      const normalized = normalizeEFResponse(data);
+
+      setResponse(JSON.stringify(normalized, null, 2));
     } catch (err) {
-      console.error("Error:", err);
+      console.error("ERROR FROM EF:", err);
       setResponse("❌ Error calling Edge Function.");
     } finally {
       setIsLoading(false);
@@ -111,73 +108,10 @@ const commonFields: { key: string; value: string }[] = [
 
 
 
-const handleDuplicateRecord = async () => {
-  if (!duplicateTable || !duplicateId) {
-    toast.error("⚠️ Missing Required Info", {
-      description: "Table name and Record ID are required.",
-    });
-    return;
-  }
-
-  const { data, error } = await supabase
-    .from(duplicateTable)
-    .select("*")
-    .eq("id", duplicateId)
-    .single();
-
-  if (error || !data) {
-    toast.error("❌ Record Not Found", {
-      description: error?.message ?? "No matching ID in that table.",
-    });
-    return;
-  }
-
-  // Remove standard ID
-  delete data.id;
-
-  // Remove user-specified unique column if provided
-  if (uniqueColumnToStrip && uniqueColumnToStrip in data) {
-    delete data[uniqueColumnToStrip];
-  }
-
-   // Remove created_at if it is in the record, this allows the duplicate to get the default now() value
-  if ("created_at" in data) {
-    delete data["created_at"];
-  }
-
-  const { data: inserted, error: insertError } = await supabase
-    .from(duplicateTable)
-    .insert([data])
-    .select();
-
-  if (insertError) {
-    toast.error("⚠️ Duplication Failed", {
-      description: insertError.message,
-    });
-  } else if (inserted && inserted.length > 0) {
-    toast.success("✅ Record Duplicated", {
-      description: `New ID: ${inserted[0].id}`,
-    });
-  } else {
-    toast.success("✅ Record Duplicated", {
-      description: "New record was created, but no ID was returned.",
-    });
-  }
-};
-
-
-
 
 
 
   return (
-    <Tabs defaultValue="run-ef" className="w-full">
-      <TabsList className="mb-4">
-        <TabsTrigger value="run-ef">Run EF</TabsTrigger>
-        <TabsTrigger value="tools">Tools</TabsTrigger>
-      </TabsList>
-
-     <TabsContent value="run-ef">
     <div className="p-6 space-y-4">
       <h1 className="text-2xl font-bold tracking-tight">🧪 Edge Function Tester</h1>
 
@@ -250,47 +184,47 @@ const handleDuplicateRecord = async () => {
         </div>
       )}
     </div>
-    </TabsContent>
-
-    <TabsContent value="tools">
-      <div className="p-6 space-y-4">
-        <h2 className="text-xl font-bold">🔁 Duplicate Record Tool</h2>
-
-        <div className="space-y-2">
-          <Label>Table Name</Label>
-          <Input
-            placeholder="wf_assistant_automation_control"
-            value={duplicateTable}
-            onChange={(e) => setDuplicateTable(e.target.value)}
-          />
-        </div>
-
-        <div className="space-y-2">
-          <Label>Unique Column to Exclude</Label>
-          <Input
-            placeholder="e.g. request_id"
-            value={uniqueColumnToStrip}
-            onChange={(e) => setUniqueColumnToStrip(e.target.value)}
-          />
-        </div>
-
-
-        <div className="space-y-2">
-          <Label>Record ID</Label>
-          <Input
-            placeholder="e.g. 49d7ebc9-1234-xyz"
-            value={duplicateId}
-            onChange={(e) => setDuplicateId(e.target.value)}
-          />
-        </div>
-
-        <Button onClick={handleDuplicateRecord}>
-          Duplicate Record
-        </Button>
-      </div>
-    </TabsContent>
-
-
-  </Tabs>
   );
+}
+
+
+/**
+ * normalizeEFResponse
+ * Safely normalizes EF responses between new and legacy formats.
+ *
+ * @param {any} obj - The parsed JSON from the EF
+ * @returns {NormalizedEFResponse}
+ */
+function normalizeEFResponse(obj: any): {
+  success?: boolean;
+  message?: string;
+  data?: any;
+  legacyWarning?: string;
+  rawResponse?: any;
+  EF_RunTime?: any;
+  extraElements?: any;
+} {
+  const isNewFormat =
+    typeof obj === "object" &&
+    "success" in obj &&
+    "message" in obj &&
+    "data" in obj &&
+    "EF_RunTime" in obj;
+console.log("isNewFormat ", isNewFormat);
+  if (isNewFormat) {
+    const {success, message, data, EF_RunTime, ...stripped} = obj;
+    return {
+      success: obj.success,
+      EF_RunTime: obj.EF_RunTime,
+      message: obj.message,
+      data: obj.data,
+      extraElements: stripped,
+    };
+  } else {
+    return {
+      success: true, // Let it show up as successful for now
+      legacyWarning: "This is a legacy or non-standard response format and should be updated.",
+      rawResponse: obj,
+    };
+  }
 }

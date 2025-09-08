@@ -11,26 +11,35 @@ export default function StoryArcBeatsView() {
     const [success, setSuccess] = useState('');
     const [assistantName, setAssistantName] = useState('');
     const [record_id, setRecordId] = useState('');
+    let testAssistantName = "WF_ArcBeatDevelopmentAssistant";
+    let testStatus = "Prep JSON";
 
     const callAssistant = async () => {
-        try {
-            //Define EdgeFunction name and body
-            let ef_Name = "ef_init_wf_StoryArcsAssistant";
-            let body_Payload = {
-              narrativeProjectID: projectId as string
-            };
-            //Call EF
-            const { data } = await run_EF(ef_Name, body_Payload);
-              setMsg(data.message);
-              setStatus(data.status);
-              setSuccess(data.success);
-              setAssistantName(data.assistantName);
-              setRecordId(data.record_id);
-            } catch (err) {
-            console.error('Error:', err);
-            setMsg('Error calling edge function.');
-            }
-    }
+      try {
+        const ef_Name = "ef_step_assistant_CreateWFRecord";
+        const body_Payload = {
+          wf_assistant_name: testAssistantName,
+          narrative_project_id: projectId,
+          status: testStatus
+        };
+
+        console.log("body: ", body_Payload);
+
+        const response = await run_EF(ef_Name, body_Payload);
+
+        // This is a legacy response – no `success` or `data` object
+        setMsg(response.message ?? '');
+        setStatus(response.outcome ?? '');
+        setSuccess("true"); // manually assume success for now
+        setAssistantName(testAssistantName);
+        setRecordId("legacy-ef"); // optional: placeholder or leave blank
+
+      } catch (err) {
+        console.error("Error:", err);
+        setMsg("Error calling edge function.");
+      }
+    };
+
     if(status != null){    
           useEffect(() => {
             console.log(`Message:${msg}`);

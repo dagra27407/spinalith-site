@@ -14,18 +14,18 @@
  */
 
 import { Outlet } from "react-router-dom";
-import NavBar from "@/components/layout/NavBar";
-import SidebarTree from "@/components/layout/SidebarTree";
+import NavBar from "@/components/layout/navbars/devtools_NavBar";
+import SidebarTree from "@/components/layout/sidebars/devtools_SidebarTree";
 import { Toaster } from "@/components/ui/sonner";
 
 
-export default function SpinalithCoreLayout() {
+export default function devToolsLayout() {
   return (
     <div className="flex flex-col h-screen">
       <NavBar />
       <div className="flex flex-1 overflow-hidden">
         <SidebarTree />
-        <div className="flex-1 overflow-auto p-4">
+        <div className="flex-1 overflow-auto p-0">
           <Outlet />
         </div>
       </div>

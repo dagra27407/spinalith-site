@@ -1,21 +1,30 @@
-// supabase/functions/function_template.ts
+// supabase/functions/ef_step_assistant_PrepJSON.ts
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { runProcess } from "./runProcess.ts";
 
-serve(async (req) => {
-	//Set headers
-		const corsHeaders = {
-		"Access-Control-Allow-Origin": "*",
-		"Access-Control-Allow-Methods": "POST, GET, OPTIONS",
-		"Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type"
-	  };
+/*************************************
+ * GLOBAL VARIABLES
+ * ***********************************/
 
-	  const jsonHeaders = {
-		...corsHeaders,
-		"Content-Type": "application/json"
-	  };
+//Set headers for calls to this function
+const corsHeaders = {
+"Access-Control-Allow-Origin": "*",
+"Access-Control-Allow-Methods": "POST, GET, OPTIONS",
+"Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type"
+};
+
+const jsonHeaders = {
+...corsHeaders,
+"Content-Type": "application/json"
+};
+
+const efStartTime = Date.now(); //Used for calculating duration
+const ef_log_id = crypto.randomUUID(); // used to connect all http runs within this EF in logging tables
+
+serve(async (req) => {
+
   
   // ───────────────────────────────────────────────────────────────
   // ✅ 1. Handle preflight CORS request (OPTIONS request from browser)
@@ -75,8 +84,10 @@ serve(async (req) => {
   if (req.method === "POST") {
     try {
 		const body = await req.json(); //Extract body of HTTP call
-        const { narrativeProjectID, record_id } = body; //Get passed values from body
-        const token = req.headers.get("Authorization")?.replace("Bearer ", ""); //Pull the users auth token for use in next EF call
+        
+
+    //Pull the users auth token for use in next EF call
+    const token = req.headers.get("Authorization")?.replace("Bearer ", "");
 		if (!token) {
 		  return new Response(JSON.stringify({ error: "Missing token" }), {
 			status: 400,
@@ -87,44 +98,14 @@ serve(async (req) => {
 /*****************************************************************************************************************
   // ** MAIN LOGIC FOR THIS EF NEEDS TO GO HERE ********************************************************************
 ****************************************************************************************************************/
-let sourceTable = "wf_assistant_automation_control"
-await runProcess(supabase, user, record_id, narrativeProjectID, sourceTable);
 
+const response = await runProcess(supabase, user, body, token, efStartTime);
+console.log("runProcess response:", response);
+return response;
 /*****************************************************************************************************************
 // ** END OF MAIN LOGIC FOR THIS EF NEEDS TO GO HERE ********************************************************************
 ****************************************************************************************************************/
 
-/*
-        // ** Call next Edge Function in automation order passing token provided to this one for user auth *******
-        (async () => {
-          try {
-            const res = await fetch(`${EDGE_FUNCTIONS_URL}/run_assistant_job`, { //Next EF name being called
-              method: "POST",
-              headers: { 
-                'Authorization': `Bearer ${token}`, //Needs to pass token along to new EF for user authentication
-                "Content-Type": "application/json" },
-              body: JSON.stringify({ record_id: newRecord.id }), // body should include any data you need to pass along to the next EF
-            });
-            if (!res.ok) {
-              const errText = await res.text();
-              console.error("run_assistant_job failed:", errText, newRecord.id);
-            }
-            if (res.ok) {
-            }
-          } catch (err) {
-            console.error("run_assistant_job error:", err, newRecord.id);
-          }
-          
-        })();
-*/
-        // ** Send response from requestor *******
-        return new Response(JSON.stringify({
-        success: true,
-        message: `Assistant was runnning`,
-        }), {
-        status: 200,
-        headers: jsonHeaders,
-        });
         
     } catch (err) {
       // ─────────────────────────────────────────────
@@ -146,5 +127,38 @@ await runProcess(supabase, user, record_id, narrativeProjectID, sourceTable);
         headers: jsonHeaders,
       });
     });
+
+/**
+ * formatMsToTime
+ * Converts a duration in milliseconds to a formatted time string: "HH:MM:SS.mmm"
+ *
+ * @param {number} ms - Duration in milliseconds.
+ * @returns {string} A formatted string representing the time duration.
+ *
+ * @example
+ * formatMsToTime(6342); // "00:00:06.342"
+ * formatMsToTime(3723001); // "01:02:03.001"
+ */
+function formatMsToTime(ms) {
+  // Calculate hours from total milliseconds
+  const hours = Math.floor(ms / 3600000);
+
+  // Calculate remaining minutes
+  const minutes = Math.floor((ms % 3600000) / 60000);
+
+  // Calculate remaining seconds
+  const seconds = Math.floor((ms % 60000) / 1000);
+
+  // Get remaining milliseconds
+  const milliseconds = ms % 1000;
+
+  // Format each component to ensure fixed width (e.g., "02" for minutes)
+  return (
+    String(hours).padStart(2, '0') + ':' +
+    String(minutes).padStart(2, '0') + ':' +
+    String(seconds).padStart(2, '0') + '.' +
+    String(milliseconds).padStart(3, '0')
+  );
+} //END OF formatMsToTime
 
 

@@ -150,8 +150,8 @@ serve(async (req) => {
 /*****************************************************************************************************************
   // ** MAIN LOGIC FOR THIS EF NEEDS TO GO HERE ********************************************************************
 ****************************************************************************************************************/
-        //Run Main Proccess flow
-    const mainProcess = await mainWorkflow({supabase, user, wf_assistant_name, narrative_project_id, status});
+    //Run Main Proccess flow
+    const mainProcess = await mainWorkflow({supabase, user, wf_assistant_name, narrative_project_id, status, token});
 
     //Final Completion Return
     return new Response(
@@ -213,7 +213,6 @@ serve(async (req) => {
  * @param {Object} options - Workflow context
  * @param {any} options.supabase - Supabase client instance
  * @param {any} options.user - Authenticated user object
- * @param {string} options.request_id - ID of the workflow control record
  *
  * @returns {Promise<void|Response>} - Returns nothing on success,
  * or a Response object if a failure occurs during retry management or data fetching.
@@ -224,12 +223,14 @@ async function mainWorkflow({
   wf_assistant_name,
   narrative_project_id,
   status,
+  token,
 }: {
   supabase: any;
   user: any;
   wf_assistant_name: string;
   narrative_project_id: string;
   status: string;
+  token: string;
 }) {
 
 /*******************************************************************************
@@ -238,7 +239,7 @@ async function mainWorkflow({
     const wf_table = "wf_assistant_automation_control";
 
     // Create record in wf_assistant_automation_control with parameters sent in body
-    const { data: newRecord, error: insertError } = await supabase
+    const { data: new_wf_Record, error: insertError } = await supabase
     .from(wf_table)
     .insert({
         narrative_project_id: narrative_project_id,
@@ -259,7 +260,13 @@ async function mainWorkflow({
     });
     }
 
-  
+    let efName = "ef_router_wf_assistant_automation_control";
+    let payload = {
+      "request_id": new_wf_Record.id,
+    }
+    let router = callEdgeFunction(efName, payload, token);
+    console.log(router);
+
     return new Response(
                       JSON.stringify({
                         outcome: "Complete",
@@ -309,3 +316,59 @@ function formatMsToTime(ms) {
   );
 } // END OF formatMsToTime
 
+
+
+/**
+ * callEdgeFunction – Utility to call a Supabase Edge Function via POST
+ *
+ * @param {string} efName - The name of the Edge Function to call (without full URL).
+ * @param {Object} payload - The JSON object to send as the body of the POST request.
+ * @param {HeadersInit} [headers={}] - Optional headers for the request. Defaults to JSON content type.
+ * @returns {Promise<any>} - The parsed JSON response from the Edge Function, or error object if failed.
+ */
+export async function callEdgeFunction(
+  efName: string,
+  payload: Record<string, any>,
+  token
+): Promise<any> {
+  try {
+    // Construct the full URL using the project-wide EDGE_FUNCTIONS_URL (set in secrets .env)
+    const url = `${Deno.env.get("EDGE_FUNCTIONS_URL")}/${efName}`;
+
+  // Build Headers
+  let headers: HeadersInit = {
+    "Content-Type": "application/json",
+    "Authorization": `Bearer ${token}`
+  };
+
+
+    // Make the POST request to the Edge Function with payload and headers
+    const response = await fetch(url, {
+      method: "POST",
+      headers,
+      body: JSON.stringify(payload)
+    });
+
+    // If request is successful (status code 200–299), parse and return the response
+    if (response.ok) {
+      return await response.json();
+    }
+
+    // If not successful, capture status and error text
+    const errorText = await response.text();
+    console.error(`Edge Function POST failed [${response.status}]:`, errorText);
+    return {
+      success: false,
+      error: `Edge Function POST failed: ${errorText}`,
+      status: response.status
+    };
+
+  } catch (err: any) {
+    // If fetch throws due to network issues or other reasons
+    console.error("Edge Function POST error:", err.message || err);
+    return {
+      success: false,
+      error: err.message || "Unknown error"
+    };
+  }
+} //END OF callEdgeFunction
