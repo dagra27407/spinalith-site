@@ -49,7 +49,22 @@ const jsonHeaders = {
 "Content-Type": "application/json"
 };
 
-    
+export type EFContext = {
+  supabase: any;
+  user: any;
+  token: string;
+  request_id: string;
+  wf_table: string;           // usually "wf_assistant_automation_control"
+  ef_log_id: string;          // shared run id for logs
+  efStartTime: Date;        // Date.now() at EF start
+  wf_record?: any;            // set after fetchSingleRecord
+  ids?: {                     // optional: used by other EFs
+    thread_id?: string;
+    run_id?: string;
+    message_id?: string;
+  };
+};
+
 /**
  * Supabase Edge Function handler for the MultiPhase Assistant Runner pipeline.
  *
@@ -71,7 +86,16 @@ const jsonHeaders = {
 
 serve(async (req) => {
   const efStartTime = Date.now(); //Used for calculating duration
-  
+  const ef_log_id = crypto.randomUUID(); // used to connect all http runs within this EF in logging tables
+  const ctx: EFContext = {
+  supabase: undefined,
+  user: undefined,
+  token: undefined,
+  request_id: undefined,
+  wf_table: "wf_assistant_automation_control",
+  ef_log_id,  // from your top-level const
+  efStartTime // from your top-level const
+  };
   // ───────────────────────────────────────────────────────────────
   // ✅ 1. Handle preflight CORS request (OPTIONS request from browser)
   // This allows the browser to verify it can send POST/GET/Authorization headers
@@ -163,15 +187,20 @@ serve(async (req) => {
    /*********************************************************************
    ** Step 1: Get wf_assistant_automation_control record ***************
    *********************************************************************/
+    // hydrate ctx from request + auth
+    ctx.supabase   = supabase;
+    ctx.user       = user;
+    ctx.token      = token;
+    ctx.request_id = request_id;
 
     //Run Main Proccess flow
-    const mainProcess = await mainWorkflow({supabase, user, request_id, token});
+    const mainProcess = await mainWorkflow(ctx);
 
     //Final Completion Return
     return new Response(
                         JSON.stringify({
                         outcome: "Complete",
-                        message: "Outbound Message",
+                        message: "Check Loop Batch Complete",
                         EF_RunTime: formatMsToTime(Date.now()-efStartTime),
                         }),
                         {
@@ -237,28 +266,19 @@ serve(async (req) => {
  * @returns {Promise<void|Response>} - Returns nothing on success,
  * or a Response object if a failure occurs during retry management or data fetching.
  */
-async function mainWorkflow({
-  supabase,
-  user,
-  request_id,
-  token,
-}: {
-  supabase: any;
-  user: any;
-  request_id: string;
-  token: string;
-}) {
+async function mainWorkflow(ctx: EFContext){
 
     /*******************************************************************************
      * Variable Declaration
      *******************************************************************************/
-        const wf_table = "wf_assistant_automation_control";
+      const { supabase, user, token, request_id, wf_table } = ctx;
         const scriptMapping_table = "wf_script_mapping_warehouse";
         const sourceField = "iteration_json";
         const concatField = "concatenated_json"
         const outputField = "final_json";
         const splitMarker = "***SplitPoint***";
 
+        
         // Get wf_record
         const wf_result = await fetchSingleRecord({
         supabase,
@@ -273,7 +293,8 @@ async function mainWorkflow({
         return wf_result; // error Response object, pass it up
         }
         let wf_record = wf_result.returned_record;
-
+        ctx.wf_record = wf_record;
+        await logActivity(ctx, "CheckLoopBatch:Started", JSON.stringify({ status: "Starting Check Loop Batch" }));
         let assistantName = wf_record.wf_assistant_name;
 
         // Get and process json
@@ -315,7 +336,7 @@ async function mainWorkflow({
                         } else {
                         console.log(`✅ Status updated to "Max Retry Attempts Reached" for record ${request_id}`);
                         }
-
+                    await logActivity(ctx, "CheckLoopBatch:MaxAttemptsReached", JSON.stringify({ status: "Early Exit Check Loop Batch" }));
                     return; //exit function
                 } 
                 else {
@@ -331,6 +352,7 @@ async function mainWorkflow({
                         console.log(`✅ retry_count updated to "${retryCount + 1}" for record ${request_id}`);
                         }
 
+                    await logActivity(ctx, "CheckLoopBatch:TriggerNextBatch", JSON.stringify({ status: "Trigger RequestNextBatch" }));
                     await triggerNextBatch({supabase, user, request_id, tableName: wf_table, statusField: "status", statusValue: "Re-Send Last Response"});
                     let jsonerror_efName = "ef_router_wf_assistant_automation_control";
                     let jsonerror_payload = {
@@ -343,20 +365,8 @@ async function mainWorkflow({
         } catch(error){
             if (error) {
                     console.error(`❌ Failed to update status field:`, error.message);
-                    return new Response(
-                        JSON.stringify({
-                        success: false,
-                        message: `Failed to update to Re-Send Last Response: ${error.message}`,
-                        details: {
-                            request_id,
-                            status: "Max Retry Attempts Reached",
-                        },
-                        }),
-                        {
-                        status: 500,
-                        headers: jsonHeaders,
-                        }
-                    );
+                    return { success: false, error: error};
+                    await logActivity(ctx, "CheckLoopBatch:EarlyExit", JSON.stringify({ status: "Failed to Update Status" }));
                     }
         }
 
@@ -365,7 +375,7 @@ async function mainWorkflow({
 
         // ✅ If is not last chunk - else is last chunk
         let keepBatching = await shouldContinueBatching(supabase, user, parsedJson, assistantName)
-        if (keepBatching) {
+        if (keepBatching.success) {
             // Trigger next view (e.g., set status to "Request Next Batch")
             console.log("isFinalChunk = False. Need another batch");
             
@@ -383,7 +393,7 @@ async function mainWorkflow({
             
             // Flag table to enter view to get next batch
             await triggerNextBatch({supabase, user, request_id, tableName: wf_table, statusField: "status", statusValue: "Request Next Batch"});
-
+            await logActivity(ctx, "CheckLoopBatch:TriggerNextBatch", JSON.stringify({ status: "Starting RequestNextBatch" }));
         } else {
             // Move to recombine phase
             console.log("isFinalChunk = True. No more batches needed");
@@ -452,6 +462,7 @@ async function mainWorkflow({
                         }
             
             // Flag status Parse Response
+            await logActivity(ctx, "CheckLoopBatch:ReadyToParse", JSON.stringify({ status: "Starting Parser" }));
             await triggerNextBatch({supabase, user, request_id, tableName: wf_table, statusField: "status", statusValue: "Parse Response"});
         }
         
@@ -762,10 +773,12 @@ async function triggerNextBatch({
         full: JSON.stringify(error),
         });
     throw error;
+    return{ success: false, error: error };
     }
 
 
     console.log("✅ Supabase record updated to trigger next assistant batch.");
+    return{ success: true };
 } // END OF triggerNextBatch
 
 
@@ -822,21 +835,21 @@ async function shouldContinueBatching(supabase: any, user: any, parsedJson: any,
 
         if (error || !promptRecord) {
             console.error(`❌ Failed to fetch batch_style for assistant '${assistantName}':`, error);
-            return false;
+            return { success: false, error: error };
         }
 
         const { batch_style } = promptRecord;
 
         if (batch_style && parsedJson.isFinalChunk === false) {
             console.log("🔁 More chunks expected.");
-            return true;
+            return { success: true };
         }
         console.log("✅ Final chunk received.");
-        return false;
+        return { succcess: false, error: "Not final chunk"};
 
     } catch (err) {
         console.error("❌ Unexpected error in shouldContinueBatching:", err);
-        return false;
+        return { success: false, error: err};
     }
 } // END OF shouldContinueBatching
 
@@ -872,6 +885,7 @@ async function appendBatchToConcatenatedFieldFromRecord(supabase, user, request_
     }
 
     console.log("New GPT batch appended using pre-fetched record.");
+    return {success: true};
 } // END OF appendBatchToConcatenatedFieldFromRecord
 
 
@@ -993,3 +1007,53 @@ export async function callEdgeFunction(
     };
   }
 } //END OF callEdgeFunction
+
+
+
+/**
+ * @function logActivity
+ * @async
+ * @param {EFContext} ctx
+ *   Execution context containing `supabase`, `wf_record`, and `ef_log_id`.
+ * @param {string} status
+ *   Short event/status label to record (e.g., "PollRunStatus").
+ * @param {any} [details]
+ *   Optional details payload passed through as-is. If your DB column is TEXT,
+ *   pass a string or pre-`JSON.stringify` this value before calling.
+ * @param {string} [tableName="wf_assistant_activity_log"]
+ *   Target table name for the insert.
+ * @returns {Promise<void>}
+ *
+ * @example
+ * await logActivity(ctx, "PollRunStatus", { attempt: 3, elapsedMs: 22179 });
+ *
+ * @notes
+ * - On insert error or exception, this util logs a warning via `console.warn`
+ *   and resolves; it never throws.
+ */
+export async function logActivity(
+  ctx: EFContext,
+  status: string,
+  details?: any,
+  tableName = "wf_assistant_activity_log"
+): Promise<void> {
+  try {
+    const { error } = await ctx.supabase
+      .from(tableName)
+      .insert([
+        {
+          wf_control_id: ctx.wf_record?.id,
+          ef_log_id: ctx.ef_log_id,
+          event: status,
+          details,
+          assistant_name: ctx.wf_record?.wf_assistant_name,
+        },
+      ]);
+
+    if (error) {
+      console.warn("activity log insert error:", error);
+    }
+  } catch (e) {
+    console.warn("activity log insert threw:", e);
+  }
+} // END OF logActivity

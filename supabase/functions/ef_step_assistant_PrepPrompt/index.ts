@@ -20,11 +20,37 @@ const jsonHeaders = {
 "Content-Type": "application/json"
 };
 
-const efStartTime = Date.now(); //Used for calculating duration
-const ef_log_id = crypto.randomUUID(); // used to connect all http runs within this EF in logging tables
+
+export type EFContext = {
+  supabase: any;
+  user: any;
+  token: string;
+  request_id: string;
+  wf_table: string;           // usually "wf_assistant_automation_control"
+  ef_log_id: string;          // shared run id for logs
+  efStartTime: Date;        // Date.now() at EF start
+  wf_record?: any;            // set after fetchSingleRecord
+  ids?: {                     // optional: used by other EFs
+    thread_id?: string;
+    run_id?: string;
+    message_id?: string;
+  };
+};
 
 serve(async (req) => {
   
+    const efStartTime = Date.now(); //Used for calculating duration
+    const ef_log_id = crypto.randomUUID(); // used to connect all http runs within this EF in logging tables
+    const ctx: EFContext = {
+    supabase: undefined,
+    user: undefined,
+    token: undefined,
+    request_id: undefined,
+    wf_table: "wf_assistant_automation_control",
+    ef_log_id,  // from your top-level const
+    efStartTime // from your top-level const
+    };
+
   // ───────────────────────────────────────────────────────────────
   // ✅ 1. Handle preflight CORS request (OPTIONS request from browser)
   // This allows the browser to verify it can send POST/GET/Authorization headers
@@ -83,7 +109,7 @@ serve(async (req) => {
   if (req.method === "POST") {
     try {
 		const body = await req.json(); //Extract body of HTTP call
-        const { narrativeProjectID, request_id } = body; //Get passed values from body
+        const { request_id } = body; //Get passed values from body
     //Pull the users auth token for use in next EF call
     const token = req.headers.get("Authorization")?.replace("Bearer ", ""); 
 		if (!token) {
@@ -96,8 +122,15 @@ serve(async (req) => {
 /*****************************************************************************************************************
   // ** MAIN LOGIC FOR THIS EF NEEDS TO GO HERE ********************************************************************
 ****************************************************************************************************************/
+
+// hydrate ctx from request + auth
+ctx.supabase   = supabase;
+ctx.user       = user;
+ctx.token      = token;
+ctx.request_id = request_id;
+
 let sourceTable = "wf_assistant_automation_control"
-await runProcess(supabase, user, request_id, narrativeProjectID, sourceTable, token);
+await runProcess(ctx);
 
 /*****************************************************************************************************************
 // ** END OF MAIN LOGIC FOR THIS EF NEEDS TO GO HERE ********************************************************************

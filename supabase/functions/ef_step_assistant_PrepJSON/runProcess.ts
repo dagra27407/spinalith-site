@@ -134,10 +134,6 @@ await loadAllBaseTables(supabase, user, fieldMapLibrary.baseTableMap, narrativeP
 determineEpisodeKey(fieldMapLibrary);
 
 
-// ** Module Add-On Triggers ** Used in conditional output object inclusion logic **
-let mod_AbilitySystem = globalThis?.NarrativeProjectData?.[0]?.mod_AbilitySystem_Trigger;
-
-
 // ** Define sort by options ** 
 const sortRegistry = {
   byArcID: (a, b) => (a.arcID ?? 0) - (b.arcID ?? 0),
@@ -166,19 +162,37 @@ if (fieldMapLibrary.filterMap) {
 //    jsonOutput is dynamically created inserting the segments listed in the mapping
 let jsonOutput = {};
 
-for (let sectionKey of Object.keys(fieldMapLibrary.jsonOutputMap)) {
+
+// make sure tags are available
+globalThis.mod_tags = Array.isArray(globalThis?.NarrativeProjectData?.[0]?.mod_tags)
+  ? globalThis.NarrativeProjectData[0].mod_tags
+  : [];
+
+//Loop through fieldMapLibrary.jsonOutputMap and create all sections outlined
+for (const sectionKey of Object.keys(fieldMapLibrary.jsonOutputMap)) {
   const control = fieldMapLibrary.jsonOutputMap[sectionKey];
 
-  // Conditional check happens here if inclusion is conditional and conditions boolean variable is false section is skipped
-  if (control.conditional && globalThis[control.conditionVariable] !== true) continue;
-console.log("sectionKey:", sectionKey);
-console.log("fieldMapLibrary:", JSON.stringify(fieldMapLibrary,null,2));
-  const builtSection = buildOutputSection(sectionKey, fieldMapLibrary);
+  //If section flagged as conditional check if mod_tag is present on project(skip section if tag not present)
+  if (control?.conditional === true) {
+    const tags = globalThis.mod_tags as string[];
+    const needed = control.conditionValue; // string or string[]
 
-  if (builtSection !== null) {
-    jsonOutput[sectionKey] = builtSection;
+    const include =
+      typeof needed === "string"
+        ? tags.includes(needed)
+        : Array.isArray(needed)
+          ? needed.some(t => tags.includes(t)) // any-of
+          : false; // require a conditionValue when conditional=true
+
+    if (!include) continue;  //Skip to next item in loop if section condition not met
   }
+
+  //Add section to output JSON
+  const builtSection = buildOutputSection(sectionKey, fieldMapLibrary);
+  if (builtSection !== null) jsonOutput[sectionKey] = builtSection;
 }
+
+
 //console.log("batchingData: ", fieldMapLibrary.batchingMap);
 // Create batchData information
 let batchData = { success: true, data: "exclude" }; // Safe default

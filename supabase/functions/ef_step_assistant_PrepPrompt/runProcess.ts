@@ -18,40 +18,58 @@
  * - 06/06/2025 - Rebuilt script for use in singular control table workflow with normalized json replacing airtable specific calls
  * - 07/10/2025 - Re-factored code for use in Edge Function environment vs airtable
  */
-export async function runProcess(supabase: any, user: any, request_id: string, narrativeProjectID: string, sourceTable: string, token: string) {
-  console.log(`runProcess received request_id: ${request_id} || sourceTable: ${sourceTable}`);
+export async function runProcess(ctx: EFContext) {
+  const { supabase, user, token, request_id, wf_table } = ctx;
+  console.log(`runProcess received request_id: ${request_id} || wf_table: ${wf_table}`);
 
   /*******************************************************************************
  * 🔧 Variable Declaration
  * Expects as a paramater
  * -request_id of the wf_assistant_automation_control record
- * -sourceTable (as of this design that is the only table expected to be passed but left open for future design)
+ * -wf_table (as of this design that is the only table expected to be passed but left open for future design)
  *******************************************************************************/
 
 
     // ✅ Output configuration
     const dataFlowConfig = {
-        outputTable: sourceTable,    // Table where JSON will be written
+        outputTable: wf_table,    // Table where JSON will be written
         outputField: "gpt_prompt"           // Field to write JSON to
     };
     let tableOutput = dataFlowConfig.outputTable;
 
     // tableList defines all tables that need to be loaded and normalized for use in script
     const tableList = {
-        WF_SourceData:				    { tableName: sourceTable, filterByNarrative: false },
         ScriptMappingWarehouseData:	    { tableName: "wf_script_mapping_warehouse", filterByNarrative: false },
         PromptWarehouseData:			{ tableName: "wf_assistant_prompt_warehouse", filterByNarrative: false },
         NarrativeProjectData:			{ tableName: "narrative_projects", filterByNarrative: true }, // assume loaded by recordID
     };
 
+    // Get wf_record
+    const wf_result = await fetchSingleRecord({
+    supabase,
+    user,
+    tableName: wf_table,
+    keyField: "id",
+    request_key: request_id
+    });
+
+    // Validate and extract wf_record
+    if (!('returned_record' in wf_result)) {
+    return wf_result; // error Response object, pass it up
+    }
+    let wf_record = wf_result.returned_record;
+    ctx.wf_record = wf_record;
+    await logActivity(ctx, "PrepPrompt:Started", JSON.stringify({ status: "Starting PrepPrompt" }));
+    let narrativeProjectID = wf_record.narrative_project_id;
+
     // Using tableList create a json instance of each table in globalThis
     await loadAllSupabaseTables(request_id, narrativeProjectID, tableList)
 
     let promptRecord = globalThis.PromptWarehouseData.find(
-  r => r.assistant_name === globalThis.WF_SourceData?.[0]?.wf_assistant_name
+  r => r.assistant_name === wf_record.wf_assistant_name
 );
 
-const assistantName = globalThis.WF_SourceData?.[0]?.wf_assistant_name;
+const assistantName = wf_record.wf_assistant_name;
 if (!promptRecord) {
   throw new Error(`❌ No matching prompt record for assistant "${assistantName}".`);
 }
@@ -68,25 +86,26 @@ let moduleSnippets = [];
 
 const narrativeProjectRecord = globalThis.NarrativeProjectData?.[0]; // Grab the only expected project
 
-for (let fieldName of Object.keys(promptRecord)) {
-  // ✅ Check for fields like "mod_ability_system_plug_in"
-  if (fieldName.startsWith("mod_") && promptRecord[fieldName]) {
-
-    // 🔁 Convert "_plug_in" to "_trigger" to find the enabling flag in the narrative project
-    let triggerFieldName = fieldName.replace("_plug_in", "_trigger");
-
-    // ✅ Only include the snippet if the corresponding trigger is active in the narrative project
-    if (narrativeProjectRecord?.[triggerFieldName] === true) {
-        moduleSnippets.push(promptRecord[fieldName]);
-        }
-
+//add prompts for any modules tagged in project
+const modTags: string[] = narrativeProjectRecord?.mod_tags ?? [];
+for (const tag of modTags) {
+  const snippet = promptRecord[tag];
+  if (typeof snippet === "string" && snippet.trim().length > 0) {
+    moduleSnippets.push(snippet);
+  } else {
+    // optional logging
+    console.warn(`[PrepPrompt] No matching snippet for tag "${tag}"`);
   }
 }
 
 // ✨ If no modules active, use fallback
 if (moduleSnippets.length === 0) {
-    let fallback = promptRecord["NoModulesIncluded"];
-    if (fallback) moduleSnippets.push(fallback);
+  const fallback = promptRecord["no_modules_included"];
+  if (typeof fallback === "string" && fallback.trim()) {
+    moduleSnippets.push(fallback);
+  } else {
+    throw new Error("No mods present and no 'no_modules_included' fallback defined in Prompt Warehouse.");
+  }
 }
 
 // 🧠 Final prompt assembly
@@ -287,3 +306,107 @@ export async function callEdgeFunction(
     };
   }
 } //END OF callEdgeFunction
+
+
+
+/**
+ * Fetches a single record from a Supabase table using a unique key field.
+ *
+ * Designed to be reusable across any table where a record can be uniquely identified
+ * by a single key (e.g. id, request_key, assistant_name, etc).
+ *
+ * @param {Object} params
+ * @param {any} params.supabase - The Supabase client instance.
+ * @param {any} params.user - The authenticated Supabase user (unused here but reserved for future RLS logic).
+ * @param {string} params.tableName - The name of the table to query.
+ * @param {string} params.keyField - The unique key field to filter by (e.g., 'id' or 'assistant_name').
+ * @param {string} params.request_key - The value to match in the keyField.
+ * @returns {Promise<{ returned_record: any } | Response>} The matched record, or a Response object if not found or error occurs.
+ */
+async function fetchSingleRecord({
+  supabase,
+  user,
+  tableName,
+  keyField,
+  request_key,
+}: {
+  supabase: any;
+  user: any;
+  tableName: string;
+  keyField: string;
+  request_key: string;
+}) {
+  try {
+    const { data, error } = await supabase
+      .from(tableName)
+      .select("*")
+      .eq(keyField, request_key)
+      .single();
+
+    if (error || !data) {
+      console.error(`${tableName}: Failed to fetch record with ${keyField}=${request_key}`, error);
+      return new Response(
+        JSON.stringify({ error: `${tableName}: Record not found using ${keyField} = ${request_key}` }),
+        { status: 404, headers: jsonHeaders }
+      );
+    }
+
+    return { returned_record: data };
+  } catch (error: any) {
+    console.error(`${tableName}: Unexpected error during fetchSingleRecord:`, error);
+    return new Response(
+      JSON.stringify({ error: `${tableName}: Unexpected error: ${error.message}` }),
+      { status: 500, headers: jsonHeaders }
+    );
+  }
+} // END OF fetchSingleRecord
+
+
+
+/**
+ * @function logActivity
+ * @async
+ * @param {EFContext} ctx
+ *   Execution context containing `supabase`, `wf_record`, and `ef_log_id`.
+ * @param {string} status
+ *   Short event/status label to record (e.g., "PollRunStatus").
+ * @param {any} [details]
+ *   Optional details payload passed through as-is. If your DB column is TEXT,
+ *   pass a string or pre-`JSON.stringify` this value before calling.
+ * @param {string} [tableName="wf_assistant_activity_log"]
+ *   Target table name for the insert.
+ * @returns {Promise<void>}
+ *
+ * @example
+ * await logActivity(ctx, "PollRunStatus", { attempt: 3, elapsedMs: 22179 });
+ *
+ * @notes
+ * - On insert error or exception, this util logs a warning via `console.warn`
+ *   and resolves; it never throws.
+ */
+export async function logActivity(
+  ctx: EFContext,
+  status: string,
+  details?: any,
+  tableName = "wf_assistant_activity_log"
+): Promise<void> {
+  try {
+    const { error } = await ctx.supabase
+      .from(tableName)
+      .insert([
+        {
+          wf_control_id: ctx.wf_record?.id,
+          ef_log_id: ctx.ef_log_id,
+          event: status,
+          details,
+          assistant_name: ctx.wf_record?.wf_assistant_name,
+        },
+      ]);
+
+    if (error) {
+      console.warn("activity log insert error:", error);
+    }
+  } catch (e) {
+    console.warn("activity log insert threw:", e);
+  }
+} // END OF logActivity

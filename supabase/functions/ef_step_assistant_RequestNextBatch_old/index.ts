@@ -1,4 +1,5 @@
-// supabase/functions/ef_step_assistant_InitialMessage.ts
+// supabase/functions/ef_step_assistant_RequestNextBatch.ts
+
 
 /*************************************
  * GLOBAL VARIABLES
@@ -22,7 +23,6 @@ const jsonHeaders = {
 
 const efStartTime = Date.now(); //Used for calculating duration
 const ef_log_id = crypto.randomUUID(); // used to connect all http runs within this EF in logging tables
-
     
 /**
  * Supabase Edge Function handler for the MultiPhase Assistant Runner pipeline.
@@ -32,10 +32,9 @@ const ef_log_id = crypto.randomUUID(); // used to connect all http runs within t
  * - Manages CORS preflight checks
  * - Authenticates the user via Supabase Auth
  * - Parses the request body for `request_id`
- * - Initializes the multi-phase assistant run (CreateThread, InitialMessage, RunThread)
+ * - Initializes the multi-phase assistant run (RequestNextBatch, RunThread)
  * - Returns assistant run metadata and status
  *
- * Only supports POST requests. All others return a 405.
  *
  * @method OPTIONS - CORS preflight check
  * @method POST - Triggers the multi-phase assistant execution using the provided request ID
@@ -132,8 +131,8 @@ serve(async (req) => {
 /*****************************************************************************************************************
   // ** MAIN LOGIC FOR THIS EF NEEDS TO GO HERE ********************************************************************
 ****************************************************************************************************************/
-    //Run Main Proccess flow
-    const mainProcess = await mainWorkflow({supabase, user, request_id, ef_log_id, token});
+        //Run Main Proccess flow
+    const mainProcess = await mainWorkflow({supabase, user, request_id, token});
 
     //Final Completion Return
     return new Response(
@@ -147,8 +146,6 @@ serve(async (req) => {
                         headers: jsonHeaders,
                         }
                     );
-
-
 
 
 
@@ -206,21 +203,20 @@ async function mainWorkflow({
   supabase,
   user,
   request_id,
-  ef_log_id,
   token,
 }: {
   supabase: any;
   user: any;
   request_id: string;
-  ef_log_id: string;
   token: string;
 }) {
 
-  /*******************************************************************************
+/*******************************************************************************
    * Variable Declaration
    *******************************************************************************/
   const wf_table = "wf_assistant_automation_control";
   const http_Request_Key = "WF_OpenAI_Assistant_HTTP";
+  
 
   // Get wf_record
     const wf_result = await fetchSingleRecord({
@@ -237,8 +233,7 @@ async function mainWorkflow({
     }
     const wf_record = wf_result.returned_record;
 
-
-  const { response: initializeAssistantResponse, updatedIDs: initializeAssistantUpdatedIDs} = await initializeAssistant({
+  const { response: requestNextBatchResponse, updatedIDs: requestNextBatchUpdatedIDs} = await requestNextBatch({
     supabase,
     user,
     request_id,
@@ -248,23 +243,23 @@ async function mainWorkflow({
   });
 
   // All internal handlers return a Response — just return it as-is
-  if (!(initializeAssistantResponse instanceof Response)) {
-    throw new Error("Expected a Response object from initializeAssistant.");
+  if (!(requestNextBatchResponse instanceof Response)) {
+    throw new Error("Expected a Response object from requestNextBatch.");
   }
 
-  if (initializeAssistantResponse.status !== 200) {
-    return initializeAssistantResponse;
+  if (requestNextBatchResponse.status !== 200) {
+    return requestNextBatchResponse;
   }
 
   // Assume initializeAssistant returned status: 200 at this point
-  const initAssistantResponse = await initializeAssistantResponse.json();
+  const initAssistantResponse = await requestNextBatchResponse.json();
 
 
   const { response: pollAssistantResponse, updatedIDs: pollAssistantUpdatedIDs} = await pollAssistant({
     supabase,
     user,
     wf_record,
-    multiPhaseIDs: initializeAssistantUpdatedIDs,
+    multiPhaseIDs: requestNextBatchUpdatedIDs,
     //multiPhaseIDs: multiPhaseIDs,
     efStartTime,
     timeoutLimitMs: 130000, // default 60s = 60000
@@ -292,11 +287,11 @@ async function mainWorkflow({
 
     const assistantText = assistantMessage?.content?.[0]?.text?.value || null;
 
+    // Place the response received into iteration_json for Check Loop Batch to process
     if(assistantText){
       const { error: assistantTextError } = await supabase
         .from("wf_assistant_automation_control")
         .update({ 
-          gpt_response_initial: assistantText,
           iteration_json: assistantText,
           status: "Check Loop Batch"
         })
@@ -309,13 +304,14 @@ async function mainWorkflow({
     }
     }
 
+  
     // Call WF Router to kick off next ef process
     let efName = "ef_router_wf_assistant_automation_control";
-    let payload = {
-      "request_id": request_id,
-    }
-    let router = callEdgeFunction(efName, payload, token);
-    console.log(router);
+        let payload = {
+          "request_id": request_id,
+        }
+        let router = callEdgeFunction(efName, payload, token);
+        console.log(router);
 
 
     return new Response(
@@ -331,6 +327,7 @@ async function mainWorkflow({
                         headers: jsonHeaders,
                       }
                     );
+
 
 } //END OF mainWorkflow
 
@@ -363,7 +360,7 @@ async function mainWorkflow({
  *   };
  * }>} - Either an early error response or the final run response and IDs.
  */
-async function initializeAssistant({
+async function requestNextBatch({
   supabase,
   user,
   request_id,
@@ -381,64 +378,29 @@ async function initializeAssistant({
 
   //Declare variables to store ids between http calls
   let multiPhaseIDs = {
-    thread_id: "Not Set Yet",
+    thread_id: wf_record.thread_id,
     message_id: "Not Set Yet",
     run_id: "Not Set Yet",
   };
-
-
-
-  /*********************************************************************
-   ** Step 1: Handle CreateThread HTTP Call ****************************
-   *********************************************************************/
-  const {response: createThreadResponse, updatedIDs: createThreadUpdatedIDs } = await handlePhaseCall({
-  supabase,
-  user,
-  wf_record,
-  phase: "CreateThread", //Should match run_type of http record you want to use
-  multiPhaseIDs,
-  ef_log_id,
-  http_Request_Key,
-  });
-
-  //Set id values based on returned ids
-  multiPhaseIDs.thread_id = createThreadUpdatedIDs.thread_id;
-  multiPhaseIDs.message_id = createThreadUpdatedIDs.message_id;
-  multiPhaseIDs.run_id = createThreadUpdatedIDs.run_id;
-
-
-  //Store thread_id in the wf_assistant_automation_control record
-if (multiPhaseIDs.thread_id && wf_record?.id) {
-  const { error: threadUpdateError } = await supabase
-    .from("wf_assistant_automation_control")
-    .update({ thread_id: multiPhaseIDs.thread_id })
-    .eq("id", wf_record.id);
-
-  if (threadUpdateError) {
-    console.error("❌ Failed to save thread_id to wf_assistant_automation_control:", threadUpdateError);
-  } else {
-    console.log("✅ Saved thread_id to wf_assistant_automation_control:", multiPhaseIDs.thread_id);
-  }
-}
 
   
   /*********************************************************************
    ** Step 2: Handle InitialMessage HTTP Call **************************
    *********************************************************************/
- const { response: initialMessageResponse, updatedIDs: initialMessageUpdatedIDs } = await handlePhaseCall({
+ const { response: messageResponse, updatedIDs: messageUpdatedIDs } = await handlePhaseCall({
   supabase,
   user,
   wf_record,
-  phase: "InitialMessage", //Should match run_type of http record you want to use
+  phase: "RequestNextBatch", //Should match run_type of http record you want to use
   multiPhaseIDs,
   ef_log_id,
   http_Request_Key,
   });
 
   //Set id values based on returned ids
-  multiPhaseIDs.thread_id = initialMessageUpdatedIDs.thread_id;
-  multiPhaseIDs.message_id = initialMessageUpdatedIDs.message_id;
-  multiPhaseIDs.run_id = initialMessageUpdatedIDs.run_id;
+  multiPhaseIDs.thread_id = messageUpdatedIDs.thread_id;
+  multiPhaseIDs.message_id = messageUpdatedIDs.message_id;
+  multiPhaseIDs.run_id = messageUpdatedIDs.run_id;
 
   /*********************************************************************
    ** Step 3: Handle runThread HTTP Call **************************
@@ -622,12 +584,12 @@ async function retrieveAssistant({
   user: any;
   wf_record: any;
   ef_log_id: string;
+  http_Request_Key: string;
   multiPhaseIDs: {
     thread_id: string;
     message_id: string;
     run_id: string;
   };
-  http_Request_Key: string;
 }) {
 
     const {response: getResponseResponse, updatedIDs: getResponseUpdatedIDs } = await handlePhaseCall({
@@ -679,7 +641,6 @@ async function retrieveAssistant({
  * @param {string} params.multiPhaseIDs.message_id - Current message ID or "Not Set Yet".
  * @param {string} params.multiPhaseIDs.run_id - Current run ID or "Not Set Yet".
  * @param {string} params.ef_log_id - The ID used to track all http calls within this EF.
- * @param {string} params.http_Request_Key - the request key used in http_request_mapping_warehouse
  * 
  * @returns {Promise<{ response: Response, updatedIDs: { thread_id: string, message_id: string, run_id: string } }>} 
  * Returns an HTTP response object (success or error) and an updated set of multiPhaseIDs.
@@ -720,7 +681,7 @@ async function handlePhaseCall({
     if (error || !data) {
       console.error(`handlePhaseCall/${phase}: Failed to fetch http_request_mapping_warehouse record:`, error);
       return {response: new Response(
-        JSON.stringify({ error: `handlePhaseCall/${phase}: Failed to fetch mapping for: ${http_Request_Key}` }),
+        JSON.stringify({ error: `handlePhaseCall/${phase}: Failed to fetch mapping for: ${http_Request_Key}`}),
         {
           status: 404,
           headers: jsonHeaders,
@@ -840,6 +801,8 @@ return {response, updatedIDs};
  * @param {string} [options.temperature=null] - Optional temperature for model creativity.
  * @param {string} [options.request_prompt=null] - Direct override of the prompt to send to the LLM.
  * @param {string} params.ef_log_id - The ID used to track all http calls within this EF.
+ * @param {string} params.http_Request_Key - request_key used for table http_request_mapping_warehouse
+ * @param {any} wf_record - instance of the record from wf_assistant_automation_control
  *
  * @returns {Promise<Response>} A formatted HTTP Response object containing the LLM output or error message.
  */
@@ -889,12 +852,6 @@ async function constructLLMCall({
 
 // Validate assistant_id is present if CreateThread
 if (!assistant_id && run_type.toLowerCase() === "initialmessage") {
-  console.error(
-    `❌ constructLLMCall/InitialMessage: missing assistant_id for assistant "${assistant_key}". ` +
-    `Check wf_script_mapping_warehouse.assistant_id. ` +
-    `context: thread_id=${multiPhaseIDs?.thread_id ?? "—"}, request_key=${request_key}, url=${request_url}`
-  );
-
   return new Response(
     JSON.stringify({ error: "assistant_id must be supplied to constructLLMCall for CreateThread!" }),
     {
@@ -939,6 +896,30 @@ try{
         break;
     }
   
+  // Get wf_prompts
+    const wf_prompts = "wf_assistant_prompt_warehouse";
+    const prompt_result = await fetchSingleRecord({
+    supabase,
+    user,
+    tableName: wf_prompts,
+    keyField: "assistant_name",
+    request_key: assistant_key
+    });
+    
+    // Validate and extract wf_record
+    if (!('returned_record' in prompt_result)) {
+    return wf_prompts; // error Response object, pass it up
+    }
+    const prompt_record = prompt_result.returned_record;
+
+  // Set request_prompt
+  let prompt;
+  if(run_type?.toLowerCase() === "requestnextbatch"){
+    prompt = prompt_record.next_batch_prompt;
+  } else {
+    prompt = request_prompt;
+  }
+
   //Build body of http call
   const http_body = {
     
@@ -954,7 +935,7 @@ try{
     request_url = request_url.replace("{{thread_id}}", multiPhaseIDs.thread_id);
     //These parameters are not accepted in CreateTread Assistant API Calls
     http_body.role = "user";
-    http_body.content = request_prompt;
+    http_body.content = prompt;
   }
 
   if (run_type?.toLowerCase() === "pollrunstatus") { 
@@ -977,6 +958,14 @@ try{
   if (run_type?.toLowerCase() === "getresponse") { 
     //Update URL Template
     request_url = request_url.replace("{{thread_id}}", multiPhaseIDs.thread_id);
+  }
+
+  if (run_type?.toLowerCase() === "requestnextbatch") { 
+    //Update URL Template
+    request_url = request_url.replace("{{thread_id}}", multiPhaseIDs.thread_id);
+    //These parameters are not accepted in CreateTread Assistant API Calls
+    http_body.role = "user";
+    http_body.content = prompt;
   }
 
   //Function call to send reqeust to LLM
@@ -1096,7 +1085,7 @@ async function runHttpRequest({
     provider: string;
     run_type: string;
     model: string;
-    assistant_key: string
+    assistant_key: string;
   };
   multiPhaseIDs:{
     thread_id: string;
@@ -1267,13 +1256,14 @@ async function logLLMRequest(supabase: any, user: any, logTable: string, logData
     const { error } = await supabase.from(logTable).insert([logData]);
 
     if(error){
-      console.error("logLLMRequest error: ", error);
-      return(success: false, error);
+      console.log("logLLMRequest error: ", error);
     }
 
-    return(success: true);
-
 } //END OF logLLMRequest
+
+
+
+
 
 
 
@@ -1328,6 +1318,49 @@ async function fetchSingleRecord({
     );
   }
 } // END OF fetchSingleRecord
+
+
+
+/**
+ * updateTextField
+ * Trigger Next Batch Phase by updating status, this is picked up when ef_router_wf_assistant_automation_control is called
+ *
+ * @param {string} tableName - Supabase table name (e.g., "wf_assistant_automation_control").
+ * @param {string} table_id - UUID of the record to update.
+ * @param {string} fieldName - The column name used for status.
+ * @param {string} udatedValue - The new value to set (e.g., "Awaiting Next Chunk").
+ */
+async function updateTextField({
+    supabase,
+    user,
+    table_id,
+    tableName,
+    fieldName,
+    udatedValue}:
+    {
+    supabase: any;
+    user: any;
+    table_id: string;
+    tableName: string;
+    fieldName: string;
+    udatedValue: string;
+    }) {
+    
+    const { data, error } = await supabase
+        .from(tableName)
+        .update({ [fieldName]: udatedValue })
+        .eq("id", table_id);
+
+    if (error) {
+    console.error("❌ Failed to trigger next batch:", {
+        message: error?.message,
+        full: JSON.stringify(error),
+        });
+    throw error;
+    }
+
+    console.log(`Updated ${fieldName} of ${tableName} to ${udatedValue} for id ${table_id}`);
+} // END OF triggerNextBatch
 
 
 

@@ -23,7 +23,33 @@ const jsonHeaders = {
 const efStartTime = Date.now(); //Used for calculating duration
 const ef_log_id = crypto.randomUUID(); // used to connect all http runs within this EF in logging tables
 
+
+export type EFContext = {
+  supabase: any;
+  user: any;
+  token: string;
+  request_id: string;
+  wf_table: string;           // usually "wf_assistant_automation_control"
+  ef_log_id: string;          // shared run id for logs
+  efStartTime: Date;        // Date.now() at EF start
+  wf_record?: any;            // set after fetchSingleRecord
+  ids?: {                     // optional: used by other EFs
+    thread_id?: string;
+    run_id?: string;
+    message_id?: string;
+  };
+};
 serve(async (req) => {
+
+  const ctx: EFContext = {
+  supabase: undefined,
+  user: undefined,
+  token: undefined,
+  request_id: undefined,
+  wf_table: "wf_assistant_automation_control",
+  ef_log_id,  // from your top-level const
+  efStartTime // from your top-level const
+  };
 
   // ───────────────────────────────────────────────────────────────
   // ✅ 1. Handle preflight CORS request (OPTIONS request from browser)
@@ -99,7 +125,12 @@ serve(async (req) => {
           headers: jsonHeaders
           });
       }
-      const mainProcess = await mainWorkflow({supabase, user, request_id, token});
+
+      ctx.token = token;
+      ctx.request_id = request_id;
+      ctx.supabase = supabase;
+      ctx.user = user;
+      const mainProcess = await mainWorkflow(ctx);
 
       //Final Completion Return
       return new Response(
@@ -137,30 +168,21 @@ serve(async (req) => {
  * records from the `wf_assistant_automation_control` table.
  *
  * @param {Object} options - Workflow context
- * @param {any} options.supabase - Supabase client instance
- * @param {any} options.user - Authenticated user object
- * @param {string} options.request_id - ID of the workflow control record
+ * @param {any} ctx.supabase - Supabase client instance
+ * @param {any} ctx.user - Authenticated user object
+ * @param {string} ctx.request_id - ID of the workflow control record
  *
  * @returns {Promise<void|Response>} - Returns nothing on success,
  * or a Response object if a failure occurs during retry management or data fetching.
  */
-async function mainWorkflow({
-  supabase,
-  user,
-  request_id,
-  token,
-}: {
-  supabase: any;
-  user: any;
-  request_id: string;
-  token: string;
-}) {
+async function mainWorkflow(ctx: EFContext) {
+  
 
 /*******************************************************************************
    * Variable Declaration
    *******************************************************************************/
-    const wf_table = "wf_assistant_automation_control";
-
+//destruct from ctx    
+const { supabase, user, token, request_id, wf_table } = ctx;
     
     // Get wf_record
     const wf_result = await fetchSingleRecord({
@@ -177,6 +199,7 @@ async function mainWorkflow({
     }
     const wf_record = wf_result.returned_record;
 
+    ctx.wf_record = wf_record;
     const testing = wf_record.testing_router_block;
     const status = wf_record.status;
     console.log(`Running logic for status: ${status}`);
@@ -259,14 +282,31 @@ async function mainWorkflow({
                     console.log(router);
             break;
 
+        case "PollingNeeded":
+          // Happens when initial call to poll for assistant response results in identifying pipeline
+          // needs to continue polling for assistant completing and response ready to retrieve.
+          console.log(`→ CALLED FUNCTION: ef_step_assistant_PollRunStatus | request_id: ${request_id}`);
+            efName = "ef_step_assistant_PollRunStatus";
+                    payload = {
+                      "request_id": request_id,
+                    }
+                    router = await callEdgeFunction(efName, payload, token);
+                    console.log(router);
+            break;
+            
         default:
             console.log(`⚠️ Unrecognized status: ${status} | request_id: ${request_id}`);
         }
-                  
+      
+    //Log router event in activityLog
+    await logActivity(ctx, "Router:CalledEF", JSON.stringify({ status: ctx.wf_record.status }));
 
     return new Response(JSON.stringify({ success: true }), {
         headers: jsonHeaders,
     });
+    }
+    else{
+      await logActivity(ctx, "Router:No EF Called", JSON.stringify({ status: "Testing = True" }));
     }; // END OF testing skip wrapper
   
     return new Response(
@@ -428,3 +468,53 @@ export async function callEdgeFunction(
     };
   }
 } //END OF callEdgeFunction
+
+
+
+/**
+ * @function logActivity
+ * @async
+ * @param {EFContext} ctx
+ *   Execution context containing `supabase`, `wf_record`, and `ef_log_id`.
+ * @param {string} status
+ *   Short event/status label to record (e.g., "PollRunStatus").
+ * @param {any} [details]
+ *   Optional details payload passed through as-is. If your DB column is TEXT,
+ *   pass a string or pre-`JSON.stringify` this value before calling.
+ * @param {string} [tableName="wf_assistant_activity_log"]
+ *   Target table name for the insert.
+ * @returns {Promise<void>}
+ *
+ * @example
+ * await logActivity(ctx, "PollRunStatus", { attempt: 3, elapsedMs: 22179 });
+ *
+ * @notes
+ * - On insert error or exception, this util logs a warning via `console.warn`
+ *   and resolves; it never throws.
+ */
+export async function logActivity(
+  ctx: EFContext,
+  status: string,
+  details?: any,
+  tableName = "wf_assistant_activity_log"
+): Promise<void> {
+  try {
+    const { error } = await ctx.supabase
+      .from(tableName)
+      .insert([
+        {
+          wf_control_id: ctx.wf_record?.id,
+          ef_log_id: ctx.ef_log_id,
+          event: status,
+          details,
+          assistant_name: ctx.wf_record?.wf_assistant_name,
+        },
+      ]);
+
+    if (error) {
+      console.warn("activity log insert error:", error);
+    }
+  } catch (e) {
+    console.warn("activity log insert threw:", e);
+  }
+} // END OF logActivity

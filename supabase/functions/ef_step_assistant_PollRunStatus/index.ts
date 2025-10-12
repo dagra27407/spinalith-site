@@ -340,7 +340,9 @@ serve(async (req) => {
  * or a Response object if a failure occurs during retry management or data fetching.
  */
 async function mainWorkflow(ctx: EFContext) {
-  // Fetch control row
+
+  // Step 1: initialize data for polling ////////////////////////////////////////////////////////
+  // 1.1) Fetch control row
   const wf_result = await fetchSingleRecord({
     tableName: ctx.wf_table,
     keyField: "id",
@@ -358,57 +360,64 @@ async function mainWorkflow(ctx: EFContext) {
   ctx.wf_record = wf_record;
 
 
-  await setStatus(ctx, "InitialMessage:Started"); //Non-Router trigger Status
 
-
-  // Step 1: initialize assistant
-  const initializeAssistantResponse = await initializeAssistant(ctx);
-
-  if (!initializeAssistantResponse.success) {
-    console.log("initializeAssistantResponse.success !== true");
-
-    await setStatus(ctx, "PotentialRestart"); //Router trigger Status
-
-    return initializeAssistantResponse;
+  
+  // 1.2) Guard: require thread_id + run_id else early exit
+  const thread_id = wf_record?.thread_id;
+  const run_id = wf_record?.run_id;
+  if (!thread_id || !run_id) {
+    await setStatus(ctx, "Halt:Polling:MissingIDs");
+    await logActivity(ctx, "Polling:MissingIDs", JSON.stringify({ ef_log_id: ctx.ef_log_id }));
+    return { success: true };
   }
 
-console.log("!!! initializeAssistantUpdatedIDs: ", {
-  ctx_thread_id: ctx?.ids?.thread_id,
-  ctx_run_id: ctx?.ids?.run_id,
-  ctx_message_id: ctx?.ids?.message_id,
-});
+  // 1.3) Early-exit on attempt limit
+  const attempts = Number(wf_record.polling_attempt_count ?? 0);
+  const limit = Number(wf_record.polling_attempt_limit ?? 20);
+  if (attempts >= limit) {
+    await setStatus(ctx, "PollingLimitReached");
+    await logActivity(ctx, "Polling:LimitReached", JSON.stringify({ attempts, limit }));
+    await invokeRouter(ctx);
+    return { success: true };
+  }
 
-  // Step 2: poll
+  // 1.4) Mark started + increment attempt counter
+  await setStatus(ctx, "Polling:Started");
+  await ctx.supabase
+    .from(ctx.wf_table)
+    .update({
+      polling_attempt_count: attempts + 1,
+      polling_last_started_at: new Date().toISOString(),
+    })
+    .eq("id", wf_record.id);
+
+  // 1.5) Seed ctx.ids from wf_record
+  ctx.ids.thread_id = thread_id;
+  ctx.ids.run_id = run_id;
+
+  // Step 2: poll //////////////////////////////////////////////////////////////////////
+  // 2.1) run polling function
   const pollAssistantResponse = await pollAssistant(ctx);
 
-  //polling timed out or hit max attempts
+  // 2.2) polling timed out or hit max attempts
+  // If polling wasn't successful tag status PollingNeeded, routerEF handles further pipeline actions
   if(!pollAssistantResponse.success){
     await setStatus(ctx, "PollingNeeded");  //Router trigger Status
   }
 
+  // 2.3) polling shows completed success i.e. got a terminal result
+  // switch statement handles tagging status for routerEF to handle further pipeline actions
   const runStatus = String(pollAssistantResponse?.data?.runStatus || "").toLowerCase();
-  const lastErr   = pollAssistantResponse?.data?.last_error || null;
-  const code      = (lastErr?.code || "").toLowerCase();
-
   if(pollAssistantResponse.success){
     switch(runStatus){
       //Updates database depending on polling results then falls through to next logic points
       //to allow for calling of router.
       case "failed":
-        if (code === "rate_limit_exceeded" || code === "server_error" || code === "overloaded") {
-          await setStatus(ctx, "PollingNeeded");
-          await logActivity(ctx, "PollingResults: failed-transient", { ef_log_id: ctx.ef_log_id, code, msg: lastErr?.message });
-        } else if (code === "run_expired") {
-          await setStatus(ctx, "Re-Send Last Response");
-          await logActivity(ctx, "PollingResults: failed-run_expired", { ef_log_id: ctx.ef_log_id });
-        } else if (code === "invalid_request_error" || code === "tool_output_parse") {
-          await setStatus(ctx, "PotentialRestart");
-          await logActivity(ctx, "PollingResults: failed-hard", { ef_log_id: ctx.ef_log_id, code, msg: lastErr?.message });
-        } else {
-          // Unknown—be conservative
-          await setStatus(ctx, "PotentialRestart");
-          await logActivity(ctx, "PollingResults: failed-unknown", { ef_log_id: ctx.ef_log_id, code, msg: lastErr?.message });
-        }
+        // indicates something with the run errored on openai side or a hicup happened durring run
+        // pipeline will request assistant to re send the last response treating it as if the assistant
+        // did recieve the last message but either did not send a response or the response had errors
+        await setStatus(ctx, "Re-Send Last Response");
+        await logActivity(ctx, "PollingResults: failed", JSON.stringify({ef_log_id: ctx.ef_log_id}));
       break;
       case "cancelled":
         // indicates openai recieved an http request to cancel the run. we don't currently allow for this so
@@ -502,141 +511,6 @@ console.log("!!! initializeAssistantUpdatedIDs: ", {
 
 
 
-/**
- * Orchestrates the assistant bootstrap sequence (CreateThread → InitialMessage → RunThread),
- * persists generated IDs, updates workflow status milestones, and returns a minimal result.
- *
- * Flow
- * 1) **CreateThread**
- *    - `handlePhaseCall({ phase: "CreateThread", ctx })`
- *    - On failure: returns `{ success: false, reason: "CreateThreadFail" }`
- *    - On success: persists `ctx.ids.thread_id` to `ctx.wf_table` and `setStatus(ctx, "Thread:Created", ...)`
- *
- * 2) **InitialMessage**
- *    - `handlePhaseCall({ phase: "InitialMessage", ctx })`
- *    - On failure: returns `{ success: false, reason: "InitialMessageFail" }`
- *    - On success: `setStatus(ctx, "InitialMessage:Posted", ...)`
- *
- * 3) **RunThread**
- *    - `handlePhaseCall({ phase: "RunThread", ctx })`
- *    - On failure: returns `{ success: false, reason: "RunThreadResponseFail" }`
- *    - On success: persists `ctx.ids.run_id` to `ctx.wf_table` and `setStatus(ctx, "Run:Started", ...)`
- *    - Final return: bubbles the minimal result from RunThread (i.e., `{ success: true, data }`)
- *
- * Side effects
- * - Updates DB rows in `ctx.wf_table` (thread_id / run_id) via Supabase.
- * - Emits status transitions via `setStatus` (best-effort).
- * - On DB persist errors, logs via `logEFError` (best-effort) and continues.
- *
- * @async
- * @function initializeAssistant
- * @param {EFContext} ctx
- *   Execution context containing:
- *   - `supabase`, `wf_table`, `wf_record` (with `id`, `wf_assistant_name`),
- *   - `ef_log_id`, `http_Request_Key`,
- *   - `ids` (mutated during phases: `thread_id`, `message_id`, `run_id`),
- *   - other fields consumed by lower layers (`handlePhaseCall`, `setStatus`).
- *
- * @returns {Promise<
- *   | { success: true; data: any }
- *   | { success: false; reason: "CreateThreadFail" | "InitialMessageFail" | "RunThreadResponseFail" }
- * >}
- *   - Early exits with `{ success:false, reason }` when a phase fails.
- *   - On success, returns the result from the **RunThread** phase unchanged.
- *
- * @example
- * const r = await initializeAssistant(ctx);
- * if (!r.success) {
- *   // r.reason ∈ { "CreateThreadFail", "InitialMessageFail", "RunThreadResponseFail" }
- *   // handle / retry / surface to caller
- * } else {
- *   // Use r.data (parsed JSON from the RunThread call)
- * }
- *
- * @notes
- * - This function does not throw; callers should branch on `result.success`.
- * - Persist failures for `thread_id` / `run_id` are logged via `logEFError` and do not abort the flow.
- */
-async function initializeAssistant(ctx: EFContext) {
-
-  /************ Step 1: CreateThread ************/
-  const createThreadResponse =
-    await handlePhaseCall({
-      phase: "CreateThread",
-      ctx,
-    });
-  if(!createThreadResponse.success){
-    return{ success: false, reason: "CreateThreadFail"};
-  }
-
-  // persist thread_id
-  if (ctx.ids.thread_id && ctx.wf_record?.id) {
-    const { error: threadUpdateError } = await ctx.supabase
-      .from(ctx.wf_table)
-      .update({ thread_id: ctx.ids.thread_id })
-      .eq("id", ctx.wf_record.id);
-    if (threadUpdateError) {
-      console.error("save thread_id error:", threadUpdateError);
-      let args = {
-        efName: "ef_step_assistant_InitialMessage",
-        functionName: "initializeAssistant",
-        error_message: JSON.stringify(threadUpdateError),
-        relevant_data: { ef_log_id: ctx.ef_log_id},
-      }
-      await logEFError(ctx, args);
-    }
-  }
-
-  await setStatus(ctx, "Thread:Created", `thread_id: ${ ctx.ids.thread_id }`);
-
-  /************ Step 2: InitialMessage ************/
-  const initialMessageResponse =
-    await handlePhaseCall({
-      phase: "InitialMessage",
-      ctx,
-    });
-
-  if(!initialMessageResponse.success){
-    return{ success: false, reason: "InitialMessageFail"};
-  }
-
-  await setStatus(ctx, "InitialMessage:Posted", `message_id: ${ ctx.ids.message_id }`);
-
-
-  /************ Step 3: RunThread ************/
-  const runThreadResponse =
-    await handlePhaseCall({
-      phase: "RunThread",
-      ctx,
-    });
-
-  if(!runThreadResponse.success){
-    return{ success: false, reason: "RunThreadResponseFail"};
-  }
-
-  // persist run_id
-  if (ctx.ids.run_id && ctx.wf_record?.id) {
-    const { error: runIDUpdateError } = await ctx.supabase
-      .from(ctx.wf_table)
-      .update({ run_id: ctx.ids.run_id })
-      .eq("id", ctx.wf_record.id);
-    if (runIDUpdateError) {
-      console.error("save run_id error:", runIDUpdateError);
-      let args = {
-        efName: "ef_step_assistant_InitialMessage",
-        functionName: "initializeAssistant",
-        error_message: JSON.stringify(runIDUpdateError),
-        relevant_data: { ef_log_id: ctx.ef_log_id},
-      }
-      await logEFError(ctx, args);
-    }
-  }
-
-  await setStatus(ctx, "Run:Started", `run_id: ${ctx.ids.run_id}`);
-
-  // return exactly what callers expect today
-  return runThreadResponse;
-} //END OF intializeAssistant
 
 /**
  * Polls the assistant run status until it reaches a terminal state or limits are exceeded.
@@ -720,8 +594,7 @@ if (runStatus && ctx.dynamic.last_run_status !== runStatus) {
 
   // if the status contains a value that indicates its finished return response
   if (["completed", "failed", "cancelled", "expired", "requires_action"].includes(runStatus)) {
-    return{ success: true, data: {runStatus: runStatus,
-    last_error: parsed?.data?.last_error ?? null} };
+    return{ success: true, data: {runStatus: runStatus} };
   }
 
 
@@ -1492,7 +1365,6 @@ async function logLLMRequest(
     thread_id:            ctx.ids?.thread_id,
     run_id:               ctx.ids?.run_id,
     message_id:           ctx.ids?.message_id,
-    wf_control_id:        ctx.wf_record?.id ?? ctx.request_id,
   };
 
     // Helper to keep huge fields readable
