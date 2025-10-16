@@ -1,4 +1,3 @@
 User-agent: *
 Allow: /
-
-Sitemap: https://spinalith-site.vercel.app/sitemap.xml
+Sitemap: https://spinalith.com/sitemap.xml
