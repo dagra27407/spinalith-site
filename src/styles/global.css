@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Small, reusable helpers for this site */
+@layer utilities {
+  .hero-bg {
+    background:
+      radial-gradient(60% 60% at 50% 10%, rgba(0,0,0,0.06), transparent 60%),
+      linear-gradient(180deg, rgba(0,0,0,0.02), transparent);
+  }
+}
+
+/* global.css */
+.page-bands {
+  --band-color: rgb(244 244 245); /* default (like zinc-100) */
+  position: relative;
+  z-index: 0;
+}
+
+@media (min-width: 1024px) {
+  .page-bands::before,
+  .page-bands::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: max(calc((100vw - 72rem) / 2), 1rem); /* match your Container width */
+    background: var(--band-color);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .page-bands::before { left: 0; }
+  .page-bands::after  { right: 0; }
+}
+
+/* content sits above the bands */
+.page-bands > * { position: relative; z-index: 1; }
+
+/* optional presets */
+.page-bands--light  { --band-color: rgb(244 244 245); } /* zinc-100 */
+.page-bands--white  { --band-color: #ffffff; }
+.page-bands--dark   { --band-color: #0b0b0b; }
+.page-bands--brand  { --band-color: rgb(var(--brand-50)); } /* if you set brand vars */
