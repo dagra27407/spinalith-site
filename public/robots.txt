@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://spinalith-site.vercel.app/sitemap.xml
