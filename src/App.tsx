@@ -7,7 +7,7 @@ import { WaitlistForm } from "./components/WaitlistForm";
 export default function App() {
   return (
     <div className="page-bands page-bands--light">
-    <div className="min-h-screen bg-white text-gray-900">
+    <div className="min-h-screen text-gray-900">
       
       <header className="py-4">
         <Container>
