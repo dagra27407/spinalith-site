@@ -2,7 +2,7 @@
 //  Used to create payload JSON maps that are used by ef_step_assistant_PrepJSON
 //  Once created these maps must be stored in wf_script_mapping_warehouse.script_mapping_json_payload
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useMemo } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -99,6 +99,7 @@ export default function PayloadMapBuilderView() {
       field: string;
       fieldType: SectionMapCard_FieldType;
     };
+    type ModTag = { mod_tag: string; description?: string | null };
     const [get_SectionMapCard_BaseTablesOptions, set_SectionMapCard_BaseTablesOptions] = useState<string[]>([]);
     const [get_SectionMapCard_SelectedSource, set_SectionMapCard_SelectedSource] = useState("");
     const [get_SectionMapCard_FieldMap, set_SectionMapCard_FieldMap] = useState<Record<string, string[]>>({});
@@ -113,7 +114,9 @@ export default function PayloadMapBuilderView() {
     const [get_SectionMapCard_SectionOrder, set_SectionMapCard_SectionOrder] = useState<string[]>([]);
     const [get_SectionMapCard_RenamingAlias, set_SectionMapCard_RenamingAlias] = useState<string | null>(null);
     const [get_SectionMapCard_RenameInput, set_SectionMapCard_RenameInput] = useState("");
-    
+    const [get_SectionMapCard_ModTags, set_SectionMapCard_ModTags] = useState<ModTag[]>([]);
+    const sectionMapCard_ModTags_fetchedRef = useRef(false);
+    const [get_SectionMapCard_ConditionValue, set_SectionMapCard_ConditionValue] = useState<string>("");
 
     // --- Nested Mapping Key Card (visual skeleton) ---
     type NestedAlias = { section: string; field: string }; // section alias + nested field alias
@@ -678,7 +681,36 @@ export default function PayloadMapBuilderView() {
         });
       }, [get_SectionMapCard_ConstructedMap]);
 
-    // #endregion
+
+      // Load the mod_tags for use in ui
+      useEffect(() => {
+        if (sectionMapCard_ModTags_fetchedRef.current) {
+          console.log(".current exit point");
+          return;            // already fetched this mount
+        }
+
+        let aborted = false;
+        (async () => {
+          const { data, error } = await supabase
+            .from("mod_tag_catalog")
+            .select("mod_tag")
+            .eq("active", true)
+            .order("mod_tag");
+          if (!aborted){
+           set_SectionMapCard_ModTags((data ?? []) as ModTag[]);
+           sectionMapCard_ModTags_fetchedRef.current = true;
+          }
+        })();
+
+
+    
+        return () => { aborted = true; };
+      }, []); // single logical fetch even in Strict Mode
+
+      useEffect(() => {
+  console.log("get_SectionMapCard_ModTags:", get_SectionMapCard_ModTags);
+}, [get_SectionMapCard_ModTags]);
+      // #endregion
 
 
     /*-----------------------------------------------
@@ -1572,6 +1604,7 @@ const handle_FilterMapCard_SourceSelect = async (value: string) => {
           source: get_SectionMapCard_SelectedSource,
           sectionMapKey: newKey,
           conditional: get_SectionMapCard_ConditionalSwitch,
+          conditionValue: get_SectionMapCard_ConditionValue,
         };
         return copy;
       });
@@ -2300,6 +2333,7 @@ const handleImportReplace = () => {
                         setAlias: set_SectionMapCard_SectionAilias,
                         selectedEditAlias: get_SectionMapCard_SelectedEditAlias,
                         setSelectedEditAlias: set_SectionMapCard_SelectedEditAlias,
+                        modTags: get_SectionMapCard_ModTags,
                       })}
                     </CardContent>
 
@@ -3180,6 +3214,7 @@ const handleImportReplace = () => {
       setAlias,
       selectedEditAlias,
       setSelectedEditAlias,
+      modTags,
     }: {
       mode: "add" | "edit" | "manage";
       constructedMap: Record<string, any>;
@@ -3187,6 +3222,7 @@ const handleImportReplace = () => {
       setAlias: (v: string) => void;
       selectedEditAlias: string;
       setSelectedEditAlias: (v: string) => void;
+      modTags: ModTag[];
     }) {
       if (mode === "add") {
         // === your original, working Add UI ===
@@ -3216,7 +3252,7 @@ const handleImportReplace = () => {
               </SelectContent>
             </Select>
 
-
+            {/* switch for is conditional */}
             <div className="flex gap-2">
               <Label>Conditional Inclusion?</Label>
               <Switch
@@ -3227,6 +3263,29 @@ const handleImportReplace = () => {
               </Switch>
             </div>
 
+            {/* If conditional display select to choose mod tag */}
+            {get_SectionMapCard_ConditionalSwitch && (
+              <div className="mt-3">
+                <Label className="mb-1 block">Required tag</Label>
+                <Select
+                  value={get_SectionMapCard_ConditionValue}
+                  onValueChange={set_SectionMapCard_ConditionValue}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Choose a tag…" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {(modTags ?? []).map((t) => (
+                      <SelectItem key={t.mod_tag} value={t.mod_tag}>
+                        {t.mod_tag}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
+
+            
             {/* — Field list container with sticky header — */}
               <div className="mt-3 rounded border">
                 {/* Header */}
@@ -3357,6 +3416,28 @@ const handleImportReplace = () => {
               onCheckedChange={set_SectionMapCard_ConditionalSwitch}
             />
           </div>
+
+          {/* If conditional display select to choose mod tag */}
+            {get_SectionMapCard_ConditionalSwitch && (
+              <div className="mt-3">
+                <Label className="mb-1 block">Required tag</Label>
+                <Select
+                  value={get_SectionMapCard_ConditionValue}
+                  onValueChange={set_SectionMapCard_ConditionValue}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Choose a tag…" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {(modTags ?? []).map((t) => (
+                      <SelectItem key={t.mod_tag} value={t.mod_tag}>
+                        {t.mod_tag}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
 
           {/* Header */}
           <div className="grid grid-cols-[auto,12rem,1fr,12rem] gap-3 items-center px-3 py-2 bg-muted/40 sticky top-0 z-10 mt-3 rounded-t border-x border-t">

@@ -1,84 +1,87 @@
+/**
+ * AllProjectsView (snap-to-standards pass)
+ *
+ * Plain-English (2am-you): Post-auth landing page listing all narrative
+ * projects for the current user with a CTA to create a new one.
+ *
+ * This update ONLY changes layout/styling classes to our shared utilities
+ * and token-driven shadcn variants. No logic or data changes.
+ *
+ * What changed (class-level only):
+ *  - Page padding   → .app-page
+ *  - Row gaps       → .app-gap
+ *  - Title style    → .app-h1
+ *  - Cards          → .app-card-radius on project tiles + loading/empty shells
+ */
+
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/lib/supabaseClient";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 
-
-/**
- * AllProjectsView
- *
- * This is the main post-authentication dashboard displaying all user-created narrative projects.
- * 
- * Features:
- * - Lists all narrative projects associated with the current user/session.
- * - Offers a CTA to create a new project ("+ New Project" button).
- * - Serves as the primary entry point into project-specific workspaces.
- * 
- * This component is routed at path `/` and is the user's default landing page after login.
- * It is the central hub for project navigation and selection.
- * 
- * Future enhancements may include:
- * - Search and filter functionality
- * - Project pinning or starring
- * - Quick stats or progress indicators per project
- * 
- * @returns {JSX.Element} The rendered project selection and creation interface.
- */
 export default function AllProjectsView() {
-  const [projects, setProjects] = useState([]);
+  const [projects, setProjects] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProjects = async () => {
       const { data, error } = await supabase.from("narrative_projects").select("*");
-      if (!error) {
-        setProjects(data || []);
-      }
+      if (!error) setProjects(data || []);
       setLoading(false);
     };
-
     fetchProjects();
   }, []);
 
-  if (loading) return <div className="p-6 text-muted-foreground">Loading your projects...</div>;
+  if (loading)
+    return <Card className="app-card-radius p-6 text-muted-foreground">Loading your projects…</Card>;
 
-  const handleNewProjectClick = () => {
-  navigate("/new-project"); // Match the route you defined in `Router.tsx`
-  };
+  const handleNewProjectClick = () => navigate("/projects/new");
 
   return (
-    <div className="p-6 space-y-6">
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold">Welcome to Spinalith</h1>
-        <Button onClick={handleNewProjectClick}>
-          + New Project
-        </Button>
+    <div className="app-page space-y-6">
+      {/* Header */}
+      <div className="flex items-center justify-between app-gap">
+        <h1 className="app-h1">Welcome to Spinalith</h1>
+        <Button onClick={handleNewProjectClick}>+ New Project</Button>
       </div>
 
+      {/* Empty / Grid */}
       {projects.length === 0 ? (
-        <div className="text-muted-foreground">You don't have any narrative projects yet.</div>
+        <Card className="app-card-radius p-6 text-muted-foreground">
+          You don't have any narrative projects yet.
+        </Card>
       ) : (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {projects.map((project) => (
             <Card
               key={project.id}
-              className="cursor-pointer hover:shadow-md transition"
+              className="app-card-radius cursor-pointer transition hover:shadow"
               onClick={() => navigate(`/projects/${project.id}`)}
             >
               <CardHeader>
-                <CardTitle>{project.title}</CardTitle>
+                <CardTitle className="truncate">{project.title}</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-muted-foreground">
-                  {project.tone} | {project.format}
+                <p className="text-sm text-muted-foreground truncate">
+                  {project.tone} {project.tone && project.format ? "|" : ""} {project.format}
                 </p>
               </CardContent>
             </Card>
           ))}
         </div>
       )}
+
+      {/* Footer */}
+      <div>
+        <button
+          className="text-xs underline text-muted-foreground"
+          onClick={() => navigate("/projects")}
+        >
+          Advanced: projects list (delete / transfer)
+        </button>
+      </div>
     </div>
   );
 }

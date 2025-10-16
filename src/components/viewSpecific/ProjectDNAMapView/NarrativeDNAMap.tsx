@@ -22,15 +22,16 @@ const NarrativeDNAMap = () => {
 
   const phaseList = [
     {
-      title: "Narrative Concept",
-      description: "Define the core concepts of your project.",
-      status: "available",
-      view: "NarrativeConcept",
-    },{
       title: "Story Arcs",
       description: "Define the overarching narrative arcs that shape your project.",
       status: "available",
       view: "StoryArcsView",
+    },
+    {
+      title: "Story Arc Beats",
+      description: "Break Story Arcs into primary moments.",
+      status: "available",
+      view: "StoryArcBeatsView",
     },
     {
       title: "Characters",
@@ -43,12 +44,6 @@ const NarrativeDNAMap = () => {
       description: "Outline the chapter structure of your book.",
       status: "locked",
       view: "CharactersView",
-    },
-    {
-      title: "Story Arc Beats",
-      description: "Break Story Arcs into primary moments.",
-      status: "available",
-      view: "StoryArcBeatsView",
     },
     // Add more phases as needed
   ];

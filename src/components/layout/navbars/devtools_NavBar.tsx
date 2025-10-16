@@ -1,102 +1,93 @@
-// src/components/layout/NavBar.tsx
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Button } from "@/components/ui/button"
-import { supabase } from "@/lib/supabaseClient"
+/**
+ * Devtools NavBar (theme-aligned)
+ *
+ * Plain-English (2am-you): Top bar for the Dev Tools area. This is a
+ * classes-only pass to align with our tokenized theme + spacing utilities.
+ * No logic/routing changes.
+ *
+ * Changes:
+ *  - Wrapper → sticky top bar with token surfaces: bg-card / text / border
+ *  - Spacing → compact, consistent gap (container w/ max width)
+ *  - Kept shadcn Tabs + Buttons; removed hard-coded bg/shadow
+ */
+
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
+import { supabase } from "@/lib/supabaseClient";
 import { Home } from "lucide-react";
-import { Activity } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react"; // if not already imported
+import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
-
-
-
 /**
- * Navigation bar component for the main Spinalith interface.
- * 
- * Displays the application name, primary navigation tabs, 
- * a home button (navigates to All Projects view), and sign-out functionality.
+ * Navigation bar for the Dev Tools section.
  */
 export default function NavBar() {
-const navigate = useNavigate();
-const [activeTab, setActiveTab] = useState("Dev Tools"); //Used to manage View Navigation and set default view
+  const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState("Dev Tools"); // default to Dev Tools
+  const location = useLocation();
 
-const location = useLocation();
+  useEffect(() => {
+    if (location.pathname === "/") setActiveTab("Default");
+    else if (location.pathname.includes("/devtools")) setActiveTab("Dev Tools");
+  }, [location.pathname]);
 
-useEffect(() => {
-  if (location.pathname === "/")  setActiveTab("Home");
-  else if (location.pathname.includes("/devtools")) setActiveTab("Dev Tools");
-}, [location.pathname]);
+  /** Home (All Projects) */
+  const handleGoHome = () => navigate("/");
 
-/**
- * Navigates the user to the All Projects view.
- * Triggered by clicking the home icon button in the nav bar.
- */
-const handleGoHome = () => {
-  navigate("/");
-};
+  /** Tab change */
+  const handleTabChange = (tab: string) => {
+    setActiveTab(tab);
+    switch (tab) {
+      case "Default":
+        navigate("/");
+        break;
+      case "Dev Tools":
+        navigate("/devtools");
+        break;
+      default:
+        break;
+    }
+  };
 
-/**
- * Used in testing to navigate us to our TestView page
- */
-const handleTestView = () => {
-  navigate("/devtools");
-};
-
-
-/**
- * Sign user out and navigate to login screen
- */
-const handleSignOut = async () => {
-  const { error } = await supabase.auth.signOut()
-  if (error) {
-    console.error("Error signing out:", error.message)
-  } else {
-    // Optional: redirect to login or reload the page
-    window.location.reload()
-  }
-}
-
-
-
-const handleTabChange = (tab: string) => {
-  setActiveTab(tab); // update state for UI
-  switch (tab) {
-    case "Default":
-      navigate("/");
-      break;
-    case "Dev Tools":
-      navigate("/devtools");
-      break;
-    default:
-      break;
-  }
-};
-
-
+  /** Sign out */
+  const handleSignOut = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      console.error("Error signing out:", error.message);
+    } else {
+      window.location.reload();
+    }
+  };
 
   return (
-    <div className="flex items-center justify-between px-4 py-2 border-b bg-white shadow-sm">
-      <div className="text-xl font-semibold">Spinalith</div>
-      <Tabs value={activeTab} onValueChange={handleTabChange}>
-        <TabsList className="gap-2">
-          <TabsTrigger value="Default">Default</TabsTrigger>
-          <TabsTrigger value="Dev Tools">Dev Tools</TabsTrigger>
-        </TabsList>
-      </Tabs>
-      <div className="flex items-center gap-2">
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={handleGoHome}
-          aria-label="Go to All Projects"
-        >
-          <Home className="h-5 w-5" />
-        </Button>
-        <Button variant="ghost" onClick={handleSignOut}>Sign Out</Button>
+    <div className="app-navbar app-navbar--tint">
+      <div className="mx-auto max-w-screen-2xl px-4 py-2 flex items-center justify-between gap-3">
+        {/* Brand */}
+        <div className="text-lg font-semibold tracking-tight select-none">Spinalith — Dev Tools</div>
+
+        {/* Primary navigation */}
+        <Tabs value={activeTab} onValueChange={handleTabChange}>
+          <TabsList className="gap-2">
+            <TabsTrigger value="Default">Default</TabsTrigger>
+            <TabsTrigger value="Dev Tools">Dev Tools</TabsTrigger>
+          </TabsList>
+        </Tabs>
+
+        {/* Actions */}
+        <div className="flex items-center gap-2">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={handleGoHome}
+            aria-label="Go to All Projects"
+            title="Go to All Projects"
+          >
+            <Home className="h-5 w-5" />
+          </Button>
+          <Button variant="ghost" onClick={handleSignOut}>Sign Out</Button>
+        </div>
       </div>
     </div>
-  )
+  );
 }
-
-

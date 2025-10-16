@@ -1,16 +1,14 @@
 /**
- * SpinalithCoreLayout
+ * devToolsLayout (theme-aligned shell)
  *
- * Main authenticated application layout for Spinalith.
- * Includes:
- * - <NavBar />: Top nav
- * - <SidebarTree />: Left-hand project/module tree
- * - <Outlet />: Workspace for nested route views
- * - <Toaster />: Global toast notifications (via Sonner)
+ * Plain-English (2am-you): Layout wrapper for the DevTools area. This is a
+ * classes-only update to align with our tokenized theme and spacing model.
+ * No routing or logic changes.
  *
- * This layout wraps all authenticated routes inside AppRouter.
- *
- * @returns {JSX.Element} Full-page layout structure for the main app
+ * Changes:
+ *  - Root: `min-h-screen bg-background text-foreground flex flex-col`
+ *  - Remove extra p-* from the scroll container; views own spacing via .app-page
+ *  - Keep split-pane scroll: sidebar fixed; right pane scrolls
  */
 
 import { Outlet } from "react-router-dom";
@@ -18,19 +16,23 @@ import NavBar from "@/components/layout/navbars/devtools_NavBar";
 import SidebarTree from "@/components/layout/sidebars/devtools_SidebarTree";
 import { Toaster } from "@/components/ui/sonner";
 
-
 export default function devToolsLayout() {
   return (
-    <div className="flex flex-col h-screen">
+    <div className="min-h-screen bg-background text-foreground flex flex-col">
+      {/* Top devtools nav */}
       <NavBar />
+
+      {/* Main split: sidebar + content */}
       <div className="flex flex-1 overflow-hidden">
         <SidebarTree />
-        <div className="flex-1 overflow-auto p-0">
+        <div id="app-main" role="main" className="flex-1 overflow-auto">
+          {/* NOTE: Dev views provide their own spacing via .app-page */}
           <Outlet />
         </div>
       </div>
+
+      {/* Global toasts */}
       <Toaster />
     </div>
   );
 }
-

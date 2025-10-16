@@ -45,9 +45,10 @@ export const PhaseCard = ({ title, description, status, view, projectId }: Phase
     if (status === "locked") return;
 
     const routeMap: Record<string, string> = {
+      NarrativeConcept: "edit",
       StoryArcsView: "story-arcs",
       CharactersView: "character-design",
-      StoryArcBeatsView: "story-arc-beats",
+      StoryArcBeatsView: "beats",
       // Add more routes here
     };
 

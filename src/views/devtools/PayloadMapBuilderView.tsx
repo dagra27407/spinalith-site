@@ -2216,12 +2216,12 @@ const handleImportReplace = () => {
 // *********************************Define UI View(visual components)*********************************
 /*************************************************************************************************************** */
     return (
-        <div className="flex flex-row gap-4 w-full bg-white-50 p-6">
+        <div className="flex flex-row app-gap w-full bg-white-50 p-6 app-page space-y-6">
 {/* LEFT – Primary Scrollable Area */}
             <div className="w-2/3 min-w-[300px] pr-4">
                 <div className="p-4 space-y-6">
   {/* BASE TABLE CARD */}
-                <Card>
+                <Card className="app-card-radius">
                     <CardContent className="space-y-4">
                       <Styled_CardHeader>Base Table Selection</Styled_CardHeader>
       {/* Config Table Dropdown */}
@@ -2275,7 +2275,7 @@ const handleImportReplace = () => {
 
 
 {/* filterMap construction card */}
-                <Card className="p-4 mt-4">
+                <Card className="app-card-radius p-4">
                   <CardHeader>
                     <Styled_CardHeader>Filtered Records</Styled_CardHeader>
                     <div className="mt-2 flex justify-center">
@@ -2306,7 +2306,7 @@ const handleImportReplace = () => {
 
  {/* Section Map Card */}
                 {get_SectionMapCard_BaseTablesOptions.length > 0 && (
-                  <Card>
+                  <Card className="app-card-radius">
                     <CardHeader>
                       <Styled_CardHeader>Section Map</Styled_CardHeader>
                       <CardDescription>Construct your JSON Payload Section.</CardDescription>
@@ -2343,7 +2343,7 @@ const handleImportReplace = () => {
 
 {/* nestedMappingKey Card */}
 
-                  <Card>
+                  <Card className="app-card-radius">
                     <CardHeader>
                       <Styled_CardHeader>Nested Map</Styled_CardHeader>
                         <div className="mt-2 flex justify-center">
@@ -2371,7 +2371,7 @@ const handleImportReplace = () => {
               </Card>
 
  {/* Batching Map Card */}
-                <Card>
+                <Card className="app-card-radius">
                   <CardHeader>
                     <CardTitle>Batching Map</CardTitle>
                     <CardDescription>
@@ -2381,7 +2381,7 @@ const handleImportReplace = () => {
 
                   <CardContent className="space-y-4">
                     {/* Mode */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3 items-end">
+                    <div className="grid grid-cols-1 md:grid-cols-3 app-gap items-end">
                       <div className="md:col-span-1">
                         <Label>Mode</Label>
                         <Select value={bm_mode} onValueChange={(v) => onChange_Mode(v as BatchingMode)}>
@@ -2423,7 +2423,7 @@ const handleImportReplace = () => {
 
                     {/* Data-driven specifics */}
                     {bm_mode === "dataDriven" && (
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                      <div className="grid grid-cols-1 md:grid-cols-3 app-gap">
                         <div>
                           <Label>Source (globalThis)</Label>
                           <Select value={bm_source} onValueChange={onChange_Source}>
@@ -2465,7 +2465,7 @@ const handleImportReplace = () => {
 
                     {/* Output-controlled specifics */}
                     {bm_mode === "outputControlled" && (
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                      <div className="grid grid-cols-1 md:grid-cols-3 app-gap">
                         <div className="md:col-span-1">
                           <Label>Per-batch key</Label>
                           <Input
@@ -2495,7 +2495,7 @@ const handleImportReplace = () => {
                     </div>
 
                     {/* Actions */}
-                    <div className="flex gap-2">
+                    <div className="flex app-gap">
                       <Button type="button" variant="secondary" onClick={clear_BatchingMapCard}>
                         Clear
                       </Button>
@@ -2508,7 +2508,7 @@ const handleImportReplace = () => {
 
   {/* Generate Payload Map Card*/}
                 {get_BaseTableCard_SelectedTables.length > 0 && (
-                <Card>
+                <Card className="app-card-radius">
                     <CardContent className="space-y-4">
                     <div className="p-4 space-y-4">
                         <Styled_CardHeader>Payload Preview</Styled_CardHeader>
@@ -2552,7 +2552,7 @@ const handleImportReplace = () => {
 
 {/* RIGHT – Persistent Preview */}
             <div className="w-1/3 min-w-[250px] sticky top-4 self-start">
-                <Card>
+                <Card className="app-card-radius">
                   <CardHeader className="flex flex-row items-center justify-between space-y-0">
                     {/* Left: title (allow truncation) */}
                     <div className="min-w-0">
@@ -2560,7 +2560,7 @@ const handleImportReplace = () => {
                     </div>
 
                     {/* Right: actions */}
-                    <div className="ml-4 flex items-center gap-2 flex-nowrap shrink-0">
+                    <div className="ml-4 flex items-center app-gap flex-nowrap shrink-0">
                       <Button size="icon" variant="ghost" onClick={() => setImportOpen(true)} title="Import / Hydrate JSON">
                         <FileUp className="h-4 w-4" />
                       </Button>
@@ -2639,7 +2639,7 @@ const handleImportReplace = () => {
             {get_FilterMapCard_ConstructedFilters.map((filter, index) => (
               <div key={index} className="space-y-2">
                 {/* Row 1: Delete + Field + Operator */}
-                <div className="grid grid-cols-12 gap-3 items-center">
+                <div className="grid grid-cols-12 app-gap items-center">
                   {/* Delete (icon before Field) */}
                   <div className="col-span-2 sm:col-span-1 flex">
                     <Button
@@ -2701,7 +2701,7 @@ const handleImportReplace = () => {
                 </div>
 
                 {/* Row 2: Mode switch + Value/Reference UI (under Field/Operator) */}
-                <div className="grid grid-cols-12 gap-3 items-start">
+                <div className="grid grid-cols-12 app-gap items-start">
                   {/* spacer under the trash icon column */}
                   <div className="col-span-2 sm:col-span-1" />
 
@@ -2726,7 +2726,7 @@ const handleImportReplace = () => {
 
                     {/* Match UI */}
                     {filter.matchMode === "reference" ? (
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                      <div className="grid grid-cols-1 md:grid-cols-2 app-gap">
                         {/* Reference Source */}
                         <Select
                           value={filter.refSource ?? ""}
@@ -2779,7 +2779,7 @@ const handleImportReplace = () => {
             ))}
 
             {/* Actions */}
-            <div className="flex justify-end gap-4 flex-wrap">
+            <div className="flex justify-end app-gap flex-wrap">
               <Button onClick={addFilter} type="button">
                 + Add Filter Rule
               </Button>
@@ -2822,7 +2822,7 @@ const handleImportReplace = () => {
           {/* Alias row (Edit) */}
           <div>
             <Label>Output Alias</Label>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 app-gap">
               {/* Alias selector */}
               <Select
                 value={get_FilterMapCard_SelectedEditAlias}
@@ -2887,7 +2887,7 @@ const handleImportReplace = () => {
               {get_FilterMapCard_ConstructedFilters.map((filter, index) => (
                 <div key={index} className="space-y-2">
                   {/* Row 1: Delete + Field + Operator */}
-                  <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 items-center">
+                  <div className="grid grid-cols-1 sm:grid-cols-12 app-gap items-center">
                     {/* Delete (icon before Field) */}
                     <div className="sm:col-span-1 flex">
                       <Button
@@ -2951,7 +2951,7 @@ const handleImportReplace = () => {
                   </div>
 
                   {/* Row 2: Mode switch + Value/Reference UI (under Field/Operator) */}
-                  <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 items-start">
+                  <div className="grid grid-cols-1 sm:grid-cols-12 app-gap items-start">
                     {/* spacer under the trash icon column (sm+) */}
                     <div className="hidden sm:block sm:col-span-1" />
 
@@ -2976,7 +2976,7 @@ const handleImportReplace = () => {
 
                       {/* Match UI */}
                       {filter.matchMode === "reference" ? (
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                        <div className="grid grid-cols-1 md:grid-cols-2 app-gap">
                           {/* Reference Source */}
                           <Select
                             value={filter.refSource ?? ""}
@@ -3029,7 +3029,7 @@ const handleImportReplace = () => {
               ))}
 
               {/* Actions */}
-              <div className="flex justify-end gap-4 flex-wrap">
+              <div className="flex justify-end app-gap flex-wrap">
                 <Button onClick={addFilter} type="button">
                   + Add Filter Rule
                 </Button>
@@ -3079,7 +3079,7 @@ const handleImportReplace = () => {
               return (
                 <div
                   key={alias}
-                  className="flex flex-col md:flex-row md:items-center gap-2 md:gap-3 border rounded p-2 overflow-hidden"
+                  className="flex flex-col md:flex-row md:items-center app-gap md:app-gap border rounded p-2 overflow-hidden"
                 >
                   {/* Left: meta / rename */}
                   <div className="flex-1 min-w-0">
@@ -3091,7 +3091,7 @@ const handleImportReplace = () => {
                         </div>
                       </>
                     ) : (
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center app-gap">
                         <Input
                           value={get_FilterMapCard_RenameInput}
                           onChange={(e) => set_FilterMapCard_RenameInput(e.target.value)}
@@ -3110,7 +3110,7 @@ const handleImportReplace = () => {
 
                   {/* Right: actions (wrap under on narrow widths) */}
                   {!isRenaming && (
-                    <div className="flex items-center gap-1 flex-wrap md:flex-nowrap justify-end md:justify-start shrink-0">
+                    <div className="flex items-center app-gap flex-wrap md:flex-nowrap justify-end md:justify-start shrink-0">
                       <Button
                         size="icon"
                         variant="ghost"
@@ -3253,7 +3253,7 @@ const handleImportReplace = () => {
             </Select>
 
             {/* switch for is conditional */}
-            <div className="flex gap-2">
+            <div className="flex app-gap">
               <Label>Conditional Inclusion?</Label>
               <Switch
                 checked={get_SectionMapCard_ConditionalSwitch}
@@ -3289,7 +3289,7 @@ const handleImportReplace = () => {
             {/* — Field list container with sticky header — */}
               <div className="mt-3 rounded border">
                 {/* Header */}
-                <div className="grid grid-cols-[auto,12rem,1fr,12rem] gap-3 items-center px-3 py-2 bg-muted/40 sticky top-0 z-10">
+                <div className="grid grid-cols-[auto,12rem,1fr,12rem] app-gap items-center px-3 py-2 bg-muted/40 sticky top-0 z-10">
                   <div className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Use</div>
                   <div className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Source Field</div>
                   <div className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Alias (JSON key)</div>
@@ -3308,7 +3308,7 @@ const handleImportReplace = () => {
                       return (
                         <div
                           key={fieldName}
-                          className="grid grid-cols-[auto,12rem,1fr,12rem] gap-3 items-center px-3 py-2 border-t"
+                          className="grid grid-cols-[auto,12rem,1fr,12rem] app-gap items-center px-3 py-2 border-t"
                         >
                           {/* Use (checkbox) */}
                           <input
@@ -3409,7 +3409,7 @@ const handleImportReplace = () => {
             </SelectContent>
           </Select>
 
-          <div className="flex items-center gap-2 mt-3">
+          <div className="flex items-center app-gap mt-3">
             <Label>Conditional Inclusion?</Label>
             <Switch
               checked={get_SectionMapCard_ConditionalSwitch}
@@ -3440,7 +3440,7 @@ const handleImportReplace = () => {
             )}
 
           {/* Header */}
-          <div className="grid grid-cols-[auto,12rem,1fr,12rem] gap-3 items-center px-3 py-2 bg-muted/40 sticky top-0 z-10 mt-3 rounded-t border-x border-t">
+          <div className="grid grid-cols-[auto,12rem,1fr,12rem] app-gap items-center px-3 py-2 bg-muted/40 sticky top-0 z-10 mt-3 rounded-t border-x border-t">
             <div className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Use</div>
             <div className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Source Field</div>
             <div className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Alias (JSON key)</div>
@@ -3459,7 +3459,7 @@ const handleImportReplace = () => {
                 return (
                   <div
                     key={fieldName}
-                    className="grid grid-cols-[auto,12rem,1fr,12rem] gap-3 items-center px-3 py-2 border-t first:border-t-0"
+                    className="grid grid-cols-[auto,12rem,1fr,12rem] app-gap items-center px-3 py-2 border-t first:border-t-0"
                   >
                     {/* Use (checkbox) */}
                     <input
@@ -3546,7 +3546,7 @@ const handleImportReplace = () => {
                     const atBottom = idx === get_SectionMapCard_SectionOrder.length - 1;
 
                     return (
-                      <div key={alias} className="flex items-center gap-3 border rounded p-2">
+                      <div key={alias} className="flex items-center app-gap border rounded p-2">
                         <div className="flex-1 min-w-0">
                           {!isRenaming ? (
                             <>
@@ -3557,7 +3557,7 @@ const handleImportReplace = () => {
                               </div>
                             </>
                           ) : (
-                            <div className="flex items-center gap-2">
+                            <div className="flex items-center app-gap">
                               <Input
                                 value={get_SectionMapCard_RenameInput}
                                 onChange={(e) => set_SectionMapCard_RenameInput(e.target.value)}
@@ -3574,7 +3574,7 @@ const handleImportReplace = () => {
                         </div>
 
                         {!isRenaming && (
-                          <div className="flex items-center gap-1 shrink-0">
+                          <div className="flex items-center app-gap shrink-0">
                             <Button
                               size="icon"
                               variant="ghost"
@@ -3655,7 +3655,7 @@ const handleImportReplace = () => {
       if(get_NestedMapCard_Mode === "add"){
         return(
         <CardContent className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 app-gap">
             {/* Alias (placeholder select for now) */}
             <div>
               <Label>Alias (must match a nested field)</Label>
@@ -3852,7 +3852,7 @@ const handleImportReplace = () => {
 
           </div>
 
-          <div className="flex justify-end gap-2">
+          <div className="flex justify-end app-gap">
             <Button variant="ghost">Cancel</Button>
             <Button
               onClick={handleAddNestedMapping}
@@ -3878,7 +3878,7 @@ if (get_NestedMapCard_Mode === "edit") {
     <CardContent className="space-y-4">
     <>
       {/* Row 1: alias + recordSource (matches Add) */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 app-gap">
         <div>
           <Label>Select nested alias to edit</Label>
           <Select
@@ -3933,7 +3933,7 @@ if (get_NestedMapCard_Mode === "edit") {
       </div>
 
       {/* Row 2: linkFieldInParent + childIDField */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 app-gap">
         <div>
           <Label>linkFieldInParent</Label>
           <Select
@@ -4002,7 +4002,7 @@ if (get_NestedMapCard_Mode === "edit") {
       </div>
 
       {/* Row 3: fieldMappingKey + sortKey */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 app-gap">
         <div>
           <Label>fieldMappingKey</Label>
           <Select
@@ -4060,7 +4060,7 @@ if (get_NestedMapCard_Mode === "edit") {
       </div>
 
       {/* Actions */}
-      <div className="flex justify-end gap-2">
+      <div className="flex justify-end app-gap">
         <Button variant="destructive" onClick={handleDeleteNestedMapping}>
           Delete
         </Button>
@@ -4137,7 +4137,7 @@ if (get_NestedMapCard_Mode === "edit") {
               />
             </div>
 
-            <DialogFooter className="gap-2">
+            <DialogFooter className="app-gap">
               <Button variant="outline" onClick={() => setImportText("")}>
                 Clear
               </Button>

@@ -1,66 +1,189 @@
+/*
+ * index.css (Spinalith)
+ * Plain‑English: Tailwind + shadcn base styles + our minimal design tokens.
+ * Everything visual should derive from these CSS variables and utilities.
+ *
+ * How to use in views:
+ *  - Page wrapper: <div class="app-page space-y-6"> … </div>
+ *  - Common gaps: class="flex app-gap" (or "grid app-gap")
+ *  - Card corners: class="app-card-radius"
+ *  - Headings: <h1 class="app-h1">Page</h1>, <h2 class="app-h2">Section</h2>
+ */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* ----------------------------------------------
+   Base design tokens (light & dark)
+   Note: Values are HSL triplets to match shadcn's expectations.
+---------------------------------------------- */
 @layer base {
   :root {
+    /* shadcn color tokens */
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
+
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
+
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
+
     --primary: 222.2 47.4% 11.2%;
     --primary-foreground: 210 40% 98%;
+
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 222.2 47.4% 11.2%;
+
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
+
     --accent: 210 40% 96.1%;
     --accent-foreground: 222.2 47.4% 11.2%;
+
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
+
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
     --ring: 222.2 84% 4.9%;
+
+    /* Optional chart tones used by some shadcn examples */
     --chart-1: 12 76% 61%;
     --chart-2: 173 58% 39%;
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
-    --radius: 0.5rem}
+
+    /* Global radius knob (shadcn expects this) */
+    --radius: 0.5rem;
+
+    /* Spinalith spacing & sizing tokens (our additions) */
+    --space-page-x: 24px; /* default horizontal page padding */
+    --space-page-y: 24px; /* default vertical page padding */
+    --space-grid: 16px;   /* default gap for flex/grid rows */
+
+    --radius-card: 16px;  /* unified card/panel radius */
+    --radius-panel: 16px;
+    --radius-button: 12px;
+
+    --fs-page: 1.5rem;     /* 24px page heading */
+    --fs-section: 1.25rem; /* 20px section heading */
+  }
+
   .dark {
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
+
     --card: 222.2 84% 4.9%;
     --card-foreground: 210 40% 98%;
+
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
+
     --primary: 210 40% 98%;
     --primary-foreground: 222.2 47.4% 11.2%;
+
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
+
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
+
     --accent: 217.2 32.6% 17.5%;
     --accent-foreground: 210 40% 98%;
+
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
+
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
+
     --chart-1: 220 70% 50%;
     --chart-2: 160 60% 45%;
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%}
+    --chart-5: 340 75% 55%;
+
+    /* Radii/spacing are neutral; no dark overrides needed */
+  }
 }
 
+/* ----------------------------------------------
+   Base element resets that respect our tokens
+---------------------------------------------- */
 @layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
+  * { @apply border-border; }
+  body { @apply bg-background text-foreground; }
 }
+
+/* ----------------------------------------------
+   Minimal utility helpers (use in views to avoid drift)
+---------------------------------------------- */
+@layer utilities {
+  /* Top-level page wrapper (use instead of p-5/p-6/etc.) */
+  .app-page { padding: var(--space-page-y) var(--space-page-x); }
+
+  /* Common row/stack gaps (use instead of gap-3/gap-4/gap-6) */
+  .app-gap  { gap: var(--space-grid); }
+
+  /* Unified card/panel radius (use instead of rounded-xl/2xl) */
+  .app-card-radius { border-radius: var(--radius-card); }
+
+  /* Consistent heading sizes (optional helpers) */
+  .app-h1 { font-size: var(--fs-page); font-weight: 600; line-height: 1.2; }
+  .app-h2 { font-size: var(--fs-section); font-weight: 600; }
+
+  /* Soft card surface that matches shadcn cards */
+  .app-surface {
+    background-color: hsl(var(--card));
+    color: hsl(var(--card-foreground));
+    border: 1px solid hsl(var(--border));
+  }
+
+  /* Subtle, tasteful shadow (use sparingly) */
+  .app-shadow {
+    box-shadow:
+      0 1px 2px rgba(0,0,0,.06),
+      0 1px 1px rgba(0,0,0,.04);
+  }
+
+  /* Sidebar surface with gentle contrast (uses existing tokens) */
+  .app-sidebar {
+    background-color: hsl(var(--muted));
+    color: hsl(var(--muted-foreground));
+    border-right: 1px solid hsl(var(--border));
+  }
+
+  /* A modern, theme-safe top bar */
+  .app-navbar {
+    /* position */
+    position: sticky;
+    top: 0;
+    z-index: 50;
+
+    /* separator + depth */
+    border-bottom: 1px solid hsl(var(--border));
+    box-shadow: 0 1px 0 0 hsl(var(--border) / 0.3);
+
+    /* subtle translucency + blur over content */
+    background-color: hsl(var(--card) / 0.92);
+    -webkit-backdrop-filter: saturate(180%) blur(8px);
+    backdrop-filter: saturate(180%) blur(8px);
+
+    color: hsl(var(--card-foreground));
+  }
+
+  /* Optional color tint for the top bar (uses theme tokens) */
+  .app-navbar--tint {
+    /* lay a faint primary tint over the base .app-navbar background */
+    background-image: linear-gradient(hsl(var(--primary) / 0.15), hsl(var(--primary) / 0.15));
+    /* if you prefer accent or muted instead of primary, swap the var: 
+      --accent or --muted both work nicely */
+  }
+
+
+}
+
