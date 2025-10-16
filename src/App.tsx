@@ -1,59 +1,64 @@
-import { useEffect, useState } from "react";
-import { supabase } from "@/lib/supabaseClient";
-import type { Session } from "@supabase/supabase-js";
-import AuthScreen from "@/components/auth/Auth";
-import AppRouter from "@/router/Router";
+import React from "react";
+import { WaitlistForm } from "./components/WaitlistForm";
 
-// ✅ NEW: design tokens runtime init (loads saved palette and sets CSS vars)
-import { initThemeFromLocalStorage } from "@/lib/ui/designTokens";
-
-/**
- * App
- *
- * Plain-English:
- * - Initializes our design tokens once on boot (colors/vars for shadcn + Tailwind).
- * - Listens for Supabase auth session changes and renders either:
- *     - <AppRouter /> when authenticated
- *     - <AuthScreen /> when not
- */
 export default function App() {
-  const [session, setSession] = useState<Session | null>(null);
+  return (
+    <div className="min-h-screen bg-white text-gray-900">
+      <header className="px-6 py-4">
+        <div className="max-w-6xl mx-auto flex items-center justify-between">
+          <div className="text-xl font-semibold tracking-tight">Spinalith</div>
+          <nav className="text-sm">
+            <a href="#features" className="hover:underline">Features</a>
+          </nav>
+        </div>
+      </header>
 
-  // 1) Theme bootstrapping (safe, runs once). If no saved theme, uses "slate".
-  /*useEffect(() => {
-    initThemeFromLocalStorage("indigo");
-  }, []);*/
-    // 1) Theme bootstrapping + console helper (dev only)
-  useEffect(() => {
-    initThemeFromLocalStorage("slate");
+      <main className="px-6">
+        <section className="max-w-6xl mx-auto py-20">
+          <h1 className="text-4xl sm:text-6xl font-bold tracking-tight">
+            Story planning that feels like a writers’ room.
+          </h1>
+          <p className="mt-4 text-lg text-gray-600 max-w-2xl">
+            Spinalith helps authors design arcs, beats, and chapters with AI—then
+            grow them into publish-ready narratives.
+          </p>
 
-    // expose a quick tester in the console: setTheme('indigo') / setTheme('slate')
-    (window as any).setTheme = (k: ThemeKey) => setTheme(k);
+          <div className="mt-8">
+            <WaitlistForm source="site-hero" />
+            <p className="mt-2 text-xs text-gray-500">
+              No spam. Early access updates only.
+            </p>
+          </div>
+        </section>
 
-    // tidy up on hot reload/unmount
-    return () => {
-      delete (window as any).setTheme;
-    };
-  }, []);
+        <section id="features" className="max-w-6xl mx-auto py-16 border-t">
+          <h2 className="text-2xl font-semibold">What’s coming</h2>
+          <ul className="mt-6 grid sm:grid-cols-2 lg:grid-cols-3 gap-6 text-sm">
+            <li className="p-4 border rounded-lg">
+              <div className="font-medium">Arc & Beat Designer</div>
+              <div className="text-gray-600 mt-1">Craft story arcs and beats with structure-aware AI.</div>
+            </li>
+            <li className="p-4 border rounded-lg">
+              <div className="font-medium">Chapter Planner</div>
+              <div className="text-gray-600 mt-1">Map beats to chapters with device-aware enrichment.</div>
+            </li>
+            <li className="p-4 border rounded-lg">
+              <div className="font-medium">Callback Engine</div>
+              <div className="text-gray-600 mt-1">Foreshadowing and callbacks tracked across the book.</div>
+            </li>
+          </ul>
+        </section>
+      </main>
 
-  // 2) Supabase session wiring (your existing logic)
-  useEffect(() => {
-    // Get current session on initial load
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-    });
-
-    // Subscribe to auth changes (login/logout)
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-    });
-
-    // Cleanup on unmount
-    return () => subscription.unsubscribe();
-  }, []);
-
-  // App entry point: route to app or auth screen
-  return session ? <AppRouter /> : <AuthScreen />;
+      <footer className="px-6 py-8 border-t">
+        <div className="max-w-6xl mx-auto text-sm text-gray-600 flex flex-wrap gap-4 justify-between">
+          <div>© {new Date().getFullYear()} Spinalith</div>
+          <div className="space-x-4">
+            <a className="hover:underline" href="/privacy.html">Privacy</a>
+            <a className="hover:underline" href="/terms.html">Terms</a>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
 }
