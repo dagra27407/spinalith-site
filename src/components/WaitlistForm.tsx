@@ -1,45 +1,48 @@
-import { useState } from "react";
+import React, { useState } from "react";
 
-export function WaitlistForm({ source = "site-hero" }: { source?: string }) {
-  const [email, setEmail] = useState("");
-  const [state, setState] = useState<"idle"|"sending"|"ok"|"err">("idle");
 
-const url = import.meta.env.VITE_FUNCTIONS_URL;
+export default function WaitlistForm() {
+const [email, setEmail] = useState("");
+const [status, setStatus] = useState<"idle"|"loading"|"ok"|"err">("idle");
 
-async function onSubmit(e: React.FormEvent) {
-  e.preventDefault();
-  setState("sending");
-  try {
-    const res = await fetch(`${url}/waitlist`, {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ email, source }),
-    });
-    setState(res.ok ? "ok" : "err");
-  } catch {
-    setState("err");
-  }
+
+async function submit(e: React.FormEvent) {
+e.preventDefault();
+if (!email) return;
+setStatus("loading");
+try {
+const base = import.meta.env.VITE_FUNCTIONS_URL ?? "";
+const res = await fetch(`${base}/waitlist`, {
+method: "POST",
+headers: { "Content-Type": "application/json" },
+body: JSON.stringify({ email }),
+});
+if (!res.ok) throw new Error("bad status");
+setStatus("ok");
+setEmail("");
+} catch (err) {
+setStatus("err");
+}
 }
 
 
-  return (
-    <form onSubmit={onSubmit} className="flex gap-2 w-full max-w-md">
-      <input
-        type="email"
-        required
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder="you@domain.com"
-        className="w-full border rounded px-3 py-2"
-        aria-label="Email address"
-      />
-      <button
-        className="rounded px-4 py-2 border"
-        disabled={state === "sending"}
-      >
-        {state === "sending" ? "Joining…" : "Join"}
-      </button>
-      {state === "ok" && <p className="text-sm ml-2">Got it — thanks!</p>}
-    </form>
-  );
+return (
+<form onSubmit={submit} className="mt-6 flex items-stretch gap-3">
+<input
+type="email"
+required
+placeholder="you@domain.com"
+value={email}
+onChange={(e) => setEmail(e.target.value)}
+className="h-11 w-full rounded-xl border px-3 text-sm outline-none focus:ring-2 focus:ring-[color-mix(in_oklab,hsl(var(--primary))_60%,transparent)]"
+/>
+<button
+type="submit"
+disabled={status === "loading"}
+className="h-11 rounded-xl border px-4 text-sm"
+>
+{status === "loading" ? "Joining…" : status === "ok" ? "Joined" : "Join"}
+</button>
+</form>
+);
 }

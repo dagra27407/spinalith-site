@@ -1,0 +1,295 @@
+:root { color-scheme: light; }
+html, body, #root { height: 100%; }
+body {
+  background: var(--surface-50);
+  color: var(--text-900);
+  font-family: var(--font-sans);
+}
+
+/* Centered app container (constrained like Simply Business) */
+.container-app {
+  max-width: 1120px; /* adjust later if needed */
+  margin: 0 auto;
+  padding-inline: 1rem;
+}
+
+/* Sections & panels */
+.section { padding: 4rem 0; }
+.section--tight { padding: 2rem 0; }
+.panel {
+  background: var(--surface-0);
+  border: 1px solid var(--border-200);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+.tint { background: var(--surface-100); }
+
+/* Fixed header */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  backdrop-filter: blur(8px);
+  background: color-mix(in oklab, var(--surface-0) 85%, transparent);
+  border-bottom: 1px solid var(--border-200);
+}
+.site-header__inner {
+  height: 56px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+
+/* Buttons (base) */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  padding: .625rem .9rem;        /* same size you had */
+  font-weight: 600;
+  border-radius: 10px;
+  border: 1px solid var(--border-200);
+  transition: transform .04s ease, background .2s ease, color .2s ease, border .2s ease;
+}
+.btn:hover { transform: translateY(-1px); }
+
+/* Primary (20% color usage) — now uses the new palette tokens */
+.btn-primary {
+  background: var(--brand-primary);     /* #0A84FF from tokens.css */
+  color: #fff;
+  border-color: transparent;
+}
+.btn-primary:hover {
+  background: var(--brand-primary-ink); /* slightly darker blue for hover */
+}
+
+/* Optional neutral variant (outline/ghost) if you want it */
+.btn-neutral {
+  background: var(--surface-0);
+  color: var(--text-900);
+  border-color: var(--border-200);
+}
+.btn-neutral:hover {
+  background: var(--surface-50);
+}
+
+
+/* Links use primary (20%) */
+a { color: var(--brand-primary); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* Headings */
+h1, h2, h3 { line-height: var(--leading-tight); }
+
+/* Editorial bands (flowy, not cardy) */
+.band-neutral { background: var(--surface-100); }
+.band-primary-tint { background: color-mix(in oklab, var(--brand-primary) 6%, var(--surface-50)); }
+.band-dark { background: var(--soft-black); color: #fff; }
+
+/* Copy container widths */
+.prose-narrow { max-width: 48rem; }
+.prose-medium { max-width: 64rem; }
+
+/* A light “stat” chip (optional for trust strip) */
+.stat {
+  border: 1px solid var(--border-200);
+  border-radius: 999px;
+  padding: .5rem .75rem;
+  font-size: .85rem;
+  color: var(--text-700);
+  background: var(--surface-0);
+}
+
+/* Center + narrower measures on very large screens */
+@media (min-width: 1280px) {
+  .center-xl { text-align: center; }
+  .measure-narrow-xl { max-width: 42rem; }   /* ~672px */
+  .measure-medium-xl { max-width: 58rem; }   /* ~928px */
+}
+
+/* Always keep blocks centered horizontally */
+.mx-auto { margin-left: auto; margin-right: auto; }
+
+/* A subtle silver band so it contrasts with the blue one above */
+.band-silver {
+  background: color-mix(in oklab, var(--cool-silver) 22%, var(--surface-0));
+}
+
+/* Bullet-proof centering for text blocks on wide screens */
+.center-block {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Make CSS grid children center themselves nicely */
+.grid-center {
+  justify-items: center;  /* horizontal center in grid */
+  align-items: start;
+}
+
+/* darker neutral band to separate sections more clearly */
+.band-neutral-strong {
+  background: color-mix(in oklab, var(--cool-silver) 100%, var(--surface-0));
+  border-top: 6px solid var(--border-200);
+  border-bottom: 6px solid var(--border-200);
+}
+
+/* pill chips with a little depth */
+.stat-pill {
+  display: inline-flex; align-items: center; gap: .5rem;
+  border: 1px solid var(--border-200);
+  border-radius: 999px;
+  padding: .6rem .9rem;
+  background: var(--surface-0);
+  box-shadow: var(--shadow-sm);
+  font-size: .92rem; color: var(--text-700);
+  transition: transform .05s ease, box-shadow .2s ease, border-color .2s ease;
+}
+.stat-pill:hover { transform: translateY(-1px); box-shadow: var(--shadow-md); }
+
+/* tiny icon dot (for the “with a bit more …” flair) */
+.stat-dot {
+  width: 8px; height: 8px; border-radius: 999px;
+  background: var(--brand-primary);
+}
+
+/* subtle separators variant (no pills) */
+.stat-sep { color: var(--text-500); margin: 0 .75rem; }
+
+/* compact “tiles” without full cards */
+.stat-tile {
+  background: color-mix(in oklab, var(--cool-silver) 14%, var(--surface-0));
+  border: 1px solid var(--border-200);
+  border-radius: 12px;
+  padding: .9rem 1rem;
+  font-size: .95rem; color: var(--text-700);
+  transition: background .2s ease, transform .05s ease;
+}
+.stat-tile:hover { transform: translateY(-1px); }
+.stat-tile b { color: var(--text-900); }
+
+/* TONAL LADDER — neutrals */
+.band-paper { /* lightest neutral band */
+  background: color-mix(in oklab, var(--cool-silver) 20%, var(--surface-0));
+}
+.band-silver { /* you already have: keep */
+  background: color-mix(in oklab, var(--cool-silver) 32%, var(--surface-0));
+}
+.band-neutral-strong { /* mid neutral — for trust strips/separators */
+  background: color-mix(in oklab, var(--cool-silver) 36%, var(--surface-0));
+  border-top: 1px solid color-mix(in oklab, var(--soft-black) 35%, var(--cool-silver) 65%);
+  border-bottom: 1px solid color-mix(in oklab, var(--soft-black) 35%, var(--cool-silver) 65%);
+}
+
+/* BLUES (use sparingly to keep 70/20/10) */
+.band-primary-tint { /* very light blue wash */
+  background: color-mix(in oklab, var(--brand-primary) 6%, var(--surface-0));
+}
+.band-primary-strong { /* a touch stronger for CTAs if needed */
+  background: color-mix(in oklab, var(--brand-primary) 12%, var(--surface-0));
+}
+
+/* DARK */
+.band-dark { /* existing dark band */
+  background: var(--soft-black);
+  color: #fff;
+}
+.band-dark-strong { /* the class you referenced but hadn’t defined */
+  background: color-mix(in oklab, var(--soft-black) 92%, #000 8%);
+  color: #fff;
+  /* crisp hairlines for separation */
+  box-shadow:
+    inset 0 1px 0 color-mix(in oklab, #fff 10%, transparent),
+    inset 0 -1px 0 color-mix(in oklab, #000 40%, transparent);
+}
+/* On-dark text ramps */
+:root {
+  --on-dark-900: #ffffff;              /* headings / primary ink */
+  --on-dark-700: rgba(255,255,255,.86);/* body copy */
+  --on-dark-500: rgba(255,255,255,.64);/* fine print */
+}
+
+/* Scope defaults inside dark bands */
+.band-dark, .band-dark-strong {
+  color: var(--on-dark-900);
+}
+.band-dark p, .band-dark-strong p { color: var(--on-dark-700); }
+.band-dark small, .band-dark .fineprint,
+.band-dark-strong small, .band-dark-strong .fineprint { color: var(--on-dark-500); }
+
+/* Links and CTAs keep your brand blue on dark */
+.band-dark a, .band-dark-strong a { color: var(--brand-primary); }
+.band-dark a:hover, .band-dark-strong a:hover { text-decoration: underline; }
+/* Inputs on dark */
+.band-dark input[type="email"],
+.band-dark input[type="text"],
+.band-dark textarea,
+.band-dark-strong input[type="email"],
+.band-dark-strong input[type="text"],
+.band-dark-strong textarea {
+  background: #0f1013;
+  color: #fff;
+  border: 1px solid rgba(255,255,255,.28);
+}
+.band-dark input::placeholder,
+.band-dark textarea::placeholder,
+.band-dark-strong input::placeholder,
+.band-dark-strong textarea::placeholder {
+  color: rgba(255,255,255,.55);
+}
+
+/* Optional: make the primary button pop on dark */
+.band-dark .btn-primary, .band-dark-strong .btn-primary {
+  background: var(--brand-primary);
+  color: #fff;
+  border-color: transparent;
+}
+.band-dark .btn-primary:hover, .band-dark-strong .btn-primary:hover {
+  background: var(--brand-primary-ink);
+}
+
+/* optional: band spacing helper if one needs more breathing room */
+.section.section--loose { padding: 5rem 0; }
+
+.band-white { background: var(--surface-0); } /* pure white */
+
+.card { 
+  background: var(--surface-0);
+  border: 1px solid var(--border-200);
+  border-radius: 20px;            /* a bit rounder than .panel */
+  box-shadow: var(--shadow-sm);
+  transition: transform .05s ease, box-shadow .2s ease;
+}
+.card--raised { box-shadow: var(--shadow-md); }
+.card--pad { padding: 1.75rem; }
+.card:hover { 
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.title-center { text-align: center; }
+@media (min-width:1280px){ .title-center-xl { text-align:center; } }
+
+/* centers children horizontally, good for single-form cards */
+.center-stack {
+  display: grid;
+  justify-items: center;          /* centers everything inside */
+  text-align: center;             /* centers text like the fine print */
+}
+
+/* makes typical email form layouts center nicely */
+.center-stack form {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* keep the input a comfy width when centered */
+.center-stack input[type="email"],
+.center-stack input[type="text"] {
+  min-width: 320px;               /* tweak to taste */
+}
+
+/* optional: make the button align well when wrapping */
+.center-stack .btn { align-self: center; }

@@ -1,16 +1,49 @@
 :root {
+  /* ===== Minimal & Elegant (Tech-Art Hybrid / Editorial) ===== */
   /* Brand */
-  --brand-50:  255 247 236;
-  --brand-100: 255 234 204;
-  --brand-200: 255 212 154;
-  --brand-300: 255 183 97;
-  --brand-400: 255 152 49;
-  --brand-500: 255 133 23;  /* primary */
-  --brand-600: 227 108 14;
-  --brand-700: 189 82 12;
+  --brand-primary: #0A84FF;        /* Midnight Blue (20%) */
+  --brand-primary-ink: #0a6fe0;    /* hover/active tone */
 
-  /* Surfaces */
-  --bg:  #ffffff;
-  --fg:  #0a0a0a;
-  --muted: #6b7280;
+  /* Neutrals (70%) */
+  --soft-black: #111111;           /* primary text / ink */
+  --pure-white: #ffffff;           /* surfaces */
+  --cool-silver: #E5E7EB;          /* borders, tints */
+
+  /* Derived neutrals */
+  --surface-0: var(--pure-white);
+  --surface-50: #F8FAFC;           /* ultra-light background */
+  --surface-100: #F3F4F6;          /* section bands */
+  --border-200: var(--cool-silver);
+
+  --text-900: var(--soft-black);
+  --text-700: #2A2A2A;
+  --text-500: #6B7280;
+
+  /* Typography & rhythm */
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Inter, Roboto, "Helvetica Neue", Arial, "Noto Sans";
+  --leading-tight: 1.15;
+
+  /* Shape */
+  --radius-lg: 16px;
+  --radius-md: 12px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0,0,0,.06);
+  --shadow-md: 0 8px 24px rgba(0,0,0,.08);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --surface-0: #101214;
+    --surface-50: #0d0f12;
+    --surface-100: #0b0d10;
+    --border-200: #23272e;
+
+    --text-900: #f1f5f9;
+    --text-700: #cdd5df;
+    --text-500: #9aa7b4;
+
+    --shadow-sm: 0 1px 2px rgba(0,0,0,.4);
+    --shadow-md: 0 8px 24px rgba(0,0,0,.45);
+  }
 }
