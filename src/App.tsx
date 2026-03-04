@@ -20,7 +20,7 @@ export default function App() {
           <div className="site-header__inner">
             <div style={{ fontWeight: 700 }}>Spinalith</div>
               <nav className="text-sm" aria-label="Primary" style={{ display: "flex", gap: 16, alignItems: "center" }}>
-                <a href="#join" className="hover:underline">Early Access</a>
+                <a href="#join" className="hover:underline">Request Early Access</a>
 
                 {/* External: marketing -> app */}
                 <a
