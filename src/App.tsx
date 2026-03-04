@@ -19,34 +19,57 @@ export default function App() {
         <Track>
           <div className="site-header__inner">
             <div style={{ fontWeight: 700 }}>Spinalith</div>
-            <nav className="text-sm" aria-label="Primary">
-              <a href="#join" className="hover:underline">Early Access</a>
-            </nav>
+              <nav className="text-sm" aria-label="Primary" style={{ display: "flex", gap: 16, alignItems: "center" }}>
+                <a href="#join" className="hover:underline">Early Access</a>
+
+                {/* External: marketing -> app */}
+                <a
+                  href="https://app.spinalith.com"
+                  className="hover:underline"
+                  rel="noopener noreferrer"
+                >
+                  Log in
+                </a>
+              </nav>
           </div>
         </Track>
       </header>
 
       {/* HERO — plain band, copy-forward */}
-<section className="section band-dark">
-  <Track>
-    <div className="prose-narrow measure-narrow-xl center-xl mx-auto">
-      <h1 style={{ fontSize: "2.75rem", fontWeight: 800, lineHeight: 1.1 }}>
-        Build smarter stories
-      </h1>
-      <p className="mt-3" style={{ fontSize: 18 }}>
-        The creative toolkit for story-driven minds.<br />
-        Let your AI writers room collaborate with you, not for you.
-      </p>
-      <div className="mt-4">
-        <WaitlistForm />
-        <p className="mt-2 fineprint" style={{ fontSize: 12 }}>
-          Be part of the first generation of writers building with structure, storycraft, and AI synergy.
-        </p>
-      </div>
-    </div>
-  </Track>
-</section>
+      <section className="section band-dark">
+        <Track>
+          <div className="prose-narrow measure-narrow-xl center-xl mx-auto">
+            <h1 style={{ fontSize: "2.75rem", fontWeight: 800, lineHeight: 1.1 }}>
+              Build smarter stories
+            </h1>
 
+            <p className="mt-3" style={{ fontSize: 18 }}>
+              The creative toolkit for story-driven minds.<br />
+              Let your AI writers room collaborate with you, not for you.
+            </p>
+
+            <div className="mt-4">
+              <WaitlistForm />
+
+              <p className="mt-2 fineprint" style={{ fontSize: 12 }}>
+                Be part of the first generation of writers building with structure, storycraft, and AI synergy.
+              </p>
+
+              {/* ✅ Add this here (inside hero layout) */}
+              <div className="mt-3" style={{ textAlign: "center" }}>
+                <a
+                  href="https://app.spinalith.com"
+                  className="hover:underline"
+                  style={{ fontSize: 13, color: "rgba(255,255,255,.85)" }}
+                  rel="noopener noreferrer"
+                >
+                  Already have access? Open the app →
+                </a>
+              </div>
+            </div>
+          </div>
+        </Track>
+      </section>
 
 
       {/* BIG IDEA — flowing copy (no box) */}
