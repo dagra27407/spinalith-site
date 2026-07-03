@@ -65,7 +65,6 @@
   display: grid;
   grid-template-columns: minmax(320px, 0.44fr) minmax(0, 0.56fr);
   align-items: stretch;
-  width: 100%;
   height: clamp(21rem, 27vw, 31rem);
 }
 

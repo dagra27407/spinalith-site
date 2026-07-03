@@ -350,13 +350,183 @@
 
 
 /* ============================================================
+   Variant: Primary Color Edge
+   Clean branded product frame with a visible primary-color edge.
+   Best for contained product sections and standard screenshot proof.
+============================================================ */
+
+.screenshot-frame--primary-color-edge {
+  border-color: color-mix(in srgb, var(--color-brand-primary) 58%, transparent);
+  border-radius: 1.08rem;
+  background:
+    linear-gradient(180deg, rgba(33, 25, 53, 0.88), rgba(7, 5, 15, 0.96));
+  box-shadow:
+    0 28px 76px rgba(0, 0, 0, 0.48),
+    0 0 0 1px rgba(196, 181, 253, 0.08) inset,
+    0 0 54px color-mix(in srgb, var(--color-brand-primary) 26%, transparent),
+    var(--shadow-card);
+}
+
+.screenshot-frame--primary-color-edge::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  border-radius: inherit;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.09), transparent 22%),
+    radial-gradient(circle at 20% 0%, color-mix(in srgb, var(--color-brand-primary) 18%, transparent), transparent 28rem);
+  opacity: 0.78;
+}
+
+.screenshot-frame--primary-color-edge .screenshot-frame__chrome {
+  border-bottom-color: color-mix(in srgb, var(--color-brand-primary) 22%, transparent);
+  background:
+    linear-gradient(180deg, rgba(33, 25, 53, 0.94), rgba(13, 9, 24, 0.9));
+}
+
+.screenshot-frame--primary-color-edge .screenshot-frame__dot {
+  background: color-mix(in srgb, var(--color-brand-faint) 58%, transparent);
+}
+
+.screenshot-frame--primary-color-edge .screenshot-frame__dot--yellow {
+  background: color-mix(in srgb, var(--color-brand-soft) 46%, transparent);
+}
+
+.screenshot-frame--primary-color-edge .screenshot-frame__dot--green {
+  background: color-mix(in srgb, var(--color-accent-interactive-hover) 38%, transparent);
+}
+
+.screenshot-frame--primary-color-edge .screenshot-frame__media {
+  background: rgba(7, 5, 15, 0.92);
+}
+
+/* ============================================================
+   Variant: Primary Color Halo
+   Larger showcase frame with an atmospheric primary-color glow.
+   Best for centered hero/solution visuals and wide product proof.
+============================================================ */
+
+.screenshot-frame--primary-color-halo {
+  border-color: color-mix(in srgb, var(--color-brand-soft) 62%, transparent);
+  border-radius: 1.25rem;
+  background:
+    radial-gradient(circle at 50% -10%, color-mix(in srgb, var(--color-brand-primary) 22%, transparent), transparent 28rem),
+    linear-gradient(180deg, rgba(33, 25, 53, 0.78), rgba(7, 5, 15, 0.96));
+  box-shadow:
+    0 34px 92px rgba(0, 0, 0, 0.52),
+    0 0 86px color-mix(in srgb, var(--color-brand-primary) 32%, transparent),
+    0 0 140px color-mix(in srgb, var(--color-brand-strong) 18%, transparent),
+    var(--shadow-card);
+}
+
+.screenshot-frame--primary-color-halo::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  z-index: 2;
+  pointer-events: none;
+  border-radius: inherit;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.11), transparent 20%),
+    radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--color-brand-faint) 18%, transparent), transparent 24rem),
+    radial-gradient(circle at 82% 82%, color-mix(in srgb, var(--color-brand-primary) 14%, transparent), transparent 20rem);
+  opacity: 0.82;
+}
+
+.screenshot-frame--primary-color-halo .screenshot-frame__chrome {
+  min-height: 2.25rem;
+  border-bottom-color: color-mix(in srgb, var(--color-brand-primary) 24%, transparent);
+  background:
+    linear-gradient(180deg, rgba(42, 23, 71, 0.56), rgba(13, 9, 24, 0.92));
+}
+
+.screenshot-frame--primary-color-halo .screenshot-frame__dot {
+  width: 0.58rem;
+  height: 0.58rem;
+  background: color-mix(in srgb, var(--color-brand-faint) 62%, transparent);
+}
+
+.screenshot-frame--primary-color-halo .screenshot-frame__dot--yellow {
+  background: color-mix(in srgb, var(--color-brand-soft) 48%, transparent);
+}
+
+.screenshot-frame--primary-color-halo .screenshot-frame__dot--green {
+  background: color-mix(in srgb, var(--color-accent-interactive-hover) 42%, transparent);
+}
+
+.screenshot-frame--primary-color-halo .screenshot-frame__media {
+  background: rgba(7, 5, 15, 0.94);
+}
+
+/* ============================================================
+   Variant: Primary Color Tilt
+   Angled branded frame with a stronger purple edge.
+   Best for split sections where the screenshot is the visual drama.
+============================================================ */
+
+.screenshot-frame--primary-color-tilt {
+  border-color: color-mix(in srgb, var(--color-brand-primary) 64%, transparent);
+  border-radius: 1.1rem;
+  background:
+    linear-gradient(180deg, rgba(33, 25, 53, 0.82), rgba(7, 5, 15, 0.97));
+  box-shadow:
+    0 38px 110px rgba(0, 0, 0, 0.56),
+    -18px 18px 90px color-mix(in srgb, var(--color-brand-primary) 26%, transparent),
+    0 0 0 1px rgba(196, 181, 253, 0.08) inset,
+    var(--shadow-card);
+  transform: perspective(1400px) rotateY(5deg) rotateX(1.4deg) rotateZ(-2deg);
+  transform-origin: center;
+}
+
+.screenshot-frame--primary-color-tilt::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  border-radius: inherit;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.1), transparent 22%),
+    radial-gradient(circle at 14% 0%, color-mix(in srgb, var(--color-brand-primary) 22%, transparent), transparent 30rem),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.08), transparent 24%);
+  opacity: 0.76;
+}
+
+.screenshot-frame--primary-color-tilt .screenshot-frame__chrome {
+  border-bottom-color: color-mix(in srgb, var(--color-brand-primary) 24%, transparent);
+  background:
+    linear-gradient(180deg, rgba(33, 25, 53, 0.9), rgba(13, 9, 24, 0.88));
+}
+
+.screenshot-frame--primary-color-tilt .screenshot-frame__dot {
+  width: 0.58rem;
+  height: 0.58rem;
+  background: color-mix(in srgb, var(--color-brand-faint) 56%, transparent);
+}
+
+.screenshot-frame--primary-color-tilt .screenshot-frame__dot--yellow {
+  background: color-mix(in srgb, var(--color-brand-soft) 42%, transparent);
+}
+
+.screenshot-frame--primary-color-tilt .screenshot-frame__dot--green {
+  background: color-mix(in srgb, var(--color-accent-interactive-hover) 34%, transparent);
+}
+
+.screenshot-frame--primary-color-tilt .screenshot-frame__media {
+  background: rgba(7, 5, 15, 0.92);
+}
+
+/* ============================================================
    Responsive
 ============================================================ */
 
 @media (max-width: 980px) {
   .screenshot-frame,
   .screenshot-frame--browser-angle,
-  .screenshot-frame--original-hero {
+  .screenshot-frame--original-hero,
+  .screenshot-frame--primary-color-tilt {
     transform: none;
   }
 }

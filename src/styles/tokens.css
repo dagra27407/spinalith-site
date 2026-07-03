@@ -164,6 +164,7 @@
   --container-max: 1180px;
   --container-wide: 1360px;
   --container-narrow: 820px;
+  --container-display: 2000px;
 
   --section-padding-y: 6.5rem;
   --section-padding-y-tight: 4.5rem;

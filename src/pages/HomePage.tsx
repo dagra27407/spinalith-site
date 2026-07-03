@@ -19,12 +19,14 @@
 
 import { HomeHeroSection } from "../components/home/HomeHeroSection";
 import { HomeProblemSection } from "../components/home/HomeProblemSection";
+import { HomeSolutionSection } from "../components/home/HomeSolutionSection";
 
 export function HomePage() {
   return (
     <>
       <HomeHeroSection />
       <HomeProblemSection />
+      <HomeSolutionSection />
     </>
   );
 }

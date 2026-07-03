@@ -84,7 +84,7 @@ export function HomeHeroSection() {
         <div className="home-hero__visual" aria-label="Spinalith product preview">
           <div className="home-hero__visual-inner">
             <ScreenshotFrame
-              variant="originalHero"
+              variant="primaryColorHalo"
               eager
               src="/assets/screenshots/home/hero-tpv.png"
               alt="Spinalith Timeline Planner showing story arcs arranged across chapters."

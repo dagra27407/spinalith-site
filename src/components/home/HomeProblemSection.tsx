@@ -88,7 +88,7 @@ export function HomeProblemSection() {
   return (
     <section className="home-problem" aria-labelledby="home-problem-title">
       <div className="home-problem__band">
-        <div className="home-problem__band-inner">
+        <div className="site-container-display home-problem__band-inner">
           <div className="home-problem__media" aria-hidden="true">
             <img
               src="/assets/images/home/writing-clutter-desk.png"

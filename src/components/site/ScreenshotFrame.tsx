@@ -26,7 +26,10 @@ export type ScreenshotFrameVariant =
   | "glassCard"
   | "appWindow"
   | "minimal"
-  | "flat";
+  | "flat"
+  | "primaryColorEdge"
+  | "primaryColorHalo"
+  | "primaryColorTilt";
 
 type ScreenshotFrameProps = {
   src: string;
@@ -48,6 +51,9 @@ const variantClassMap: Record<ScreenshotFrameVariant, string> = {
   minimal: "screenshot-frame--minimal",
   flat: "screenshot-frame--flat",
   originalHero: "screenshot-frame--original-hero",
+  primaryColorEdge: "screenshot-frame--primary-color-edge",
+  primaryColorHalo: "screenshot-frame--primary-color-halo",
+  primaryColorTilt: "screenshot-frame--primary-color-tilt",
 };
 
 export function ScreenshotFrame({

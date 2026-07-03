@@ -1,0 +1,155 @@
+/* src/styles/site/siteHeader.css */
+
+/**
+ * File: src/styles/site/siteHeader.css
+ *
+ * Purpose:
+ * Shared public website header/navigation styling for Spinalith.com.
+ *
+ * Responsibilities:
+ * - Styles the sticky marketing-site header.
+ * - Styles the Spinalith logo lockup and public navigation.
+ * - Handles responsive header behavior separately from global layout/button rules.
+ *
+ * Notes:
+ * - Header styles live here instead of index.css so global styles stay foundational.
+ * - The mobile header keeps its CTA width auto so global mobile button rules do not stretch it.
+ * - Public navigation currently hides below 980px; this is acceptable until a mobile menu is added.
+ */
+
+/* ============================================================
+   Header / navigation
+============================================================ */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  border-bottom: 1px solid var(--header-border);
+  background: var(--header-bg);
+  box-shadow: var(--header-shadow);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.site-header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 72px;
+  gap: 1.5rem;
+}
+
+.site-logo {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+  gap: 0.65rem;
+  color: var(--color-text-primary);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.site-logo:hover {
+  color: var(--color-text-primary);
+  text-decoration: none;
+}
+
+.site-logo-mark {
+  display: grid;
+  width: 2rem;
+  height: 2rem;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 1px solid var(--color-border-brand);
+  border-radius: 0.7rem;
+  background: rgba(139, 92, 246, 0.14);
+  box-shadow: 0 0 30px rgba(139, 92, 246, 0.24);
+  color: var(--color-brand-soft);
+}
+
+.site-nav {
+  display: flex;
+  align-items: center;
+  gap: 1.35rem;
+}
+
+.site-nav a {
+  color: var(--color-text-muted);
+  font-size: 0.92rem;
+  font-weight: 650;
+}
+
+.site-nav a:hover,
+.site-nav a[aria-current="page"] {
+  color: var(--color-text-primary);
+  text-decoration: none;
+}
+
+.site-header__actions {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+  gap: 0.75rem;
+}
+
+.site-header__actions .site-button,
+.site-header__actions .btn {
+  width: auto;
+}
+
+/* ============================================================
+   Responsive
+============================================================ */
+
+@media (max-width: 980px) {
+  .site-nav {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .site-header__inner {
+    min-height: 64px;
+    gap: 0.85rem;
+  }
+
+  .site-logo {
+    gap: 0.55rem;
+    min-width: 0;
+  }
+
+  .site-logo-mark {
+    width: 1.85rem;
+    height: 1.85rem;
+    border-radius: 0.65rem;
+  }
+
+  .site-header__actions {
+    gap: 0.5rem;
+  }
+
+  .site-header__actions .site-button-secondary,
+  .site-header__actions .btn-secondary {
+    display: none;
+  }
+
+  .site-header__actions .site-button,
+  .site-header__actions .btn {
+    width: auto;
+  }
+}
+
+@media (max-width: 390px) {
+  .site-logo span:last-child {
+    max-width: 6.75rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .site-header__actions .site-button-sm {
+    padding-inline: 0.72rem;
+    font-size: 0.82rem;
+  }
+}

@@ -1,0 +1,267 @@
+/* src/styles/components/nebulaShowcase.css */
+
+/**
+ * File: src/styles/components/nebulaShowcase.css
+ *
+ * Purpose:
+ * Reusable token-driven nebula/aura visual system for premium product showcases.
+ *
+ * Responsibilities:
+ * - Creates a tunable glow, haze plume, streak, and star/dust field around child content.
+ * - Separates haze reach from star reach so the glow and particles can be tuned independently.
+ * - Uses semantic design tokens so the effect follows future theme changes.
+ * - Keeps atmospheric visuals out of page-specific section CSS.
+ *
+ * Notes:
+ * - This component is intentionally visual-only.
+ * - Child content stays above all atmosphere layers.
+ * - Do not hardcode the launch purple palette here; use semantic tokens.
+ */
+
+/* ============================================================
+   Base wrapper
+============================================================ */
+
+.nebula-showcase {
+  position: relative;
+  isolation: isolate;
+}
+
+.nebula-showcase__content {
+  position: relative;
+  z-index: 5;
+}
+
+.nebula-showcase__bloom,
+.nebula-showcase__haze-field,
+.nebula-showcase__star-field,
+.nebula-showcase__plume,
+.nebula-showcase__streaks,
+.nebula-showcase__stars,
+.nebula-showcase__star {
+  position: absolute;
+  pointer-events: none;
+}
+
+/* ============================================================
+   Bloom layer
+   Broad glow under / behind the product visual.
+============================================================ */
+
+.nebula-showcase__bloom {
+  z-index: 1;
+  left: var(--nebula-origin-x);
+  top: var(--nebula-origin-y);
+  width: var(--nebula-bloom-width);
+  height: var(--nebula-bloom-height);
+  border-radius: 999px;
+  background:
+    radial-gradient(
+      ellipse at center,
+      color-mix(in srgb, var(--color-brand-primary) 46%, transparent),
+      color-mix(in srgb, var(--color-brand-primary) 18%, transparent) 38%,
+      transparent 72%
+    );
+  filter: blur(20px);
+  opacity: calc(var(--nebula-intensity) * 0.88);
+  transform:
+    translate(-18%, -50%)
+    rotate(var(--nebula-angle))
+    scaleY(var(--nebula-spread-scale));
+}
+
+/* ============================================================
+   Haze field
+   The haze starts at the origin and extends in the angle direction.
+============================================================ */
+
+.nebula-showcase__haze-field {
+  z-index: 2;
+  left: var(--nebula-origin-x);
+  top: var(--nebula-origin-y);
+  width: var(--nebula-haze-width);
+  height: var(--nebula-haze-height);
+  transform:
+    translate(0, -50%)
+    rotate(var(--nebula-angle))
+    scaleY(var(--nebula-spread-scale));
+  transform-origin: 0% 50%;
+}
+
+/* ============================================================
+   Star field
+   Stars have their own reach so particle travel can differ from haze length.
+============================================================ */
+
+.nebula-showcase__star-field {
+  z-index: 3;
+  left: var(--nebula-origin-x);
+  top: var(--nebula-origin-y);
+  width: var(--nebula-star-width);
+  height: var(--nebula-star-height);
+  transform:
+    translate(0, -50%)
+    rotate(var(--nebula-angle))
+    scaleY(var(--nebula-spread-scale));
+  transform-origin: 0% 50%;
+}
+
+/* ============================================================
+   Plume layer
+   Soft nebula cloud, token-driven.
+============================================================ */
+
+.nebula-showcase__plume {
+  z-index: 1;
+  inset: 0;
+  border-radius: 999px;
+  background:
+    radial-gradient(
+      ellipse at 0% 52%,
+      color-mix(in srgb, var(--color-brand-primary) 54%, transparent),
+      transparent 55%
+    ),
+    radial-gradient(
+      ellipse at 36% 54%,
+      color-mix(in srgb, var(--color-brand-soft) 28%, transparent),
+      transparent 64%
+    ),
+    radial-gradient(
+      ellipse at 78% 50%,
+      color-mix(in srgb, var(--color-accent-interactive) var(--nebula-accent-strength), transparent),
+      transparent 68%
+    );
+  filter: blur(22px);
+  opacity: calc(var(--nebula-intensity) * 0.95);
+
+  -webkit-mask-image: radial-gradient(
+    ellipse at 16% 54%,
+    black 0%,
+    black 34%,
+    rgba(0, 0, 0, 0.7) 52%,
+    transparent 82%
+  );
+  mask-image: radial-gradient(
+    ellipse at 16% 54%,
+    black 0%,
+    black 34%,
+    rgba(0, 0, 0, 0.7) 52%,
+    transparent 82%
+  );
+}
+
+/* ============================================================
+   Streak layer
+   Subtle directional motion lines inside the haze.
+============================================================ */
+
+.nebula-showcase__streaks {
+  z-index: 2;
+  inset: 6% 0 8%;
+  border-radius: 999px;
+  background:
+    linear-gradient(
+      128deg,
+      transparent 24%,
+      color-mix(in srgb, var(--color-brand-faint) 7%, transparent) 25%,
+      transparent 27%
+    ),
+    linear-gradient(
+      142deg,
+      transparent 38%,
+      color-mix(in srgb, var(--color-brand-primary) 8%, transparent) 39%,
+      transparent 41%
+    );
+  opacity: calc(var(--nebula-intensity) * 0.32);
+  filter: blur(4px);
+
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    black 12%,
+    rgba(0, 0, 0, 0.46) 42%,
+    transparent 82%
+  );
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    black 12%,
+    rgba(0, 0, 0, 0.46) 42%,
+    transparent 82%
+  );
+}
+
+/* ============================================================
+   Star / dust layer
+============================================================ */
+
+.nebula-showcase__stars {
+  z-index: 3;
+  inset: 0;
+}
+
+.nebula-showcase__star {
+  left: var(--star-x);
+  top: var(--star-y);
+  width: calc(var(--star-size) * var(--star-stretch));
+  height: var(--star-size);
+  border-radius: 999px;
+  background:
+    color-mix(
+      in srgb,
+      var(--color-brand-faint) calc(100% - var(--nebula-accent-strength)),
+      var(--color-accent-interactive) var(--nebula-accent-strength)
+    );
+  box-shadow:
+    0 0 10px color-mix(in srgb, var(--color-brand-soft) 54%, transparent),
+    0 0 18px color-mix(in srgb, var(--color-brand-primary) 28%, transparent);
+  filter: blur(var(--star-blur));
+  opacity: var(--star-opacity);
+  transform: translate(-50%, -50%);
+}
+
+/* ============================================================
+   Responsive
+============================================================ */
+
+@media (max-width: 980px) {
+  .nebula-showcase__bloom {
+    filter: blur(18px);
+    opacity: calc(var(--nebula-intensity) * 0.72);
+  }
+
+  .nebula-showcase__plume {
+    filter: blur(20px);
+    opacity: calc(var(--nebula-intensity) * 0.78);
+  }
+
+  .nebula-showcase__streaks {
+    opacity: calc(var(--nebula-intensity) * 0.48);
+  }
+}
+
+@media (max-width: 640px) {
+  .nebula-showcase__bloom {
+    width: min(var(--nebula-bloom-width), 72vw);
+    height: 4.5rem;
+    opacity: calc(var(--nebula-intensity) * 0.54);
+  }
+
+  .nebula-showcase__haze-field {
+    width: min(var(--nebula-haze-width), 88vw);
+    height: min(var(--nebula-haze-height), 58vw);
+  }
+
+  .nebula-showcase__star-field {
+    width: min(var(--nebula-star-width), 88vw);
+    height: min(var(--nebula-star-height), 58vw);
+  }
+
+  .nebula-showcase__plume {
+    opacity: calc(var(--nebula-intensity) * 0.56);
+  }
+
+  .nebula-showcase__stars {
+    opacity: 0.72;
+  }
+}

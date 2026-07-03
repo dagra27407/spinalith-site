@@ -1,28 +1,37 @@
 /* src/styles/index.css */
 
+/**
+ * File: src/styles/index.css
+ *
+ * Purpose:
+ * Global foundation stylesheet for Spinalith.com.
+ *
+ * Responsibilities:
+ * - Imports the site token system and section/component stylesheets.
+ * - Provides global reset, typography, layout helpers, reusable buttons, cards,
+ *   forms, grids, utilities, and responsive foundation rules.
+ *
+ * Notes:
+ * - Keep page/section-specific CSS out of this file.
+ * - Keep site chrome/component CSS in dedicated files when practical.
+ * - Header styling lives in: src/styles/site/siteHeader.css
+ * - Screenshot frame styling lives in: src/styles/components/screenshotFrame.css
+ * - Homepage section styling lives in: src/styles/page/home/
+ */
+
+ /* Theme tokens */
 @import "./tokens.css";
+
+/* Components */
+@import "./site/siteHeader.css";
 @import "./components/screenshotFrame.css";
+@import "./components/nebulaShowcase.css";
+
+/* Pages / sections */
 @import "./page/home/homeHero.css";
 @import "./page/home/homeProblem.css";
+@import "./page/home/homeSolution.css";
 
-/*
-  Spinalith.com Global Styles
-
-  Purpose:
-  Global base styles, reusable site layout classes, section shells,
-  buttons, cards, forms, utilities, and responsive helpers.
-
-  Rule:
-  Use tokens from tokens.css. Avoid raw hex values in this file unless the
-  value is truly structural or intentionally local.
-
-  Notes:
-  Screenshot-specific styling lives in:
-  src/styles/components/screenshotFrame.css
-
-  Homepage hero styling lives in:
-  src/styles/page/home/homeHero.css
-*/
 
 /* ============================================================
    Base reset
@@ -218,6 +227,11 @@ p {
   margin-inline: auto;
 }
 
+.site-container-display {
+  width: min(var(--container-display), 100%);
+  margin-inline: auto;
+}
+
 .site-section {
   position: relative;
   padding: var(--section-padding-y) 0;
@@ -281,79 +295,6 @@ p {
 
 .section-header-centered .section-lede {
   margin-inline: auto;
-}
-
-/* ============================================================
-   Header / navigation
-============================================================ */
-
-.site-header {
-  position: sticky;
-  top: 0;
-  z-index: 50;
-  border-bottom: 1px solid var(--header-border);
-  background: var(--header-bg);
-  box-shadow: var(--header-shadow);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-}
-
-.site-header__inner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  min-height: 72px;
-  gap: 1.5rem;
-}
-
-.site-logo {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.65rem;
-  color: var(--color-text-primary);
-  font-weight: 800;
-  letter-spacing: -0.02em;
-}
-
-.site-logo:hover {
-  color: var(--color-text-primary);
-  text-decoration: none;
-}
-
-.site-logo-mark {
-  display: grid;
-  width: 2rem;
-  height: 2rem;
-  place-items: center;
-  border: 1px solid var(--color-border-brand);
-  border-radius: 0.7rem;
-  background: rgba(139, 92, 246, 0.14);
-  box-shadow: 0 0 30px rgba(139, 92, 246, 0.24);
-  color: var(--color-brand-soft);
-}
-
-.site-nav {
-  display: flex;
-  align-items: center;
-  gap: 1.35rem;
-}
-
-.site-nav a {
-  color: var(--color-text-muted);
-  font-size: 0.92rem;
-  font-weight: 650;
-}
-
-.site-nav a:hover,
-.site-nav a[aria-current="page"] {
-  color: var(--color-text-primary);
-  text-decoration: none;
-}
-
-.site-header__actions {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
 }
 
 /* ============================================================
@@ -707,10 +648,6 @@ textarea:focus {
     --section-padding-y-loose: 6rem;
   }
 
-  .site-nav {
-    display: none;
-  }
-
   .grid-2,
   .grid-3,
   .grid-4 {
@@ -724,15 +661,6 @@ textarea:focus {
     --section-padding-y: 4.25rem;
     --section-padding-y-tight: 3rem;
     --section-padding-y-loose: 5rem;
-  }
-
-  .site-header__inner {
-    min-height: 64px;
-  }
-
-  .site-header__actions .site-button-secondary,
-  .site-header__actions .btn-secondary {
-    display: none;
   }
 
   .form-row {
