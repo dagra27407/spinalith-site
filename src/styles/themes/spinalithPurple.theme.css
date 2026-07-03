@@ -1,0 +1,72 @@
+/*
+  Spinalith.com Theme File
+  Theme: Spinalith Purple
+
+  Purpose:
+  This file contains the raw palette values for the current launch brand theme.
+
+  Rule:
+  Hex values should mostly live here.
+  tokens.css maps these raw values into semantic site roles.
+  index.css and components should use semantic tokens/classes, not raw hex values.
+*/
+
+:root {
+  /* ============================================================
+     Foundation / Environment
+     Deep violet-black site world. Dark is the default brand mode.
+  ============================================================ */
+
+  --theme-bg-page: #07050f;
+  --theme-bg-section: #0d0918;
+  --theme-surface-elevated: #130f22;
+  --theme-surface-card: #171127;
+  --theme-surface-soft: #211935;
+
+  /* ============================================================
+     Brand Purple
+     Purple is the Spinalith identity color.
+     Use for brand atmosphere, headline emphasis, CTA energy,
+     screenshot glow, membership moments, and premium depth.
+  ============================================================ */
+
+  --theme-brand-atmosphere-deep: #1a102f;
+  --theme-brand-atmosphere: #2a1747;
+  --theme-brand-panel: #3b2066;
+  --theme-brand-line: #5b2ea6;
+  --theme-brand-strong: #7c3aed;
+  --theme-brand-primary: #8b5cf6;
+  --theme-brand-soft: #a78bfa;
+  --theme-brand-faint: #c4b5fd;
+
+  /* ============================================================
+     Interaction Blue
+     Blue means interaction: link, hover, focus, active, selected,
+     clickable, or user-action cue.
+  ============================================================ */
+
+  --theme-accent-interactive-deep: #0369a1;
+  --theme-accent-interactive-strong: #0284c7;
+  --theme-accent-interactive-mid: #0ea5e9;
+  --theme-accent-interactive: #38bdf8;
+  --theme-accent-interactive-hover: #7dd3fc;
+
+  /* ============================================================
+     Text
+     Warm, readable text tones for dark backgrounds.
+  ============================================================ */
+
+  --theme-text-primary: #fbf8ff;
+  --theme-text-secondary: #d8cfea;
+  --theme-text-muted: #a99cbd;
+  --theme-text-soft: #7f738f;
+  --theme-text-inverse: #090711;
+
+  /* ============================================================
+     Static utility colors
+     These are theme-specific helper values used by tokens.css.
+  ============================================================ */
+
+  --theme-white: #ffffff;
+  --theme-black: #000000;
+}

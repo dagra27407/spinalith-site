@@ -1,49 +1,233 @@
+/*
+  Spinalith.com Design Tokens
+
+  Purpose:
+  This file maps raw theme values into semantic roles the site can use.
+
+  Mental model:
+  - themes/spinalithPurple.theme.css = what colors exist in the current brand.
+  - tokens.css = what jobs those colors perform.
+  - index.css = how buttons, cards, sections, screenshots, and layout use those jobs.
+
+  Future theme swap:
+  A future theme file should provide the same --theme-* variables.
+  In most cases, swapping the import below should not require rewriting index.css
+  or section components.
+*/
+
+@import "./themes/spinalithPurple.theme.css";
+
 :root {
-  /* ===== Minimal & Elegant (Tech-Art Hybrid / Editorial) ===== */
-  /* Brand */
-  --brand-primary: #0A84FF;        /* Midnight Blue (20%) */
-  --brand-primary-ink: #0a6fe0;    /* hover/active tone */
+  color-scheme: dark;
 
-  /* Neutrals (70%) */
-  --soft-black: #111111;           /* primary text / ink */
-  --pure-white: #ffffff;           /* surfaces */
-  --cool-silver: #E5E7EB;          /* borders, tints */
+  /* ============================================================
+     Semantic backgrounds and surfaces
+  ============================================================ */
 
-  /* Derived neutrals */
-  --surface-0: var(--pure-white);
-  --surface-50: #F8FAFC;           /* ultra-light background */
-  --surface-100: #F3F4F6;          /* section bands */
-  --border-200: var(--cool-silver);
+  --color-bg-page: var(--theme-bg-page);
+  --color-bg-section: var(--theme-bg-section);
+  --color-bg-elevated: var(--theme-surface-elevated);
 
-  --text-900: var(--soft-black);
-  --text-700: #2A2A2A;
-  --text-500: #6B7280;
+  --color-surface-card: var(--theme-surface-card);
+  --color-surface-soft: var(--theme-surface-soft);
+  --color-surface-brand: var(--theme-brand-atmosphere);
+  --color-surface-brand-strong: var(--theme-brand-panel);
 
-  /* Typography & rhythm */
-  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Inter, Roboto, "Helvetica Neue", Arial, "Noto Sans";
-  --leading-tight: 1.15;
+  /* ============================================================
+     Semantic brand roles
+  ============================================================ */
 
-  /* Shape */
-  --radius-lg: 16px;
-  --radius-md: 12px;
+  --color-brand-primary: var(--theme-brand-primary);
+  --color-brand-strong: var(--theme-brand-strong);
+  --color-brand-soft: var(--theme-brand-soft);
+  --color-brand-faint: var(--theme-brand-faint);
 
-  /* Shadows */
-  --shadow-sm: 0 1px 2px rgba(0,0,0,.06);
-  --shadow-md: 0 8px 24px rgba(0,0,0,.08);
-}
+  --color-brand-atmosphere-deep: var(--theme-brand-atmosphere-deep);
+  --color-brand-atmosphere: var(--theme-brand-atmosphere);
+  --color-brand-panel: var(--theme-brand-panel);
+  --color-brand-line: var(--theme-brand-line);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --surface-0: #101214;
-    --surface-50: #0d0f12;
-    --surface-100: #0b0d10;
-    --border-200: #23272e;
+  /* ============================================================
+     Semantic interaction roles
+  ============================================================ */
 
-    --text-900: #f1f5f9;
-    --text-700: #cdd5df;
-    --text-500: #9aa7b4;
+  --color-accent-interactive-deep: var(--theme-accent-interactive-deep);
+  --color-accent-interactive-strong: var(--theme-accent-interactive-strong);
+  --color-accent-interactive-mid: var(--theme-accent-interactive-mid);
+  --color-accent-interactive: var(--theme-accent-interactive);
+  --color-accent-interactive-hover: var(--theme-accent-interactive-hover);
 
-    --shadow-sm: 0 1px 2px rgba(0,0,0,.4);
-    --shadow-md: 0 8px 24px rgba(0,0,0,.45);
-  }
+  /* ============================================================
+     Semantic text roles
+  ============================================================ */
+
+  --color-text-primary: var(--theme-text-primary);
+  --color-text-secondary: var(--theme-text-secondary);
+  --color-text-muted: var(--theme-text-muted);
+  --color-text-soft: var(--theme-text-soft);
+  --color-text-inverse: var(--theme-text-inverse);
+
+  /* ============================================================
+     Borders and dividers
+  ============================================================ */
+
+  --color-border-soft: rgba(255, 255, 255, 0.1);
+  --color-border-medium: rgba(255, 255, 255, 0.16);
+  --color-border-strong: rgba(255, 255, 255, 0.24);
+
+  --color-border-brand: rgba(167, 139, 250, 0.34);
+  --color-border-brand-strong: rgba(139, 92, 246, 0.52);
+  --color-border-interactive: rgba(56, 189, 248, 0.42);
+
+  /* ============================================================
+     Shadows and glows
+  ============================================================ */
+
+  --shadow-soft: 0 18px 54px rgba(0, 0, 0, 0.32);
+  --shadow-card: 0 24px 80px rgba(0, 0, 0, 0.42);
+  --shadow-card-hover: 0 30px 96px rgba(0, 0, 0, 0.5);
+
+  --shadow-brand-glow: 0 0 70px rgba(139, 92, 246, 0.28);
+  --shadow-brand-glow-strong: 0 0 92px rgba(139, 92, 246, 0.38);
+  --shadow-interactive-glow: 0 0 48px rgba(56, 189, 248, 0.18);
+
+  /* ============================================================
+     Gradients
+  ============================================================ */
+
+  --gradient-page:
+    radial-gradient(circle at 18% 8%, rgba(139, 92, 246, 0.22), transparent 34rem),
+    radial-gradient(circle at 82% 4%, rgba(56, 189, 248, 0.12), transparent 32rem),
+    linear-gradient(180deg, var(--color-bg-page) 0%, var(--color-bg-section) 48%, var(--color-bg-page) 100%);
+
+  --gradient-hero:
+    radial-gradient(circle at 20% 20%, rgba(139, 92, 246, 0.32), transparent 34rem),
+    radial-gradient(circle at 82% 12%, rgba(56, 189, 248, 0.12), transparent 30rem),
+    linear-gradient(135deg, rgba(26, 16, 47, 0.92), rgba(7, 5, 15, 0.84));
+
+  --gradient-section:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.025), rgba(255, 255, 255, 0));
+
+  --gradient-card:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+
+  --gradient-card-brand:
+    linear-gradient(145deg, rgba(139, 92, 246, 0.16), rgba(255, 255, 255, 0.035));
+
+  --gradient-brand:
+    linear-gradient(135deg, var(--color-brand-strong) 0%, var(--color-brand-primary) 48%, var(--color-brand-soft) 100%);
+
+  --gradient-brand-with-action:
+    linear-gradient(135deg, var(--color-brand-strong) 0%, var(--color-brand-primary) 52%, var(--color-accent-interactive) 100%);
+
+  --gradient-cta:
+    radial-gradient(circle at 50% 0%, rgba(167, 139, 250, 0.28), transparent 28rem),
+    linear-gradient(135deg, rgba(42, 23, 71, 0.96), rgba(19, 15, 34, 0.96));
+
+  /* ============================================================
+     Typography
+  ============================================================ */
+
+  --font-sans:
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Inter,
+    Roboto,
+    "Helvetica Neue",
+    Arial,
+    "Noto Sans",
+    sans-serif;
+
+  --font-serif:
+    ui-serif,
+    Georgia,
+    Cambria,
+    "Times New Roman",
+    Times,
+    serif;
+
+  --leading-tight: 1.08;
+  --leading-heading: 1.14;
+  --leading-body: 1.65;
+
+  --tracking-tight: -0.045em;
+  --tracking-heading: -0.03em;
+  --tracking-label: 0.08em;
+
+  /* ============================================================
+     Layout
+  ============================================================ */
+
+  --container-max: 1180px;
+  --container-wide: 1360px;
+  --container-narrow: 820px;
+
+  --section-padding-y: 6.5rem;
+  --section-padding-y-tight: 4.5rem;
+  --section-padding-y-loose: 8rem;
+
+  --site-gutter: 1.25rem;
+
+  /* ============================================================
+     Shape
+  ============================================================ */
+
+  --radius-xs: 0.375rem;
+  --radius-sm: 0.5rem;
+  --radius-md: 0.875rem;
+  --radius-lg: 1.25rem;
+  --radius-xl: 1.75rem;
+  --radius-2xl: 2.25rem;
+  --radius-pill: 999px;
+
+  /* ============================================================
+     Motion
+  ============================================================ */
+
+  --transition-fast: 160ms ease;
+  --transition-base: 220ms ease;
+  --transition-slow: 420ms ease;
+
+  /* ============================================================
+     Component-level visual tokens
+  ============================================================ */
+
+  --header-bg: rgba(7, 5, 15, 0.76);
+  --header-border: var(--color-border-soft);
+  --header-shadow: 0 16px 44px rgba(0, 0, 0, 0.28);
+
+  --button-primary-bg: var(--gradient-brand);
+  --button-primary-bg-hover: var(--gradient-brand-with-action);
+  --button-primary-text: var(--theme-white);
+  --button-primary-shadow: 0 18px 48px rgba(139, 92, 246, 0.32);
+
+  --button-secondary-bg: rgba(255, 255, 255, 0.055);
+  --button-secondary-bg-hover: rgba(255, 255, 255, 0.085);
+  --button-secondary-border: var(--color-border-soft);
+  --button-secondary-border-hover: var(--color-border-interactive);
+  --button-secondary-text: var(--color-text-secondary);
+
+  --card-bg: rgba(255, 255, 255, 0.055);
+  --card-bg-hover: rgba(255, 255, 255, 0.078);
+  --card-border: var(--color-border-soft);
+  --card-border-hover: var(--color-border-brand);
+  --card-shadow: var(--shadow-card);
+
+  --feature-icon-bg: rgba(139, 92, 246, 0.16);
+  --feature-icon-border: rgba(167, 139, 250, 0.18);
+  --feature-icon-color: var(--color-brand-soft);
+
+  --screenshot-bg: #0b0814;
+  --screenshot-shell-bg: rgba(19, 15, 34, 0.86);
+  --screenshot-border: rgba(255, 255, 255, 0.14);
+  --screenshot-shadow: var(--shadow-brand-glow);
+
+  --input-bg: rgba(255, 255, 255, 0.06);
+  --input-border: var(--color-border-soft);
+  --input-border-focus: var(--color-border-interactive);
+  --input-text: var(--color-text-primary);
+  --input-placeholder: var(--color-text-soft);
 }
