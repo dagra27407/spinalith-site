@@ -60,7 +60,7 @@ export function HomeSolutionSection() {
 
           <p className="home-solution__lede">
             Spinalith gives your story a visual workspace where chapters, arcs,
-            beats, and timelines come together — so you can shape the reader
+            beats, and timelines come together, You can shape the reader
             journey before the draft begins.
           </p>
         </header>

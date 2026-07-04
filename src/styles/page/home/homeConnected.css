@@ -1,0 +1,289 @@
+/* src/styles/page/home/homeConnected.css */
+
+/**
+ * File: src/styles/page/home/homeConnected.css
+ *
+ * Purpose:
+ * Section-level styles for the homepage "Everything Connected" section.
+ *
+ * Responsibilities:
+ * - Creates a wide headline + connection-map layout.
+ * - Lets the SVG map carry the section as the primary visual.
+ * - Applies section-level atmosphere around the imported map without styling map internals.
+ * - Provides responsive stacking for tablet and mobile.
+ *
+ * Notes:
+ * - The connection-map component owns its own SVG artwork styles:
+ *   src/components/home/homeComponents/homeConnectedMap.css
+ * - This file should place/scale the map shell and apply optional section halo only.
+ * - Do not reach into .home-connected-map__... internals from this file.
+ */
+
+/* ============================================================
+   Section shell
+============================================================ */
+
+.home-connected {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-top: 1px solid var(--color-border-soft);
+  border-bottom: 1px solid var(--color-border-soft);
+  background:
+    radial-gradient(
+      circle at 44% 42%,
+      color-mix(in srgb, var(--color-brand-primary) 13%, transparent),
+      transparent 30rem
+    ),
+    radial-gradient(
+      circle at 78% 52%,
+      color-mix(in srgb, var(--color-accent-interactive) 7%, transparent),
+      transparent 25rem
+    ),
+    linear-gradient(
+      180deg,
+      var(--color-bg),
+      var(--color-bg-soft) 48%,
+      var(--color-bg)
+    );
+}
+
+.home-connected::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      circle at 18% 22%,
+      color-mix(in srgb, var(--color-brand-faint) 8%, transparent),
+      transparent 18rem
+    ),
+    radial-gradient(
+      circle at 84% 76%,
+      color-mix(in srgb, var(--color-brand-soft) 7%, transparent),
+      transparent 22rem
+    );
+  opacity: 0.72;
+}
+
+.home-connected::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.026), transparent 22%),
+    radial-gradient(
+      circle at 50% 50%,
+      rgba(255, 255, 255, 0.018),
+      transparent 34rem
+    );
+  opacity: 0.58;
+}
+
+.home-connected__inner {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(17rem, 0.68fr) minmax(36rem, 1.42fr);
+  gap: clamp(2rem, 5vw, 5.5rem);
+  align-items: center;
+  padding-inline: clamp(0.75rem, 1.4vw, 1.5rem);
+}
+
+/* ============================================================
+   Copy
+============================================================ */
+
+.home-connected__copy {
+  position: relative;
+  z-index: 4;
+  min-width: 0;
+}
+
+.home-connected__title {
+  display: grid;
+  gap: 0.08em;
+  margin: 0;
+  color: var(--color-text-primary);
+  font-size: clamp(2.45rem, 4.45vw, 5.2rem);
+  line-height: 0.97;
+  letter-spacing: -0.075em;
+}
+
+.home-connected__title span {
+  display: block;
+}
+
+.home-connected__title-accent {
+  color: var(--color-brand-soft);
+  text-shadow:
+    0 0 30px color-mix(in srgb, var(--color-brand-primary) 32%, transparent),
+    0 0 62px color-mix(in srgb, var(--color-brand-primary) 18%, transparent);
+}
+
+/* ============================================================
+   Map placement
+============================================================ */
+
+.home-connected__map-shell {
+  position: relative;
+  z-index: 3;
+  width: min(100%, 58rem);
+  min-width: 0;
+  justify-self: end;
+}
+
+/* ============================================================
+   Map halo options
+============================================================ */
+
+.home-connected__map-halo {
+  position: relative;
+  isolation: isolate;
+}
+
+.home-connected__map-halo::before {
+  content: "";
+  position: absolute;
+  inset: 5% 1%;
+  z-index: -1;
+  pointer-events: none;
+  border-radius: 999px;
+  background:
+    radial-gradient(
+      ellipse at center,
+      color-mix(in srgb, var(--color-brand-primary) 24%, transparent),
+      transparent 70%
+    );
+  filter: blur(38px);
+  opacity: 0.5;
+}
+
+.home-connected__map-halo::after {
+  content: "";
+  position: absolute;
+  inset: 30% 22%;
+  z-index: -1;
+  pointer-events: none;
+  border-radius: 999px;
+  background:
+    radial-gradient(
+      ellipse at center,
+      color-mix(in srgb, var(--color-brand-faint) 20%, transparent),
+      transparent 72%
+    );
+  filter: blur(20px);
+  opacity: 0.32;
+}
+
+.home-connected__drop-halo {
+  position: relative;
+  filter:
+    drop-shadow(
+      0 0 18px color-mix(in srgb, var(--color-brand-primary) 24%, transparent)
+    )
+    drop-shadow(
+      0 0 42px color-mix(in srgb, var(--color-brand-primary) 16%, transparent)
+    )
+    drop-shadow(
+      0 0 78px color-mix(in srgb, var(--color-brand-faint) 9%, transparent)
+    );
+}
+
+.home-connected__drop-halo--strong {
+  filter:
+    drop-shadow(
+      0 0 24px color-mix(in srgb, var(--color-brand-primary) 34%, transparent)
+    )
+    drop-shadow(
+      0 0 58px color-mix(in srgb, var(--color-brand-primary) 24%, transparent)
+    )
+    drop-shadow(
+      0 0 96px color-mix(in srgb, var(--color-brand-faint) 14%, transparent)
+    );
+}
+
+/* ============================================================
+   Responsive: map drops below headline
+============================================================ */
+
+@media (max-width: 1080px) {
+  .home-connected__inner {
+    grid-template-columns: 1fr;
+    gap: clamp(2rem, 5vw, 3.25rem);
+    padding-block: clamp(1.75rem, 4vw, 3rem);
+    padding-inline: clamp(0.9rem, 2vw, 1.5rem);
+  }
+
+  .home-connected__copy {
+    width: min(100%, 48rem);
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  .home-connected__title {
+    font-size: clamp(2.55rem, 8vw, 4.75rem);
+  }
+
+  .home-connected__map-shell {
+    width: min(100%, 56rem);
+    margin-inline: auto;
+    justify-self: center;
+  }
+}
+
+/* ============================================================
+   Responsive: mobile
+============================================================ */
+
+@media (max-width: 640px) {
+  .home-connected {
+    background:
+      radial-gradient(
+        circle at 50% 18%,
+        color-mix(in srgb, var(--color-brand-primary) 12%, transparent),
+        transparent 22rem
+      ),
+      linear-gradient(
+        180deg,
+        var(--color-bg),
+        var(--color-bg-soft) 48%,
+        var(--color-bg)
+      );
+  }
+
+  .home-connected__inner {
+    gap: 1.75rem;
+    padding-block: 1.5rem;
+    padding-inline: 0.9rem;
+  }
+
+  .home-connected__copy {
+    text-align: left;
+  }
+
+  .home-connected__title {
+    font-size: clamp(2.3rem, 12vw, 3.35rem);
+    line-height: 0.98;
+    letter-spacing: -0.07em;
+  }
+
+  .home-connected__map-shell {
+    width: 100%;
+  }
+
+  .home-connected__map-halo::before {
+    inset: 10% 0%;
+    filter: blur(28px);
+    opacity: 0.44;
+  }
+
+  .home-connected__map-halo::after {
+    inset: 34% 18%;
+    filter: blur(16px);
+    opacity: 0.26;
+  }
+}

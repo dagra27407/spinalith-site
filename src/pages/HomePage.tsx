@@ -20,6 +20,7 @@
 import { HomeHeroSection } from "../components/home/HomeHeroSection";
 import { HomeProblemSection } from "../components/home/HomeProblemSection";
 import { HomeSolutionSection } from "../components/home/HomeSolutionSection";
+import { HomeConnectedSection } from "../components/home/HomeConnectedSection";
 
 export function HomePage() {
   return (
@@ -27,6 +28,7 @@ export function HomePage() {
       <HomeHeroSection />
       <HomeProblemSection />
       <HomeSolutionSection />
+      <HomeConnectedSection />
     </>
   );
 }

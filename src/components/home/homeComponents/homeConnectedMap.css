@@ -1,0 +1,210 @@
+/* src/components/home/homeComponents/homeConnectedMap.css */
+
+/**
+ * File: src/components/home/homeComponents/homeConnectedMap.css
+ *
+ * Purpose:
+ * Styles for the homepage connected-story SVG illustration.
+ *
+ * Responsibilities:
+ * - Styles the inline SVG connection map.
+ * - Keeps the entire map scalable as one image-like visual.
+ * - Uses theme tokens for fills, strokes, text, and glow.
+ *
+ * Notes:
+ * - This CSS only targets the SVG artwork.
+ * - Section CSS should scale the SVG container, not reach into internals.
+ */
+
+/* ============================================================
+   SVG shell
+============================================================ */
+
+.home-connected-map {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+/* ============================================================
+   Def stops
+============================================================ */
+
+.home-connected-map__aura-stop-strong {
+  stop-color: color-mix(in srgb, var(--color-brand-primary) 32%, transparent);
+  stop-opacity: 0.72;
+}
+
+.home-connected-map__aura-stop-soft {
+  stop-color: color-mix(in srgb, var(--color-brand-primary) 18%, transparent);
+  stop-opacity: 0.34;
+}
+
+.home-connected-map__aura-stop-clear {
+  stop-color: transparent;
+  stop-opacity: 0;
+}
+
+.home-connected-map__hub-fill-top {
+  stop-color: color-mix(in srgb, var(--color-brand-faint) 28%, #211935);
+  stop-opacity: 0.94;
+}
+
+.home-connected-map__hub-fill-mid {
+  stop-color: color-mix(in srgb, var(--color-brand-primary) 22%, #171127);
+  stop-opacity: 0.92;
+}
+
+.home-connected-map__hub-fill-bottom {
+  stop-color: color-mix(in srgb, var(--color-bg-soft) 78%, #171127);
+  stop-opacity: 0.94;
+}
+
+.home-connected-map__node-fill-top {
+  stop-color: color-mix(in srgb, var(--color-brand-primary) 16%, #211935);
+  stop-opacity: 0.84;
+}
+
+.home-connected-map__node-fill-bottom {
+  stop-color: color-mix(in srgb, var(--color-bg) 72%, #171127);
+  stop-opacity: 0.86;
+}
+
+.home-connected-map__blue-node-fill-top {
+  stop-color: color-mix(in srgb, var(--color-accent-interactive) 13%, #211935);
+  stop-opacity: 0.84;
+}
+
+.home-connected-map__blue-node-fill-bottom {
+  stop-color: color-mix(in srgb, var(--color-bg) 72%, #0b1624);
+  stop-opacity: 0.86;
+}
+
+/* ============================================================
+   Ambient layer
+============================================================ */
+
+.home-connected-map__aura {
+  opacity: 1;
+}
+
+.home-connected-map__stars circle {
+  fill: color-mix(in srgb, var(--color-brand-faint) 40%, transparent);
+  opacity: 0.34;
+}
+
+/* ============================================================
+   Connections
+============================================================ */
+
+.home-connected-map__line {
+  fill: none;
+  stroke: color-mix(in srgb, var(--color-brand-soft) 46%, transparent);
+  stroke-width: 2.05;
+  stroke-linecap: round;
+  stroke-dasharray: 7 10;
+  opacity: 0.74;
+}
+
+.home-connected-map__line--blue {
+  stroke: color-mix(in srgb, var(--color-accent-interactive) 42%, transparent);
+}
+
+.home-connected-map__line--soft {
+  stroke: color-mix(in srgb, var(--color-brand-faint) 32%, transparent);
+  opacity: 0.58;
+}
+
+.home-connected-map__spark {
+  fill: color-mix(in srgb, var(--color-brand-faint) 72%, transparent);
+  opacity: 0.88;
+}
+
+/* ============================================================
+   Cards
+============================================================ */
+
+.home-connected-map__node-card {
+  stroke: color-mix(in srgb, var(--color-brand-soft) 24%, transparent);
+  stroke-width: 1;
+}
+
+.home-connected-map__node--blue .home-connected-map__node-card {
+  stroke: color-mix(in srgb, var(--color-accent-interactive) 22%, transparent);
+}
+
+.home-connected-map__hub-card {
+  stroke: color-mix(in srgb, var(--color-brand-soft) 36%, transparent);
+  stroke-width: 1;
+}
+
+.home-connected-map__icon-box,
+.home-connected-map__hub-icon-box {
+  fill: color-mix(in srgb, var(--color-brand-primary) 15%, transparent);
+  stroke: color-mix(in srgb, var(--color-brand-soft) 28%, transparent);
+  stroke-width: 1;
+}
+
+.home-connected-map__node--blue .home-connected-map__icon-box {
+  fill: color-mix(in srgb, var(--color-accent-interactive) 10%, transparent);
+  stroke: color-mix(in srgb, var(--color-accent-interactive) 28%, transparent);
+}
+
+/* ============================================================
+   Icons
+============================================================ */
+
+.home-connected-map__icon,
+.home-connected-map__hub-icon {
+  fill: none;
+  stroke: var(--color-brand-soft);
+  stroke-width: 2.3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.home-connected-map__node--blue .home-connected-map__icon {
+  stroke: var(--color-accent-interactive-hover);
+}
+
+.home-connected-map__hub-icon {
+  stroke-width: 2.6;
+}
+
+/* ============================================================
+   Text
+============================================================ */
+
+.home-connected-map__node-title,
+.home-connected-map__hub-title {
+  fill: var(--color-text-primary);
+  font-family: inherit;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+}
+
+.home-connected-map__node-title {
+  font-size: 13.5px;
+}
+
+.home-connected-map__hub-title {
+  font-size: 15.5px;
+  text-anchor: middle;
+}
+
+.home-connected-map__node-helper,
+.home-connected-map__hub-helper {
+  fill: var(--color-text-muted);
+  font-family: inherit;
+  font-weight: 500;
+}
+
+.home-connected-map__node-helper {
+  font-size: 10.25px;
+}
+
+.home-connected-map__hub-helper {
+  font-size: 10.5px;
+  text-anchor: middle;
+}
