@@ -18,6 +18,8 @@
  * - The old static /privacy.html file may remain temporarily for legacy links.
  */
 
+import { COMMON_LINKS } from "@/routes/CommonLinks";
+
 export function PrivacyPage() {
   return (
     <section className="site-section">
@@ -57,7 +59,7 @@ export function PrivacyPage() {
               still be available here:
             </p>
 
-            <a className="site-button site-button-secondary" href="/privacy.html">
+            <a className="site-button site-button-secondary" href={COMMON_LINKS.site.privacy}>
               View legacy privacy page
             </a>
           </section>

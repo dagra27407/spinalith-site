@@ -32,6 +32,8 @@ import {
 
 import "../../styles/page/home/homeMembership.css";
 
+import { COMMON_LINKS } from "@/routes/CommonLinks";
+
 type MembershipPriceCard = {
   title: string;
   eyebrow: string;
@@ -154,7 +156,7 @@ export function HomeMembershipSection() {
 
           <a
             className="home-membership__cta"
-            href="https://app.spinalith.com"
+            href={COMMON_LINKS.app.startMembership}
           >
             <span>Start Your Membership</span>
             <ArrowRight aria-hidden="true" />

@@ -22,6 +22,8 @@ import { Link } from "react-router-dom";
 
 import { ScreenshotFrame } from "../site/ScreenshotFrame";
 
+import { COMMON_LINKS } from "@/routes/CommonLinks";
+
 const heroBenefits = [
   "See the big picture",
   "Keep everything connected",
@@ -39,10 +41,10 @@ export function HomeHeroSection() {
             </p>
 
             <h1 id="home-hero-title" className="home-hero__title">
-              <span>Build the story</span>
-              <span>before you write</span>
+              <span>Shape your story</span>
+              <span>as it</span>
               <span>
-                <strong>the draft.</strong>
+                <strong>grows.</strong>
               </span>
             </h1>
 
@@ -57,14 +59,14 @@ export function HomeHeroSection() {
             <div className="home-hero__actions" aria-label="Hero actions">
               <a
                 className="site-button site-button-primary home-hero__button"
-                href="https://app.spinalith.com"
+                href={COMMON_LINKS.app.signup}
               >
                 Start Building Your Story
               </a>
 
               <Link
                 className="site-button site-button-secondary home-hero__button"
-                to="/features"
+                to={COMMON_LINKS.site.features}
               >
                 Explore Features
               </Link>

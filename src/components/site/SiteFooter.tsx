@@ -19,6 +19,8 @@
 
 import { Link } from "react-router-dom";
 
+import { COMMON_LINKS } from "@/routes/CommonLinks";
+
 const currentYear = new Date().getFullYear();
 
 export function SiteFooter() {
@@ -43,17 +45,17 @@ export function SiteFooter() {
 
             <div className="stack">
               <h3>Product</h3>
-              <Link to="/features">Features</Link>
-              <Link to="/pricing">Pricing</Link>
-              <a href="https://app.spinalith.com">Sign In</a>
+              <Link to={COMMON_LINKS.site.features}>Features</Link>
+              <Link to={COMMON_LINKS.site.pricing}>Pricing</Link>
+              <a href={COMMON_LINKS.app.login}>Sign In</a>
             </div>
 
             <div className="stack">
               <h3>Company</h3>
-              <Link to="/about">About</Link>
-              <Link to="/contact">Contact</Link>
-              <Link to="/privacy">Privacy</Link>
-              <Link to="/terms">Terms</Link>
+              <Link to={COMMON_LINKS.site.about}>About</Link>
+              <Link to={COMMON_LINKS.site.contact}>Contact</Link>
+              <Link to={COMMON_LINKS.site.privacy}>Privacy</Link>
+              <Link to={COMMON_LINKS.site.terms}>Terms</Link>
             </div>
           </div>
 

@@ -138,12 +138,15 @@
     display: none;
   }
 
+  .site-mobile-menu__signin {
+    display: none;
+  }
+
   .site-header__actions .site-button,
   .site-header__actions .btn {
     width: auto;
   }
 }
-
 @media (max-width: 390px) {
   .site-logo span:last-child {
     max-width: 6.75rem;
@@ -221,5 +224,11 @@
 
   .site-mobile-menu-button {
     display: grid;
+  }
+}
+
+@media (max-width: 640px) {
+  .site-mobile-menu__inner .site-mobile-menu__signin {
+    display: none;
   }
 }

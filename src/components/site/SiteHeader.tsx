@@ -21,12 +21,14 @@ import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
+import { COMMON_LINKS } from "@/routes/CommonLinks";
+
 const navItems = [
-  { label: "Home", to: "/", end: true },
-  { label: "Features", to: "/features" },
-  { label: "Pricing", to: "/pricing" },
-  { label: "About", to: "/about" },
-  { label: "Contact", to: "/contact" },
+  { label: "Home", to: COMMON_LINKS.site.home, end: true },
+  { label: "Features", to: COMMON_LINKS.site.features },
+  { label: "Pricing", to: COMMON_LINKS.site.pricing },
+  { label: "About", to: COMMON_LINKS.site.about },
+  { label: "Contact", to: COMMON_LINKS.site.contact },
 ];
 
 export function SiteHeader() {
@@ -40,7 +42,7 @@ export function SiteHeader() {
     <header className="site-header">
       <div className="site-container site-header__inner">
         <NavLink
-          to="/"
+          to={COMMON_LINKS.site.home}
           className="site-logo"
           aria-label="Spinalith home"
           onClick={closeMobileMenu}
@@ -62,14 +64,14 @@ export function SiteHeader() {
         <div className="site-header__actions">
           <a
             className="site-button site-button-secondary site-button-sm"
-            href="https://app.spinalith.com"
+            href={COMMON_LINKS.app.login}
           >
             Sign In
           </a>
 
           <a
             className="site-button site-button-primary site-button-sm"
-            href="https://app.spinalith.com"
+            href={COMMON_LINKS.app.startMembership}
           >
             Start Your Membership
           </a>
@@ -109,7 +111,11 @@ export function SiteHeader() {
               </NavLink>
             ))}
 
-            <a href="https://app.spinalith.com" onClick={closeMobileMenu}>
+            <a
+              className="site-mobile-menu__signin"
+              href={COMMON_LINKS.app.login}
+              onClick={closeMobileMenu}
+            >
               Sign In
             </a>
           </div>

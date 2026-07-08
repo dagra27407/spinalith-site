@@ -14,7 +14,10 @@
  * - This is a lightweight marketing-site 404, not an app error boundary.
  */
 
+
 import { Link } from "react-router-dom";
+
+import { COMMON_LINKS } from "@/routes/CommonLinks";
 
 export function NotFoundPage() {
   return (
@@ -30,11 +33,11 @@ export function NotFoundPage() {
         </p>
 
         <div className="cluster cluster-center" style={{ marginTop: "2rem" }}>
-          <Link className="site-button site-button-primary" to="/">
+          <Link className="site-button site-button-primary" to={COMMON_LINKS.site.home}>
             Back to Home
           </Link>
 
-          <Link className="site-button site-button-secondary" to="/features">
+          <Link className="site-button site-button-secondary" to={COMMON_LINKS.site.features}>
             View Features
           </Link>
         </div>

@@ -38,6 +38,8 @@ import SiteGalleryCard from "../site/SiteGalleryCard";
 
 import "../../styles/page/home/homeMomentum.css";
 
+import { COMMON_LINKS } from "@/routes/CommonLinks";
+
 type MomentumBenefit = {
   title: string;
   body: string;
@@ -201,7 +203,7 @@ export function HomeMomentumSection() {
               ))}
             </div>
 
-            <a className="home-momentum__cta" href="https://app.spinalith.com">
+            <a className="home-momentum__cta" href={COMMON_LINKS.app.signup}>
               <span>Start Building Your Story</span>
               <ArrowRight aria-hidden="true" />
             </a>
