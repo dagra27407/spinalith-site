@@ -21,6 +21,10 @@ import { HomeHeroSection } from "../components/home/HomeHeroSection";
 import { HomeProblemSection } from "../components/home/HomeProblemSection";
 import { HomeSolutionSection } from "../components/home/HomeSolutionSection";
 import { HomeConnectedSection } from "../components/home/HomeConnectedSection";
+import { HomeWorkflowsSection } from "@/components/home/HomeWorkflowsSection";
+import { HomeMomentumSection } from "@/components/home/HomeMomentumSection";
+import { HomeProcessSection } from "@/components/home/HomeProcessSection";
+import HomeMembershipSection from "@/components/home/HomeMembershipSection";
 
 export function HomePage() {
   return (
@@ -29,6 +33,10 @@ export function HomePage() {
       <HomeProblemSection />
       <HomeSolutionSection />
       <HomeConnectedSection />
+      <HomeWorkflowsSection />
+      <HomeMomentumSection />
+      <HomeProcessSection />
+      <HomeMembershipSection />
     </>
   );
 }

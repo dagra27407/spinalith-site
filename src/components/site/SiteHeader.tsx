@@ -17,9 +17,12 @@
  * - Legal/static pages may remain in /public until migrated into React routes.
  */
 
+import { useState } from "react";
+import { Menu, X } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
 const navItems = [
+  { label: "Home", to: "/", end: true },
   { label: "Features", to: "/features" },
   { label: "Pricing", to: "/pricing" },
   { label: "About", to: "/about" },
@@ -27,10 +30,21 @@ const navItems = [
 ];
 
 export function SiteHeader() {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const closeMobileMenu = () => {
+    setIsMobileMenuOpen(false);
+  };
+
   return (
     <header className="site-header">
       <div className="site-container site-header__inner">
-        <NavLink to="/" className="site-logo" aria-label="Spinalith home">
+        <NavLink
+          to="/"
+          className="site-logo"
+          aria-label="Spinalith home"
+          onClick={closeMobileMenu}
+        >
           <span className="site-logo-mark" aria-hidden="true">
             S
           </span>
@@ -39,8 +53,8 @@ export function SiteHeader() {
 
         <nav className="site-nav" aria-label="Primary navigation">
           {navItems.map((item) => (
-            <NavLink key={item.to} to={item.to}>
-            {item.label}
+            <NavLink key={item.to} to={item.to} end={item.end}>
+              {item.label}
             </NavLink>
           ))}
         </nav>
@@ -59,8 +73,48 @@ export function SiteHeader() {
           >
             Start Your Membership
           </a>
+
+          <button
+            type="button"
+            className="site-mobile-menu-button"
+            aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={isMobileMenuOpen}
+            aria-controls="site-mobile-menu"
+            onClick={() => setIsMobileMenuOpen((current) => !current)}
+          >
+            {isMobileMenuOpen ? (
+              <X size={18} aria-hidden="true" />
+            ) : (
+              <Menu size={18} aria-hidden="true" />
+            )}
+          </button>
         </div>
       </div>
+
+      {isMobileMenuOpen && (
+        <nav
+          id="site-mobile-menu"
+          className="site-mobile-menu"
+          aria-label="Mobile navigation"
+        >
+          <div className="site-container site-mobile-menu__inner">
+            {navItems.map((item) => (
+              <NavLink
+                key={item.to}
+                to={item.to}
+                end={item.end}
+                onClick={closeMobileMenu}
+              >
+                {item.label}
+              </NavLink>
+            ))}
+
+            <a href="https://app.spinalith.com" onClick={closeMobileMenu}>
+              Sign In
+            </a>
+          </div>
+        </nav>
+      )}
     </header>
   );
 }

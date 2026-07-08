@@ -1,0 +1,377 @@
+/* src/styles/components/siteFeatureCard.css */
+
+/**
+ * File: src/styles/components/siteFeatureCard.css
+ *
+ * Purpose:
+ * Shared styling for reusable Spinalith.com feature cards.
+ *
+ * Responsibilities:
+ * - Create the dark neon/glass card, accent border, icon tile, and glow treatment.
+ * - Support wide horizontal cards and compact vertical cards through a variant prop.
+ * - Support explicit accent rail placement through accentPosition classes.
+ * - Support tablet-only accent rail placement through tabletAccentPosition classes.
+ * - Keep accent coloring controlled by --site-feature-accent.
+ *
+ * Notes:
+ * - Parent sections should control grid/flex layout and breakpoint behavior.
+ * - Uses semantic site tokens so future theme swaps do not require component rewrites.
+ * - The card should feel like dark glass with neon edges, not a filled color panel.
+ */
+
+.site-feature-card {
+  --site-feature-accent: var(--color-brand-soft);
+
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border: 1px solid
+    color-mix(
+      in srgb,
+      var(--site-feature-accent) 56%,
+      var(--color-border-soft)
+    );
+  background:
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--color-text-primary) 8%, transparent) 0%,
+      transparent 22%
+    ),
+    radial-gradient(
+      circle at 5% 0%,
+      color-mix(in srgb, var(--site-feature-accent) 18%, transparent),
+      transparent 36%
+    ),
+    radial-gradient(
+      circle at 98% 52%,
+      color-mix(in srgb, var(--site-feature-accent) 24%, transparent),
+      transparent 30%
+    ),
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--color-surface-soft) 34%, transparent),
+      color-mix(in srgb, var(--color-bg-page) 88%, transparent) 56%,
+      color-mix(in srgb, var(--color-bg-section) 72%, transparent)
+    );
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--color-text-primary) 16%, transparent),
+    inset 0 0 34px color-mix(in srgb, var(--site-feature-accent) 8%, transparent),
+    inset 0 -18px 34px color-mix(in srgb, var(--color-bg-page) 54%, transparent),
+    var(--shadow-soft),
+    0 0 18px color-mix(in srgb, var(--site-feature-accent) 22%, transparent),
+    0 0 46px color-mix(in srgb, var(--site-feature-accent) 16%, transparent);
+  backdrop-filter: blur(22px) saturate(132%);
+  -webkit-backdrop-filter: blur(22px) saturate(132%);
+}
+
+.site-feature-card::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  z-index: -1;
+  pointer-events: none;
+  border-radius: inherit;
+  background:
+    linear-gradient(
+      120deg,
+      color-mix(in srgb, var(--color-text-primary) 12%, transparent),
+      transparent 20%,
+      transparent 64%,
+      color-mix(in srgb, var(--site-feature-accent) 10%, transparent)
+    );
+  opacity: 0.9;
+}
+
+.site-feature-card::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    color-mix(in srgb, var(--site-feature-accent) 100%, transparent) 15%,
+    color-mix(in srgb, var(--site-feature-accent) 100%, transparent) 85%,
+    transparent
+  );
+  box-shadow:
+    0 0 12px color-mix(in srgb, var(--site-feature-accent) 100%, transparent),
+    0 0 28px color-mix(in srgb, var(--site-feature-accent) 72%, transparent),
+    0 0 54px color-mix(in srgb, var(--site-feature-accent) 38%, transparent);
+}
+
+/* ============================================================
+   Accent rail positions
+============================================================ */
+
+.site-feature-card--accent-right::after {
+  top: 11%;
+  right: -1px;
+  width: 5px;
+  height: 78%;
+  border-radius: var(--radius-pill) 0 0 var(--radius-pill);
+}
+
+.site-feature-card--accent-bottom::after {
+  left: 16%;
+  right: 16%;
+  bottom: -1px;
+  height: 4px;
+  border-radius: var(--radius-pill) var(--radius-pill) 0 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--site-feature-accent) 96%, transparent) 24%,
+    color-mix(in srgb, var(--site-feature-accent) 96%, transparent) 76%,
+    transparent
+  );
+}
+
+.site-feature-card--accent-top::after {
+  top: -1px;
+  left: 16%;
+  right: 16%;
+  height: 4px;
+  border-radius: 0 0 var(--radius-pill) var(--radius-pill);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--site-feature-accent) 96%, transparent) 24%,
+    color-mix(in srgb, var(--site-feature-accent) 96%, transparent) 76%,
+    transparent
+  );
+}
+
+.site-feature-card--accent-left::after {
+  top: 11%;
+  left: -1px;
+  width: 5px;
+  height: 78%;
+  border-radius: 0 var(--radius-pill) var(--radius-pill) 0;
+}
+
+/* ============================================================
+   Variants
+============================================================ */
+
+.site-feature-card--wide {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-height: 7rem;
+  padding: 0.95rem 1.35rem 0.95rem 1rem;
+  border-radius: var(--radius-lg);
+}
+
+.site-feature-card--compact {
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  min-height: 100%;
+  padding: 1.45rem 1.1rem 1.35rem;
+  border-radius: var(--radius-lg);
+  text-align: center;
+}
+
+/* ============================================================
+   Icon + copy
+============================================================ */
+
+.site-feature-card__icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 4rem;
+  height: 4rem;
+  border-radius: var(--radius-md);
+  border: 1px solid
+    color-mix(
+      in srgb,
+      var(--site-feature-accent) 62%,
+      var(--color-border-soft)
+    );
+  color: var(--site-feature-accent);
+  background:
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--color-text-primary) 9%, transparent),
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at 50% 12%,
+      color-mix(in srgb, var(--site-feature-accent) 28%, transparent),
+      transparent 58%
+    ),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--site-feature-accent) 10%, transparent),
+      color-mix(in srgb, var(--color-bg-page) 88%, transparent)
+    );
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--color-text-primary) 14%, transparent),
+    inset 0 0 26px color-mix(in srgb, var(--site-feature-accent) 14%, transparent),
+    0 0 18px color-mix(in srgb, var(--site-feature-accent) 32%, transparent),
+    0 0 34px color-mix(in srgb, var(--site-feature-accent) 18%, transparent);
+}
+
+.site-feature-card__icon svg {
+  width: 1.85rem;
+  height: 1.85rem;
+  stroke-width: 1.85;
+  filter:
+    drop-shadow(
+      0 0 5px color-mix(in srgb, var(--site-feature-accent) 76%, transparent)
+    )
+    drop-shadow(
+      0 0 13px color-mix(in srgb, var(--site-feature-accent) 34%, transparent)
+    );
+}
+
+.site-feature-card__content {
+  min-width: 0;
+}
+
+.site-feature-card--compact .site-feature-card__content {
+  margin-top: 0.95rem;
+}
+
+.site-feature-card__title {
+  margin: 0;
+  color: var(--color-text-primary);
+  font-size: 1.22rem;
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  text-shadow: 0 0 20px color-mix(in srgb, var(--color-bg-page) 58%, transparent);
+}
+
+.site-feature-card__accent-label {
+  margin: 0.36rem 0 0;
+  color: var(--site-feature-accent);
+  font-size: 0.92rem;
+  font-weight: 750;
+  line-height: 1.35;
+  text-shadow: 0 0 18px
+    color-mix(in srgb, var(--site-feature-accent) 34%, transparent);
+}
+
+.site-feature-card__body {
+  margin: 0.42rem 0 0;
+  color: var(--color-text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
+.site-feature-card--compact .site-feature-card__body {
+  max-width: 18rem;
+  margin-inline: auto;
+}
+
+/* ============================================================
+   Tablet-only accent rail overrides
+============================================================ */
+
+@media (min-width: 720px) and (max-width: 1099px) {
+  .site-feature-card--tablet-accent-right::after {
+    top: 11%;
+    right: -1px;
+    bottom: auto;
+    left: auto;
+    width: 5px;
+    height: 78%;
+    border-radius: var(--radius-pill) 0 0 var(--radius-pill);
+    background: linear-gradient(
+      180deg,
+      transparent,
+      color-mix(in srgb, var(--site-feature-accent) 100%, transparent) 15%,
+      color-mix(in srgb, var(--site-feature-accent) 100%, transparent) 85%,
+      transparent
+    );
+  }
+
+  .site-feature-card--tablet-accent-bottom::after {
+    top: auto;
+    right: 16%;
+    bottom: -1px;
+    left: 16%;
+    width: auto;
+    height: 4px;
+    border-radius: var(--radius-pill) var(--radius-pill) 0 0;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in srgb, var(--site-feature-accent) 96%, transparent) 24%,
+      color-mix(in srgb, var(--site-feature-accent) 96%, transparent) 76%,
+      transparent
+    );
+  }
+
+  .site-feature-card--tablet-accent-top::after {
+    top: -1px;
+    right: 16%;
+    bottom: auto;
+    left: 16%;
+    width: auto;
+    height: 4px;
+    border-radius: 0 0 var(--radius-pill) var(--radius-pill);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in srgb, var(--site-feature-accent) 96%, transparent) 24%,
+      color-mix(in srgb, var(--site-feature-accent) 96%, transparent) 76%,
+      transparent
+    );
+  }
+}
+
+.site-feature-card--tablet-accent-left::after {
+  top: 11%;
+  right: auto;
+  bottom: auto;
+  left: -1px;
+  width: 5px;
+  height: 78%;
+  border-radius: 0 var(--radius-pill) var(--radius-pill) 0;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    color-mix(in srgb, var(--site-feature-accent) 100%, transparent) 15%,
+    color-mix(in srgb, var(--site-feature-accent) 100%, transparent) 85%,
+    transparent
+  );
+}
+
+@media (max-width: 520px) {
+  .site-feature-card--wide {
+    align-items: flex-start;
+    gap: 0.85rem;
+    min-height: 0;
+    padding: 0.9rem 1rem;
+    border-radius: var(--radius-md);
+  }
+
+  .site-feature-card--accent-right::after {
+    top: 14%;
+    width: 4px;
+    height: 72%;
+  }
+
+  .site-feature-card--wide .site-feature-card__icon {
+    width: 3.45rem;
+    height: 3.45rem;
+    border-radius: var(--radius-md);
+  }
+
+  .site-feature-card--wide .site-feature-card__icon svg {
+    width: 1.55rem;
+    height: 1.55rem;
+  }
+
+  .site-feature-card__title {
+    font-size: 1.12rem;
+  }
+
+  .site-feature-card__body {
+    font-size: 0.92rem;
+    line-height: 1.42;
+  }
+}

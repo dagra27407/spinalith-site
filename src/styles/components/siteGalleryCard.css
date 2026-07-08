@@ -1,0 +1,498 @@
+/* src/styles/components/siteGalleryCard.css */
+
+/**
+ * File: src/styles/components/siteGalleryCard.css
+ *
+ * Purpose:
+ * Shared styling for reusable Spinalith.com gallery/catalog cards.
+ *
+ * Responsibilities:
+ * - Create image-led dark glass cards for templates, demos, and blank-start options.
+ * - Support image and blank media modes.
+ * - Support portrait, wide, and square media/card proportions.
+ * - Support compact, default, and roomy density.
+ * - Support small, medium, and large media sizing.
+ * - Support auto-height and equal-height behavior.
+ * - Keep accent coloring controlled by --site-gallery-accent.
+ *
+ * Notes:
+ * - Parent sections should control grid/flex placement and breakpoint behavior.
+ * - This component should feel more catalog/gallery oriented than SiteFeatureCard.
+ * - Uses semantic site tokens so future theme swaps do not require component rewrites.
+ * - Defaults preserve original behavior: default density, md media, equal height.
+ */
+
+.site-gallery-card {
+  --site-gallery-accent: var(--color-brand-soft);
+
+  --site-gallery-media-height-base: 11rem;
+  --site-gallery-content-padding-x: 0.95rem;
+  --site-gallery-content-padding-top: 0.92rem;
+  --site-gallery-meta-padding-x: 0.95rem;
+  --site-gallery-meta-padding-y: 0.95rem;
+  --site-gallery-pill-offset: 0.82rem;
+  --site-gallery-pill-padding-y: 0.34rem;
+  --site-gallery-pill-padding-x: 0.55rem;
+  --site-gallery-pill-font-size: 0.72rem;
+  --site-gallery-title-size: clamp(1.08rem, 1.45vw, 1.28rem);
+  --site-gallery-title-line-height: 1.08;
+  --site-gallery-summary-margin-top: 0.5rem;
+  --site-gallery-summary-size: 0.92rem;
+  --site-gallery-summary-line-height: 1.45;
+  --site-gallery-meta-size: 0.84rem;
+  --site-gallery-meta-icon-size: 0.98rem;
+  --site-gallery-blank-ring-size: 5rem;
+  --site-gallery-blank-icon-size: 1.9rem;
+
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid
+    color-mix(
+      in srgb,
+      var(--site-gallery-accent) 46%,
+      var(--color-border-soft)
+    );
+  border-radius: var(--radius-lg);
+  background:
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--color-text-primary) 7%, transparent),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 50% 0%,
+      color-mix(in srgb, var(--site-gallery-accent) 16%, transparent),
+      transparent 48%
+    ),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--color-surface-soft) 28%, transparent),
+      color-mix(in srgb, var(--color-bg-page) 92%, transparent)
+    );
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--color-text-primary) 12%, transparent),
+    inset 0 0 30px color-mix(in srgb, var(--site-gallery-accent) 7%, transparent),
+    var(--shadow-soft),
+    0 0 20px color-mix(in srgb, var(--site-gallery-accent) 14%, transparent);
+  transition:
+    transform var(--transition-base),
+    border-color var(--transition-base),
+    box-shadow var(--transition-base);
+}
+
+/* ============================================================
+   Height behavior
+============================================================ */
+
+.site-gallery-card--height-equal {
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  height: 100%;
+}
+
+.site-gallery-card--height-auto {
+  grid-template-rows: auto auto auto;
+  height: auto;
+}
+
+/* ============================================================
+   Density variants
+============================================================ */
+
+.site-gallery-card--density-compact {
+  --site-gallery-content-padding-x: 0.88rem;
+  --site-gallery-content-padding-top: 0.82rem;
+  --site-gallery-meta-padding-x: 0.88rem;
+  --site-gallery-meta-padding-y: 0.84rem;
+  --site-gallery-pill-offset: 0.68rem;
+  --site-gallery-pill-padding-y: 0.28rem;
+  --site-gallery-pill-padding-x: 0.46rem;
+  --site-gallery-pill-font-size: 0.66rem;
+  --site-gallery-title-size: clamp(0.98rem, 1.08vw, 1.18rem);
+  --site-gallery-title-line-height: 1.08;
+  --site-gallery-summary-margin-top: 0.42rem;
+  --site-gallery-summary-size: clamp(0.82rem, 0.9vw, 0.9rem);
+  --site-gallery-summary-line-height: 1.43;
+  --site-gallery-meta-size: clamp(0.74rem, 0.8vw, 0.82rem);
+  --site-gallery-meta-icon-size: 0.9rem;
+  --site-gallery-blank-ring-size: 4.15rem;
+  --site-gallery-blank-icon-size: 1.62rem;
+}
+
+.site-gallery-card--density-default {
+  --site-gallery-content-padding-x: 0.95rem;
+  --site-gallery-content-padding-top: 0.92rem;
+  --site-gallery-meta-padding-x: 0.95rem;
+  --site-gallery-meta-padding-y: 0.95rem;
+  --site-gallery-pill-offset: 0.82rem;
+  --site-gallery-pill-padding-y: 0.34rem;
+  --site-gallery-pill-padding-x: 0.55rem;
+  --site-gallery-pill-font-size: 0.72rem;
+  --site-gallery-title-size: clamp(1.08rem, 1.45vw, 1.28rem);
+  --site-gallery-title-line-height: 1.08;
+  --site-gallery-summary-margin-top: 0.5rem;
+  --site-gallery-summary-size: 0.92rem;
+  --site-gallery-summary-line-height: 1.45;
+  --site-gallery-meta-size: 0.84rem;
+  --site-gallery-meta-icon-size: 0.98rem;
+  --site-gallery-blank-ring-size: 5rem;
+  --site-gallery-blank-icon-size: 1.9rem;
+}
+
+.site-gallery-card--density-roomy {
+  --site-gallery-content-padding-x: 1.12rem;
+  --site-gallery-content-padding-top: 1.08rem;
+  --site-gallery-meta-padding-x: 1.12rem;
+  --site-gallery-meta-padding-y: 1.08rem;
+  --site-gallery-pill-offset: 0.9rem;
+  --site-gallery-pill-padding-y: 0.38rem;
+  --site-gallery-pill-padding-x: 0.62rem;
+  --site-gallery-pill-font-size: 0.76rem;
+  --site-gallery-title-size: clamp(1.18rem, 1.65vw, 1.42rem);
+  --site-gallery-title-line-height: 1.1;
+  --site-gallery-summary-margin-top: 0.58rem;
+  --site-gallery-summary-size: 0.98rem;
+  --site-gallery-summary-line-height: 1.5;
+  --site-gallery-meta-size: 0.92rem;
+  --site-gallery-meta-icon-size: 1.05rem;
+  --site-gallery-blank-ring-size: 5.35rem;
+  --site-gallery-blank-icon-size: 2rem;
+}
+
+/* ============================================================
+   Aspect variants
+============================================================ */
+
+.site-gallery-card--portrait {
+  --site-gallery-aspect-media-height: 11rem;
+}
+
+.site-gallery-card--wide {
+  --site-gallery-aspect-media-height: 9.25rem;
+}
+
+.site-gallery-card--square {
+  --site-gallery-aspect-media-height: 13rem;
+}
+
+/* ============================================================
+   Media size variants
+============================================================ */
+
+.site-gallery-card--media-sm.site-gallery-card--portrait {
+  --site-gallery-media-height-base: clamp(8.9rem, 10.2vw, 10.35rem);
+}
+
+.site-gallery-card--media-sm.site-gallery-card--wide {
+  --site-gallery-media-height-base: clamp(7.75rem, 8.8vw, 9.25rem);
+}
+
+.site-gallery-card--media-sm.site-gallery-card--square {
+  --site-gallery-media-height-base: clamp(10rem, 11vw, 11.75rem);
+}
+
+.site-gallery-card--media-md {
+  --site-gallery-media-height-base: var(--site-gallery-aspect-media-height);
+}
+
+.site-gallery-card--media-lg.site-gallery-card--portrait {
+  --site-gallery-media-height-base: clamp(10.4rem, 10.6vw, 13.75rem);
+}
+
+.site-gallery-card--media-lg.site-gallery-card--wide {
+  --site-gallery-media-height-base: clamp(9.25rem, 9.4vw, 12rem);
+}
+
+.site-gallery-card--media-lg.site-gallery-card--square {
+  --site-gallery-media-height-base: clamp(12rem, 11vw, 15rem);
+}
+
+/* ============================================================
+   Card chrome
+============================================================ */
+
+.site-gallery-card::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  z-index: -1;
+  pointer-events: none;
+  border-radius: inherit;
+  background:
+    linear-gradient(
+      130deg,
+      color-mix(in srgb, var(--color-text-primary) 10%, transparent),
+      transparent 20%,
+      transparent 64%,
+      color-mix(in srgb, var(--site-gallery-accent) 9%, transparent)
+    );
+  opacity: 0.76;
+}
+
+.site-gallery-card:hover {
+  transform: translateY(-3px);
+  border-color: color-mix(
+    in srgb,
+    var(--site-gallery-accent) 68%,
+    var(--color-border-brand)
+  );
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--color-text-primary) 14%, transparent),
+    inset 0 0 34px color-mix(in srgb, var(--site-gallery-accent) 9%, transparent),
+    var(--shadow-card),
+    0 0 28px color-mix(in srgb, var(--site-gallery-accent) 22%, transparent),
+    0 0 58px color-mix(in srgb, var(--site-gallery-accent) 12%, transparent);
+}
+
+/* ============================================================
+   Media
+============================================================ */
+
+.site-gallery-card__media {
+  position: relative;
+  min-height: var(--site-gallery-media-height-base);
+  overflow: hidden;
+  background:
+    radial-gradient(
+      circle at 50% 10%,
+      color-mix(in srgb, var(--site-gallery-accent) 16%, transparent),
+      transparent 54%
+    ),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--color-surface-soft) 30%, transparent),
+      color-mix(in srgb, var(--color-bg-page) 82%, transparent)
+    );
+}
+
+.site-gallery-card__media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(7, 5, 15, 0.08) 0%,
+      rgba(7, 5, 15, 0.05) 36%,
+      rgba(7, 5, 15, 0.84) 100%
+    ),
+    radial-gradient(
+      circle at 50% 0%,
+      color-mix(in srgb, var(--site-gallery-accent) 14%, transparent),
+      transparent 52%
+    );
+}
+
+.site-gallery-card__image {
+  display: block;
+  width: 100%;
+  height: var(--site-gallery-media-height-base);
+  object-fit: cover;
+  transform: scale(1.01);
+  opacity: 0.9;
+  filter: saturate(1.04) contrast(1.03);
+  transition:
+    transform var(--transition-slow),
+    opacity var(--transition-base),
+    filter var(--transition-base);
+}
+
+.site-gallery-card:hover .site-gallery-card__image {
+  transform: scale(1.045);
+  opacity: 0.97;
+  filter: saturate(1.09) contrast(1.05);
+}
+
+/* ============================================================
+   Pill
+============================================================ */
+
+.site-gallery-card__pill {
+  position: absolute;
+  top: var(--site-gallery-pill-offset);
+  left: var(--site-gallery-pill-offset);
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  max-width: calc(100% - (var(--site-gallery-pill-offset) * 2));
+  padding: var(--site-gallery-pill-padding-y) var(--site-gallery-pill-padding-x);
+  border: 1px solid
+    color-mix(
+      in srgb,
+      var(--site-gallery-accent) 68%,
+      var(--color-border-soft)
+    );
+  border-radius: var(--radius-sm);
+  background:
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--site-gallery-accent) 22%, transparent),
+      color-mix(in srgb, var(--color-bg-page) 76%, transparent)
+    );
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--color-text-primary) 14%, transparent),
+    0 0 16px color-mix(in srgb, var(--site-gallery-accent) 26%, transparent);
+  color: color-mix(in srgb, var(--site-gallery-accent) 82%, var(--color-text-primary));
+  font-size: var(--site-gallery-pill-font-size);
+  font-weight: 850;
+  letter-spacing: var(--tracking-label);
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+/* ============================================================
+   Blank mode
+============================================================ */
+
+.site-gallery-card--blank .site-gallery-card__media {
+  display: grid;
+  min-height: var(--site-gallery-media-height-base);
+  place-items: center;
+}
+
+.site-gallery-card__blank-visual {
+  display: grid;
+  min-height: var(--site-gallery-media-height-base);
+  place-items: center;
+}
+
+.site-gallery-card__blank-ring {
+  display: grid;
+  width: var(--site-gallery-blank-ring-size);
+  height: var(--site-gallery-blank-ring-size);
+  place-items: center;
+  border: 1px dashed
+    color-mix(
+      in srgb,
+      var(--site-gallery-accent) 48%,
+      var(--color-border-medium)
+    );
+  border-radius: var(--radius-pill);
+  color: color-mix(in srgb, var(--site-gallery-accent) 74%, var(--color-text-muted));
+  background:
+    radial-gradient(
+      circle,
+      color-mix(in srgb, var(--site-gallery-accent) 10%, transparent),
+      transparent 68%
+    );
+  box-shadow:
+    inset 0 0 24px color-mix(in srgb, var(--site-gallery-accent) 8%, transparent),
+    0 0 22px color-mix(in srgb, var(--site-gallery-accent) 10%, transparent);
+}
+
+.site-gallery-card__blank-ring svg {
+  width: var(--site-gallery-blank-icon-size);
+  height: var(--site-gallery-blank-icon-size);
+  stroke-width: 1.55;
+}
+
+/* ============================================================
+   Content
+============================================================ */
+
+.site-gallery-card__content {
+  display: grid;
+  align-content: start;
+  min-width: 0;
+  padding:
+    var(--site-gallery-content-padding-top)
+    var(--site-gallery-content-padding-x)
+    0;
+}
+
+.site-gallery-card__title {
+  margin: 0;
+  color: var(--color-text-primary);
+  font-size: var(--site-gallery-title-size);
+  font-weight: 840;
+  line-height: var(--site-gallery-title-line-height);
+  letter-spacing: -0.038em;
+  text-shadow: 0 0 20px color-mix(in srgb, var(--color-bg-page) 64%, transparent);
+}
+
+.site-gallery-card__summary {
+  margin: var(--site-gallery-summary-margin-top) 0 0;
+  color: var(--color-text-secondary);
+  font-size: var(--site-gallery-summary-size);
+  line-height: var(--site-gallery-summary-line-height);
+}
+
+/* ============================================================
+   Meta row
+============================================================ */
+
+.site-gallery-card__meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+  padding:
+    var(--site-gallery-meta-padding-y)
+    var(--site-gallery-meta-padding-x);
+  color: var(--color-text-muted);
+  font-size: var(--site-gallery-meta-size);
+  line-height: 1.2;
+}
+
+.site-gallery-card__meta svg {
+  flex: 0 0 auto;
+  width: var(--site-gallery-meta-icon-size);
+  height: var(--site-gallery-meta-icon-size);
+  color: var(--site-gallery-accent);
+  stroke-width: 1.9;
+  filter: drop-shadow(
+    0 0 8px color-mix(in srgb, var(--site-gallery-accent) 40%, transparent)
+  );
+}
+
+.site-gallery-card__meta span {
+  min-width: 0;
+}
+
+/* ============================================================
+   Responsive
+============================================================ */
+
+@media (max-width: 980px) {
+  .site-gallery-card--media-md.site-gallery-card--portrait {
+    --site-gallery-media-height-base: 10.25rem;
+  }
+
+  .site-gallery-card--media-md.site-gallery-card--square {
+    --site-gallery-media-height-base: 11.75rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .site-gallery-card {
+    border-radius: var(--radius-md);
+  }
+
+  .site-gallery-card--media-md.site-gallery-card--portrait {
+    --site-gallery-media-height-base: 9.75rem;
+  }
+
+  .site-gallery-card--media-md.site-gallery-card--square {
+    --site-gallery-media-height-base: 10.75rem;
+  }
+
+  .site-gallery-card--density-default {
+    --site-gallery-pill-offset: 0.75rem;
+    --site-gallery-pill-font-size: 0.68rem;
+    --site-gallery-content-padding-x: 0.9rem;
+    --site-gallery-content-padding-top: 0.9rem;
+    --site-gallery-title-size: 1.16rem;
+    --site-gallery-summary-margin-top: 0.48rem;
+    --site-gallery-summary-size: 0.92rem;
+    --site-gallery-summary-line-height: 1.44;
+    --site-gallery-meta-padding-x: 0.9rem;
+    --site-gallery-meta-padding-y: 0.9rem;
+    --site-gallery-meta-size: 0.86rem;
+    --site-gallery-blank-ring-size: 4.5rem;
+    --site-gallery-blank-icon-size: 1.7rem;
+  }
+}

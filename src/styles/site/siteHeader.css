@@ -106,6 +106,10 @@
   .site-nav {
     display: none;
   }
+
+  .site-mobile-menu-button {
+    display: grid;
+  }
 }
 
 @media (max-width: 640px) {
@@ -151,5 +155,71 @@
   .site-header__actions .site-button-sm {
     padding-inline: 0.72rem;
     font-size: 0.82rem;
+  }
+}
+
+/* ============================================================
+   Mobile menu
+============================================================ */
+
+.site-mobile-menu-button {
+  display: none;
+  width: 2.35rem;
+  height: 2.35rem;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 1px solid var(--color-border);
+  border-radius: 0.75rem;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--color-text-primary);
+  cursor: pointer;
+}
+
+.site-mobile-menu-button:hover {
+  border-color: var(--color-border-brand);
+  background: rgba(139, 92, 246, 0.12);
+}
+
+.site-mobile-menu {
+  border-top: 1px solid var(--header-border);
+  background: var(--header-bg);
+  box-shadow: var(--header-shadow);
+}
+
+.site-mobile-menu__inner {
+  display: grid;
+  gap: 0.25rem;
+  padding-block: 0.75rem 1rem;
+}
+
+.site-mobile-menu__inner a {
+  display: flex;
+  align-items: center;
+  min-height: 2.55rem;
+  border-radius: 0.75rem;
+  padding-inline: 0.85rem;
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
+  font-weight: 650;
+}
+
+.site-mobile-menu__inner a:hover,
+.site-mobile-menu__inner a[aria-current="page"] {
+  background: rgba(139, 92, 246, 0.12);
+  color: var(--color-text-primary);
+  text-decoration: none;
+}
+
+/* ============================================================
+   Responsive
+============================================================ */
+
+@media (max-width: 980px) {
+  .site-nav {
+    display: none;
+  }
+
+  .site-mobile-menu-button {
+    display: grid;
   }
 }

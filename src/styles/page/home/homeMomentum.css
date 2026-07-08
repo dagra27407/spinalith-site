@@ -1,0 +1,356 @@
+/* src/styles/page/home/homeMomentum.css */
+
+/**
+ * File: src/styles/page/home/homeMomentum.css
+ *
+ * Purpose:
+ * Homepage Start With Momentum section styling.
+ *
+ * Responsibilities:
+ * - Create an open, full-width section for templates, demos, genre templates, and blank start.
+ * - Keep the section premium/dark/purple-forward without enclosing it in a large bordered card.
+ * - Control section layout, spacing, responsive grid behavior, and CTA styling.
+ *
+ * Notes:
+ * - SiteBenefitItem owns benefit item visuals, sizing, icon shape, copy sizing, and internal spacing.
+ * - SiteGalleryCard owns gallery card visuals, media treatment, copy sizing, pill, meta row, and blank state.
+ * - This file should compose reusable components, not override their internals.
+ */
+
+.home-momentum {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: clamp(5.5rem, 8vw, 8rem) 0 clamp(5.25rem, 7vw, 7.5rem);
+  background:
+    radial-gradient(
+      ellipse at 18% 24%,
+      color-mix(in srgb, var(--color-brand-primary) 16%, transparent),
+      transparent 34rem
+    ),
+    radial-gradient(
+      ellipse at 72% 50%,
+      color-mix(in srgb, var(--color-accent-interactive) 7%, transparent),
+      transparent 40rem
+    ),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--color-bg-page) 98%, transparent),
+      color-mix(in srgb, var(--color-bg-section) 62%, var(--color-bg-page))
+    );
+}
+
+.home-momentum::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--color-bg-page) 100%, transparent),
+      transparent 24%,
+      transparent 76%,
+      color-mix(in srgb, var(--color-bg-page) 86%, transparent)
+    ),
+    radial-gradient(
+      circle at 36% 78%,
+      color-mix(in srgb, var(--color-brand-soft) 8%, transparent),
+      transparent 22rem
+    );
+}
+
+/* ============================================================
+   Main layout
+============================================================ */
+
+.home-momentum__body {
+  display: grid;
+  grid-template-columns: minmax(15.5rem, 0.58fr) minmax(0, 2.25fr);
+  gap: clamp(2.25rem, 4vw, 4.25rem);
+  align-items: start;
+}
+
+.home-momentum__intro {
+  min-width: 0;
+  padding-top: 0.35rem;
+}
+
+.home-momentum__kicker {
+  display: block;
+  width: fit-content;
+  margin: 0 0 0.9rem;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  color: var(--color-brand-faint);
+  font-size: 0.7rem;
+  font-weight: 850;
+  letter-spacing: var(--tracking-label);
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.home-momentum__title {
+  max-width: 8.2em;
+  margin: 0;
+  color: var(--color-text-primary);
+  font-size: clamp(2.25rem, 3.25vw, 3.55rem);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.064em;
+  text-wrap: balance;
+  text-shadow:
+    0 0 24px color-mix(in srgb, var(--color-brand-primary) 10%, transparent),
+    0 2px 18px color-mix(in srgb, var(--color-bg-page) 68%, transparent);
+}
+
+.home-momentum__title-accent {
+  color: var(--color-brand-primary);
+  text-shadow:
+    0 0 20px color-mix(in srgb, var(--color-brand-primary) 38%, transparent),
+    0 0 44px color-mix(in srgb, var(--color-brand-primary) 20%, transparent);
+}
+
+.home-momentum__lede {
+  max-width: 22rem;
+  margin: clamp(1rem, 1.5vw, 1.25rem) 0 0;
+  color: var(--color-text-secondary);
+  font-size: clamp(0.93rem, 0.92vw, 1.02rem);
+  line-height: 1.58;
+}
+
+/* ============================================================
+   Benefits layout
+============================================================ */
+
+.home-momentum__benefits {
+  display: grid;
+  gap: clamp(0.9rem, 1.1vw, 1.1rem);
+  margin-top: clamp(1.5rem, 2.2vw, 2rem);
+}
+
+.home-momentum__benefit {
+  min-width: 0;
+}
+
+/* ============================================================
+   CTA
+============================================================ */
+
+.home-momentum__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  width: min(100%, 18.5rem);
+  margin-top: clamp(1.5rem, 2.25vw, 2rem);
+  padding: 0.86rem 1.05rem;
+  border: 1px solid color-mix(in srgb, var(--color-brand-faint) 30%, transparent);
+  border-radius: var(--radius-md);
+  background: var(--button-primary-bg);
+  box-shadow:
+    0 18px 38px color-mix(in srgb, var(--color-brand-primary) 25%, transparent),
+    0 0 34px color-mix(in srgb, var(--color-brand-primary) 18%, transparent);
+  color: var(--button-primary-text);
+  font-size: 0.92rem;
+  font-weight: 850;
+  line-height: 1;
+  text-decoration: none;
+  transition:
+    transform var(--transition-base),
+    box-shadow var(--transition-base),
+    border-color var(--transition-base),
+    filter var(--transition-base);
+}
+
+.home-momentum__cta:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--color-accent-interactive-hover) 48%, transparent);
+  box-shadow:
+    0 22px 48px color-mix(in srgb, var(--color-brand-primary) 30%, transparent),
+    0 0 48px color-mix(in srgb, var(--color-brand-primary) 22%, transparent),
+    0 0 28px color-mix(in srgb, var(--color-accent-interactive) 12%, transparent);
+  filter: saturate(1.06);
+}
+
+.home-momentum__cta:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--button-focus-ring) 72%, transparent);
+  outline-offset: 4px;
+}
+
+.home-momentum__cta svg {
+  width: 1rem;
+  height: 1rem;
+  stroke-width: 2.3;
+}
+
+/* ============================================================
+   Gallery layout
+============================================================ */
+
+.home-momentum__gallery-wrap {
+  min-width: 0;
+}
+
+.home-momentum__gallery {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(0.95rem, 1.2vw, 1.2rem);
+  align-items: stretch;
+}
+
+.home-momentum__gallery-card {
+  min-height: 100%;
+}
+
+/* ============================================================
+   Note
+============================================================ */
+
+.home-momentum__note {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.62rem;
+  margin: clamp(1.6rem, 2vw, 2rem) 0 0;
+  color: var(--color-text-muted);
+  font-size: clamp(0.9rem, 1vw, 1rem);
+  line-height: 1.45;
+  text-align: center;
+}
+
+.home-momentum__note svg {
+  flex: 0 0 auto;
+  width: 1rem;
+  height: 1rem;
+  color: var(--color-brand-faint);
+  fill: color-mix(in srgb, var(--color-brand-faint) 32%, transparent);
+  filter: drop-shadow(
+    0 0 10px color-mix(in srgb, var(--color-brand-primary) 48%, transparent)
+  );
+}
+
+/* ============================================================
+   Responsive
+============================================================ */
+
+@media (max-width: 1180px) and (min-width: 1121px) {
+  .home-momentum__body {
+    grid-template-columns: minmax(15rem, 0.64fr) minmax(0, 2fr);
+    gap: clamp(2rem, 3.5vw, 3.35rem);
+  }
+}
+
+@media (max-width: 1120px) {
+  .home-momentum {
+    padding-block: clamp(4.75rem, 8vw, 6.5rem);
+  }
+
+  .home-momentum__body {
+    grid-template-columns: 1fr;
+    gap: clamp(2.6rem, 5vw, 3.6rem);
+  }
+
+  .home-momentum__intro {
+    max-width: 46rem;
+    padding-top: 0;
+  }
+
+  .home-momentum__title {
+    max-width: 10em;
+    font-size: clamp(2.75rem, 7vw, 4.35rem);
+  }
+
+  .home-momentum__lede {
+    max-width: 38rem;
+  }
+
+  .home-momentum__benefits {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .home-momentum__benefit {
+    grid-template-columns: 1fr;
+    justify-items: start;
+  }
+
+  .home-momentum__cta {
+    width: fit-content;
+    min-width: 18rem;
+  }
+
+  .home-momentum__gallery {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 820px) {
+  .home-momentum__benefits {
+    grid-template-columns: 1fr;
+  }
+
+  .home-momentum__benefit {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .home-momentum__gallery {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .home-momentum {
+    padding-block: 4.25rem 4.75rem;
+  }
+
+  .home-momentum__title {
+    font-size: clamp(2.45rem, 12vw, 3.3rem);
+    letter-spacing: -0.065em;
+  }
+
+  .home-momentum__lede {
+    font-size: 0.98rem;
+    line-height: 1.62;
+  }
+
+  .home-momentum__cta {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .home-momentum__gallery {
+    grid-template-columns: 1fr;
+  }
+
+  .home-momentum__note {
+    align-items: flex-start;
+    text-align: left;
+  }
+}
+
+/* ============================================================
+   Large desktop layout scale-up
+============================================================ */
+
+@media (min-width: 1320px) {
+  .home-momentum__body {
+    grid-template-columns: minmax(16rem, 0.54fr) minmax(0, 2.46fr);
+    gap: clamp(2.75rem, 4.4vw, 5.5rem);
+  }
+
+  .home-momentum__gallery {
+    gap: clamp(1.1rem, 1.25vw, 1.45rem);
+  }
+}
+
+@media (min-width: 1680px) {
+  .home-momentum__body {
+    grid-template-columns: minmax(16rem, 0.5fr) minmax(0, 2.6fr);
+    gap: clamp(3rem, 4vw, 6rem);
+  }
+}

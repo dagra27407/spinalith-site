@@ -4,29 +4,20 @@
  * File: src/pages/PricingPage.tsx
  *
  * Purpose:
- * Placeholder route page for the future Spinalith.com Pricing page.
+ * Public pricing page for Spinalith.com.
  *
  * Responsibilities:
- * - Keeps the /pricing route compilable during the website rebuild.
- * - Provides a temporary home for launch membership positioning.
+ * - Reuse the shared membership/pricing section from the homepage.
+ * - Keep pricing content centralized so homepage and pricing route stay consistent.
  *
  * Notes:
- * - Final pricing copy should align with Sprint 5.3 founder membership language.
+ * - Plan selection happens inside the app after account creation.
  */
 
+import HomeMembershipSection from "../components/home/HomeMembershipSection";
+
 export function PricingPage() {
-  return (
-    <section className="site-section">
-      <div className="site-container-narrow">
-        <span className="eyebrow">Membership</span>
-
-        <h1>Pricing page placeholder</h1>
-
-        <p className="section-lede">
-          This route is wired. The final page will present founder pricing, full
-          workspace access, and the membership CTA without AI-first positioning.
-        </p>
-      </div>
-    </section>
-  );
+  return <HomeMembershipSection />;
 }
+
+export default PricingPage;

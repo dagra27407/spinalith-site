@@ -1,0 +1,322 @@
+/* src/styles/page/home/homeProcess.css */
+
+/**
+ * File: src/styles/page/home/homeProcess.css
+ *
+ * Purpose:
+ * Homepage Built to Support Your Process section styling.
+ *
+ * Responsibilities:
+ * - Create a calm, premium bridge section after Start With Momentum.
+ * - Use the writing-room image as a section backdrop instead of a side image card.
+ * - Lay out the writer-control copy, five benefit callouts, and proof line over the backdrop.
+ * - Preserve responsive behavior across desktop, tablet, and mobile.
+ *
+ * Notes:
+ * - SiteBenefitItem owns benefit item visuals, sizing, icon shape, copy sizing, and internal spacing.
+ * - This file should compose SiteBenefitItem, not override its internals.
+ */
+
+.home-process {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: clamp(6rem, 8.5vw, 9rem) 0 clamp(5.75rem, 8vw, 8.5rem);
+  border-top: 1px solid color-mix(in srgb, var(--color-border-soft) 76%, transparent);
+  background:
+    radial-gradient(
+      ellipse at 16% 28%,
+      color-mix(in srgb, var(--color-brand-primary) 18%, transparent),
+      transparent 34rem
+    ),
+    radial-gradient(
+      ellipse at 82% 30%,
+      color-mix(in srgb, var(--color-accent-interactive) 10%, transparent),
+      transparent 42rem
+    ),
+    radial-gradient(
+      ellipse at 50% 100%,
+      color-mix(in srgb, var(--color-brand-soft) 10%, transparent),
+      transparent 42rem
+    ),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--color-bg-page) 98%, transparent),
+      color-mix(in srgb, var(--color-bg-section) 72%, var(--color-bg-page))
+    );
+}
+
+/* Background image plate */
+.home-process::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -3;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--color-bg-page) 96%, transparent) 0%,
+      color-mix(in srgb, var(--color-bg-page) 86%, transparent) 22%,
+      color-mix(in srgb, var(--color-bg-page) 42%, transparent) 48%,
+      color-mix(in srgb, var(--color-bg-page) 10%, transparent) 74%,
+      color-mix(in srgb, var(--color-bg-page) 52%, transparent) 100%
+    ),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--color-bg-page) 68%, transparent) 0%,
+      transparent 24%,
+      color-mix(in srgb, var(--color-bg-page) 26%, transparent) 58%,
+      color-mix(in srgb, var(--color-bg-page) 86%, transparent) 100%
+    ),
+    url("/assets/images/home/writer-control-starry-desk.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center right;
+  opacity: 0.88;
+}
+
+/* Atmosphere / particles / glow */
+.home-process::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      ellipse at 18% 46%,
+      color-mix(in srgb, var(--color-brand-primary) 18%, transparent),
+      transparent 26rem
+    ),
+    radial-gradient(
+      ellipse at 72% 36%,
+      color-mix(in srgb, var(--color-brand-soft) 12%, transparent),
+      transparent 34rem
+    ),
+    radial-gradient(
+      circle,
+      color-mix(in srgb, var(--color-brand-faint) 36%, transparent) 0 1px,
+      transparent 1.5px
+    );
+  background-size:
+    auto,
+    auto,
+    8rem 8rem;
+  background-position:
+    center,
+    center,
+    2rem 3rem;
+  opacity: 0.34;
+  mask-image: radial-gradient(ellipse at 48% 42%, black, transparent 78%);
+}
+
+/* ============================================================
+   Main layout
+============================================================ */
+
+.home-process__body {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  min-height: clamp(36rem, 47vw, 50rem);
+  align-content: center;
+}
+
+.home-process__content {
+  max-width: min(48rem, 58%);
+  min-width: 0;
+}
+
+.home-process__kicker {
+  display: block;
+  width: fit-content;
+  margin: 0 0 1rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  color: var(--color-brand-faint);
+  font-size: 0.72rem;
+  font-weight: 850;
+  letter-spacing: var(--tracking-label);
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.home-process__title {
+  display: grid;
+  gap: 0.04em;
+  max-width: 8.4em;
+  margin: 0;
+  color: var(--color-text-primary);
+  font-size: clamp(3rem, 5.6vw, 6.25rem);
+  font-weight: 900;
+  line-height: 0.96;
+  letter-spacing: -0.075em;
+  text-wrap: balance;
+  text-shadow:
+    0 0 30px color-mix(in srgb, var(--color-brand-primary) 12%, transparent),
+    0 2px 24px color-mix(in srgb, var(--color-bg-page) 78%, transparent);
+}
+
+.home-process__title-accent {
+  color: var(--color-brand-primary);
+  text-shadow:
+    0 0 26px color-mix(in srgb, var(--color-brand-primary) 45%, transparent),
+    0 0 58px color-mix(in srgb, var(--color-brand-primary) 24%, transparent);
+}
+
+.home-process__lede {
+  max-width: 38rem;
+  margin: clamp(1.2rem, 2vw, 1.7rem) 0 0;
+  color: var(--color-text-secondary);
+  font-size: clamp(1.03rem, 1.25vw, 1.28rem);
+  line-height: 1.62;
+  text-shadow: 0 2px 18px color-mix(in srgb, var(--color-bg-page) 74%, transparent);
+}
+
+/* ============================================================
+   Benefits layout
+============================================================ */
+
+.home-process__benefits {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: clamp(1rem, 1.55vw, 1.75rem);
+  align-items: start;
+  justify-content: center;
+  width: min(100%, 72rem);
+  margin: clamp(2.6rem, 4.2vw, 4.25rem) auto 0;
+}
+
+.home-process__benefit {
+  min-width: 0;
+}
+
+.home-process__proof-line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.72rem;
+  width: fit-content;
+  margin: clamp(2.1rem, 3.2vw, 3rem) auto 0;
+  color: var(--color-brand-faint);
+  font-size: clamp(0.98rem, 1.1vw, 1.12rem);
+  line-height: 1.45;
+  text-align: center;
+  text-shadow: 0 2px 16px color-mix(in srgb, var(--color-bg-page) 78%, transparent);
+}
+
+.home-process__proof-line svg {
+  flex: 0 0 auto;
+  width: 1.25rem;
+  height: 1.25rem;
+  color: var(--color-brand-faint);
+  fill: color-mix(in srgb, var(--color-brand-faint) 30%, transparent);
+  filter: drop-shadow(
+    0 0 12px color-mix(in srgb, var(--color-brand-primary) 52%, transparent)
+  );
+}
+
+/* ============================================================
+   Responsive
+============================================================ */
+
+@media (max-width: 1180px) {
+  .home-process {
+    padding-block: clamp(5.25rem, 8vw, 7rem);
+  }
+
+  .home-process::before {
+    background-position: 64% center;
+    opacity: 0.74;
+  }
+
+  .home-process__body {
+    min-height: auto;
+    align-content: start;
+  }
+
+  .home-process__content {
+    max-width: 48rem;
+  }
+
+  .home-process__title {
+    max-width: 9.5em;
+    font-size: clamp(3rem, 7vw, 5.2rem);
+  }
+
+  .home-process__lede {
+    max-width: 44rem;
+  }
+
+  .home-process__benefits {
+    width: min(100%, 58rem);
+    margin-inline: auto;
+  }
+}
+
+@media (max-width: 880px) {
+  .home-process::before {
+    background-position: 70% center;
+    opacity: 0.62;
+  }
+
+  .home-process__benefits {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    width: min(100%, 46rem);
+    margin-inline: auto;
+  }
+}
+
+@media (max-width: 640px) {
+  .home-process {
+    padding-block: 4.5rem 5rem;
+  }
+
+  .home-process::before {
+    background-position: 74% center;
+    opacity: 0.46;
+  }
+
+  .home-process::after {
+    opacity: 0.24;
+  }
+
+  .home-process__title {
+    font-size: clamp(2.7rem, 13vw, 3.9rem);
+    letter-spacing: -0.067em;
+  }
+
+  .home-process__lede {
+    font-size: 0.98rem;
+    line-height: 1.58;
+  }
+
+  .home-process__benefits {
+    grid-template-columns: 1fr;
+    gap: 1.2rem;
+    width: min(100%, 22rem);
+    margin-inline: auto;
+  }
+
+  .home-process__proof-line {
+    align-items: center;
+    justify-content: center;
+    font-size: 0.95rem;
+    margin-inline: auto;
+    text-align: center;
+  }
+}
+
+@media (max-width: 460px) {
+  .home-process::before {
+    background-position: 76% center;
+    opacity: 0.4;
+  }
+
+  .home-process__benefits {
+    width: min(100%, 20rem);
+  }
+}

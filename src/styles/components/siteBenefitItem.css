@@ -1,0 +1,342 @@
+/* src/styles/components/siteBenefitItem.css */
+
+/**
+ * File: src/styles/components/siteBenefitItem.css
+ *
+ * Purpose:
+ * Shared styling for reusable Spinalith.com benefit/proof items.
+ *
+ * Responsibilities:
+ * - Create a quiet transparent benefit item with a branded icon badge.
+ * - Support row and stacked layout variants.
+ * - Support plain and soft tones.
+ * - Support left, center, and right alignment.
+ * - Support small, medium, and large sizing.
+ * - Support rounded-square and circular icon badge shapes.
+ * - Keep accent coloring controlled by --site-benefit-accent.
+ *
+ * Notes:
+ * - Parent sections should control grid/flex placement and breakpoint behavior.
+ * - This component should stay quieter than SiteFeatureCard.
+ * - Uses semantic site tokens so future theme swaps do not require component rewrites.
+ * - md + rounded preserves the original component behavior.
+ */
+
+.site-benefit-item {
+  --site-benefit-accent: var(--color-brand-soft);
+  --site-benefit-gap: 1rem;
+  --site-benefit-soft-padding: 0.95rem;
+  --site-benefit-icon-size: 3.35rem;
+  --site-benefit-icon-svg-size: 1.55rem;
+  --site-benefit-title-size: clamp(1.03rem, 1.6vw, 1.18rem);
+  --site-benefit-body-size: 0.96rem;
+  --site-benefit-body-line-height: 1.48;
+  --site-benefit-body-max-width: 28rem;
+  --site-benefit-stack-body-max-width: 20rem;
+  --site-benefit-title-margin: 0;
+  --site-benefit-body-margin-top: 0.34rem;
+  --site-benefit-icon-radius: var(--radius-md);
+
+  position: relative;
+  min-width: 0;
+  color: var(--color-text-primary);
+}
+
+/* ============================================================
+   Sizes
+============================================================ */
+
+.site-benefit-item--size-sm {
+  --site-benefit-gap: 0.78rem;
+  --site-benefit-soft-padding: 0.78rem;
+  --site-benefit-icon-size: 2.7rem;
+  --site-benefit-icon-svg-size: 1.22rem;
+  --site-benefit-title-size: clamp(0.9rem, 1.15vw, 1rem);
+  --site-benefit-body-size: 0.84rem;
+  --site-benefit-body-line-height: 1.44;
+  --site-benefit-body-max-width: 18rem;
+  --site-benefit-stack-body-max-width: 14.5rem;
+  --site-benefit-body-margin-top: 0.28rem;
+}
+
+.site-benefit-item--size-md {
+  --site-benefit-gap: 1rem;
+  --site-benefit-soft-padding: 0.95rem;
+  --site-benefit-icon-size: 3.35rem;
+  --site-benefit-icon-svg-size: 1.55rem;
+  --site-benefit-title-size: clamp(1.03rem, 1.6vw, 1.18rem);
+  --site-benefit-body-size: 0.96rem;
+  --site-benefit-body-line-height: 1.48;
+  --site-benefit-body-max-width: 28rem;
+  --site-benefit-stack-body-max-width: 20rem;
+  --site-benefit-body-margin-top: 0.34rem;
+}
+
+.site-benefit-item--size-lg {
+  --site-benefit-gap: 1.15rem;
+  --site-benefit-soft-padding: 1.1rem;
+  --site-benefit-icon-size: 4rem;
+  --site-benefit-icon-svg-size: 1.82rem;
+  --site-benefit-title-size: clamp(1.16rem, 1.9vw, 1.38rem);
+  --site-benefit-body-size: 1.03rem;
+  --site-benefit-body-line-height: 1.52;
+  --site-benefit-body-max-width: 32rem;
+  --site-benefit-stack-body-max-width: 22rem;
+  --site-benefit-body-margin-top: 0.42rem;
+}
+
+/* ============================================================
+   Variants
+============================================================ */
+
+.site-benefit-item--row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  gap: var(--site-benefit-gap);
+}
+
+.site-benefit-item--stack {
+  display: grid;
+  justify-items: start;
+  gap: calc(var(--site-benefit-gap) * 0.82);
+}
+
+/* ============================================================
+   Tones
+============================================================ */
+
+.site-benefit-item--plain {
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.site-benefit-item--soft {
+  padding: var(--site-benefit-soft-padding);
+  border: 1px solid
+    color-mix(
+      in srgb,
+      var(--site-benefit-accent) 20%,
+      var(--color-border-soft)
+    );
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(
+      circle at 10% 0%,
+      color-mix(in srgb, var(--site-benefit-accent) 10%, transparent),
+      transparent 48%
+    ),
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--color-surface-soft) 18%, transparent),
+      color-mix(in srgb, var(--color-bg-page) 78%, transparent)
+    );
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--color-text-primary) 10%, transparent),
+    0 16px 40px color-mix(in srgb, var(--color-bg-page) 48%, transparent);
+}
+
+/* ============================================================
+   Alignment
+============================================================ */
+
+.site-benefit-item--align-left {
+  text-align: left;
+}
+
+.site-benefit-item--align-left.site-benefit-item--stack {
+  justify-items: start;
+}
+
+.site-benefit-item--align-center {
+  text-align: center;
+}
+
+.site-benefit-item--align-center.site-benefit-item--row {
+  grid-template-columns: 1fr;
+  justify-items: center;
+}
+
+.site-benefit-item--align-center.site-benefit-item--stack {
+  justify-items: center;
+}
+
+.site-benefit-item--align-center .site-benefit-item__content {
+  align-items: center;
+}
+
+.site-benefit-item--align-right {
+  text-align: right;
+}
+
+.site-benefit-item--align-right.site-benefit-item--row {
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.site-benefit-item--align-right.site-benefit-item--row .site-benefit-item__icon {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.site-benefit-item--align-right.site-benefit-item--row .site-benefit-item__content {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.site-benefit-item--align-right.site-benefit-item--stack {
+  justify-items: end;
+}
+
+.site-benefit-item--align-right .site-benefit-item__content {
+  align-items: flex-end;
+}
+
+/* ============================================================
+   Icon shapes
+============================================================ */
+
+.site-benefit-item--icon-rounded {
+  --site-benefit-icon-radius: var(--radius-md);
+}
+
+.site-benefit-item--icon-circle {
+  --site-benefit-icon-radius: var(--radius-pill);
+}
+
+/* ============================================================
+   Icon badge
+============================================================ */
+
+.site-benefit-item__icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: var(--site-benefit-icon-size);
+  height: var(--site-benefit-icon-size);
+  border: 1px solid
+    color-mix(
+      in srgb,
+      var(--site-benefit-accent) 52%,
+      var(--color-border-soft)
+    );
+  border-radius: var(--site-benefit-icon-radius);
+  color: var(--site-benefit-accent);
+  background:
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--color-text-primary) 8%, transparent),
+      transparent 42%
+    ),
+    radial-gradient(
+      circle at 50% 14%,
+      color-mix(in srgb, var(--site-benefit-accent) 24%, transparent),
+      transparent 58%
+    ),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--site-benefit-accent) 9%, transparent),
+      color-mix(in srgb, var(--color-bg-page) 82%, transparent)
+    );
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--color-text-primary) 12%, transparent),
+    inset 0 0 22px color-mix(in srgb, var(--site-benefit-accent) 12%, transparent),
+    0 0 16px color-mix(in srgb, var(--site-benefit-accent) 26%, transparent),
+    0 0 34px color-mix(in srgb, var(--site-benefit-accent) 12%, transparent);
+}
+
+.site-benefit-item__icon svg {
+  width: var(--site-benefit-icon-svg-size);
+  height: var(--site-benefit-icon-svg-size);
+  stroke-width: 1.85;
+  filter:
+    drop-shadow(
+      0 0 5px color-mix(in srgb, var(--site-benefit-accent) 68%, transparent)
+    )
+    drop-shadow(
+      0 0 12px color-mix(in srgb, var(--site-benefit-accent) 28%, transparent)
+    );
+}
+
+/* ============================================================
+   Copy
+============================================================ */
+
+.site-benefit-item__content {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.site-benefit-item__title {
+  margin: var(--site-benefit-title-margin);
+  color: var(--color-text-primary);
+  font-size: var(--site-benefit-title-size);
+  font-weight: 820;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  text-shadow: 0 0 18px color-mix(in srgb, var(--color-bg-page) 62%, transparent);
+}
+
+.site-benefit-item__body {
+  max-width: var(--site-benefit-body-max-width);
+  margin: var(--site-benefit-body-margin-top) 0 0;
+  color: var(--color-text-secondary);
+  font-size: var(--site-benefit-body-size);
+  line-height: var(--site-benefit-body-line-height);
+}
+
+.site-benefit-item--stack .site-benefit-item__body {
+  max-width: var(--site-benefit-stack-body-max-width);
+}
+
+.site-benefit-item--align-center .site-benefit-item__body {
+  margin-inline: auto;
+}
+
+.site-benefit-item--align-right .site-benefit-item__body {
+  margin-left: auto;
+}
+
+/* ============================================================
+   Responsive
+============================================================ */
+
+@media (max-width: 640px) {
+  .site-benefit-item {
+    --site-benefit-gap: 0.85rem;
+  }
+
+  .site-benefit-item--soft {
+    padding: min(var(--site-benefit-soft-padding), 0.85rem);
+    border-radius: var(--radius-md);
+  }
+
+  .site-benefit-item--size-md {
+    --site-benefit-icon-size: 2.9rem;
+    --site-benefit-icon-svg-size: 1.36rem;
+    --site-benefit-title-size: 1.02rem;
+    --site-benefit-body-size: 0.91rem;
+    --site-benefit-body-line-height: 1.44;
+    --site-benefit-body-margin-top: 0.28rem;
+  }
+
+  .site-benefit-item--size-lg {
+    --site-benefit-icon-size: 3.35rem;
+    --site-benefit-icon-svg-size: 1.52rem;
+    --site-benefit-title-size: 1.1rem;
+    --site-benefit-body-size: 0.96rem;
+    --site-benefit-body-line-height: 1.46;
+  }
+}
+
+@media (max-width: 460px) {
+  .site-benefit-item--align-center.site-benefit-item--row {
+    justify-items: center;
+  }
+
+  .site-benefit-item--align-right.site-benefit-item--row {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+}
