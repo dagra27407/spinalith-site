@@ -20,15 +20,9 @@
 
 import { Link } from "react-router-dom";
 
-import { ScreenshotFrame } from "../site/ScreenshotFrame";
+import { ScreenshotFrame_3X } from "@/components/site/ScreenshotFrame_3X";
 
 import { COMMON_LINKS } from "@/routes/CommonLinks";
-
-const heroBenefits = [
-  "See the big picture",
-  "Keep everything connected",
-  "Shape the reader journey",
-];
 
 export function HomeHeroSection() {
   return (
@@ -37,20 +31,20 @@ export function HomeHeroSection() {
         <div className="home-hero__copy">
           <div className="home-hero__copy-main">
             <p className="home-hero__eyebrow">
-              Story development workspace for writers
+              A story development workspace for writers
             </p>
 
             <h1 id="home-hero-title" className="home-hero__title">
-              <span>Shape your story</span>
-              <span>as it</span>
+              <span>Helping WRITERS</span>
+              <span>Organize and PLAN</span>
               <span>
-                <strong>grows.</strong>
+                <strong>THEIR STORIES</strong>
               </span>
             </h1>
 
             <p className="home-hero__lede">
-              Spinalith helps writers organize, visualize, and manage every
-              layer of their story.  Everything from structure and chapters to characters,
+              Spinalith helps writers organize, visualize, and manage every layer of
+              their story. Everything from structure and chapters to characters,
               worldbuilding, arcs, and the reader journey.
             </p>
           </div>
@@ -71,28 +65,48 @@ export function HomeHeroSection() {
                 Explore Features
               </Link>
             </div>
-
-            <ul
-              className="home-hero__benefits"
-              aria-label="Spinalith workspace benefits"
-            >
-              {heroBenefits.map((benefit) => (
-                <li key={benefit}>{benefit}</li>
-              ))}
-            </ul>
           </div>
         </div>
 
-        <div className="home-hero__visual" aria-label="Spinalith product preview">
-          <div className="home-hero__visual-inner">
-            <ScreenshotFrame
-              variant="primaryColorHalo"
-              eager
-              src="/assets/screenshots/home/hero-tpv.png"
-              alt="Spinalith Timeline Planner showing story arcs arranged across chapters."
-            />
-          </div>
-        </div>
+<div className="home-hero__visual">
+<ScreenshotFrame_3X
+  eager
+  className="home-hero__visual-frame"
+left={{
+  src: "/assets/screenshots/home/cpv-chapter-outline2.png",
+  alt: "Chapter Planner outline view",
+  depth: "back",
+  x: 3,
+  y: 5,
+  width: 110,
+  tilt: 0,
+  scale: 1,
+  variant: "originalHero",
+}}
+center={{
+  src: "/assets/screenshots/home/hero-tpv.png",
+  alt: "Timeline Planner view",
+  depth: "front",
+  x: 10,
+  y: 35,
+  width: 85,
+  tilt: -15,
+  scale: 1,
+  variant: "originalHero",
+}}
+right={{
+  src: "/assets/screenshots/home/dnav-characters-grid.png",
+  alt: "Narrative DNA character planning view",
+  depth: "middle",
+  x: 35,
+  y: -40,
+  width: 70,
+  tilt: -15,
+  scale: 1,
+  variant: "originalHero",
+}}
+/>
+</div>
       </div>
     </section>
   );

@@ -29,6 +29,7 @@
 @import "./components/siteFeatureCard.css";
 @import "./components/siteBenefitItem.css";
 @import "./components/siteGalleryCard.css";
+@import "./components/ScreenshotFrame_3X.css";
 
 /* Pages / sections */
 @import "./page/home/homeHero.css";
