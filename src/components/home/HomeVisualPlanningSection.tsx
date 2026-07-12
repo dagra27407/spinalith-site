@@ -152,6 +152,7 @@ export function HomeVisualPlanningSection() {
 
         <div className="home-visual-planning__visual">
 
+
           <div className="home-visual-planning__frame-stage">
             <ScreenshotFrame_3X
               eager

@@ -193,21 +193,9 @@
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-rows: auto minmax(0, 1fr) auto;
+  grid-template-rows: minmax(0, 1fr) auto;
   min-width: 0;
   height: 100%;
-}
-
-.home-visual-planning__visual-heading {
-  position: relative;
-  z-index: 2;
-  margin: 0 0 clamp(1rem, 1.8vw, 1.5rem);
-  color: var(--color-text);
-  font-size: clamp(1rem, 0.94rem + 0.28vw, 1.25rem);
-  font-weight: 700;
-  line-height: 1.35;
-  text-align: center;
-  text-wrap: balance;
 }
 
 /*
