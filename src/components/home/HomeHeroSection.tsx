@@ -18,8 +18,6 @@
  * - Avoid AI-first positioning; Spinalith launches as a story development workspace.
  */
 
-import { Link } from "react-router-dom";
-
 import { ScreenshotFrame_3X } from "@/components/site/ScreenshotFrame_3X";
 
 import { COMMON_LINKS } from "@/routes/CommonLinks";
@@ -31,7 +29,7 @@ export function HomeHeroSection() {
         <div className="home-hero__copy">
           <div className="home-hero__copy-main">
             <p className="home-hero__eyebrow">
-              A story development workspace for writers
+              Story planning software for writers
             </p>
 
             <h1 id="home-hero-title" className="home-hero__title">
@@ -43,9 +41,11 @@ export function HomeHeroSection() {
             </h1>
 
             <p className="home-hero__lede">
-              Spinalith helps writers organize, visualize, and manage every layer of
-              their story. Everything from structure and chapters to characters,
-              worldbuilding, arcs, and the reader journey.
+              Writers rarely run out of ideas. They get stuck when the story becomes
+               too complicated to keep clear, connected, and moving forward.
+            </p>
+            <p className="home-hero__solution">
+              <strong>That’s where Spinalith comes in.</strong>
             </p>
           </div>
 
@@ -58,12 +58,12 @@ export function HomeHeroSection() {
                 Start Building Your Story
               </a>
 
-              <Link
+              <a
                 className="site-button site-button-secondary home-hero__button"
-                to={COMMON_LINKS.site.features}
+                href="#how-it-works"
               >
-                Explore Features
-              </Link>
+                See How It Works
+              </a>
             </div>
           </div>
         </div>

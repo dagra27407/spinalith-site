@@ -47,6 +47,7 @@ const solutionPoints = [
 export function HomeSolutionSection() {
   return (
     <section
+      id="how-it-works"
       className="home-solution site-section"
       aria-labelledby="home-solution-title"
     >

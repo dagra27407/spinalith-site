@@ -1,0 +1,274 @@
+/* src/styles/components/siteQuoteCard.css */
+
+/**
+ * File: src/styles/components/siteQuoteCard.css
+ *
+ * Purpose:
+ * Reusable quote-style statement card styling for Spinalith.com.
+ *
+ * Responsibilities:
+ * - Style the card surface, border, glow, quotation mark, copy, and accent line.
+ * - Support compact, default, and roomy density variants.
+ * - Support automatic and equal-height card behavior.
+ * - Support left, center, right, or hidden bottom accent-line placement.
+ * - Keep all color treatment driven by semantic tokens and the component accent variable.
+ *
+ * Notes:
+ * - Parent sections own card-grid layout and responsive column changes.
+ * - Section CSS may place or size the card but should avoid overriding its internals.
+ * - The default visual treatment is intentionally restrained so repeated cards read as one set.
+ * - The local --site-quote-accent variable is supplied by SiteQuoteCard.tsx.
+ */
+
+/* ============================================================
+   Card shell
+============================================================ */
+
+.site-quote-card {
+  --site-quote-accent: var(--color-brand-soft);
+
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid
+    color-mix(
+      in srgb,
+      var(--site-quote-accent) 42%,
+      var(--color-border-soft)
+    );
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(
+      circle at 12% 6%,
+      color-mix(in srgb, var(--site-quote-accent) 13%, transparent),
+      transparent 11rem
+    ),
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--color-surface-soft) 52%, transparent),
+      color-mix(in srgb, var(--color-bg-page) 88%, transparent)
+    );
+  box-shadow:
+    inset 0 1px 0
+      color-mix(in srgb, var(--color-text-primary) 7%, transparent),
+    0 16px 38px color-mix(in srgb, var(--color-bg-page) 42%, transparent),
+    0 0 22px color-mix(in srgb, var(--site-quote-accent) 7%, transparent);
+}
+
+.site-quote-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--color-text-primary) 3%, transparent),
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at 100% 100%,
+      color-mix(in srgb, var(--site-quote-accent) 6%, transparent),
+      transparent 13rem
+    );
+}
+
+/* ============================================================
+   Height behavior
+============================================================ */
+
+.site-quote-card--height-equal {
+  height: 100%;
+}
+
+.site-quote-card--height-auto {
+  height: auto;
+}
+
+/* ============================================================
+   Density variants
+============================================================ */
+
+.site-quote-card--density-compact {
+  padding: 1rem 1.05rem 0.95rem;
+}
+
+.site-quote-card--density-default {
+  padding: clamp(1.15rem, 1.5vw, 1.45rem)
+    clamp(1.15rem, 1.65vw, 1.55rem)
+    clamp(1.05rem, 1.4vw, 1.35rem);
+}
+
+.site-quote-card--density-roomy {
+  padding: clamp(1.35rem, 2vw, 1.8rem)
+    clamp(1.35rem, 2.15vw, 1.95rem)
+    clamp(1.25rem, 1.8vw, 1.65rem);
+}
+
+/* ============================================================
+   Decorative quotation mark
+============================================================ */
+
+.site-quote-card__mark {
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  margin-bottom: 0.72rem;
+  color: var(--site-quote-accent);
+  filter: drop-shadow(
+    0 0 10px color-mix(in srgb, var(--site-quote-accent) 32%, transparent)
+  );
+}
+
+.site-quote-card__mark svg {
+  display: block;
+  width: 2.15rem;
+  height: auto;
+  overflow: visible;
+  fill: currentColor;
+}
+
+.site-quote-card--density-compact .site-quote-card__mark {
+  margin-bottom: 0.58rem;
+}
+
+.site-quote-card--density-compact .site-quote-card__mark svg {
+  width: 1.8rem;
+}
+
+.site-quote-card--density-roomy .site-quote-card__mark {
+  margin-bottom: 0.85rem;
+}
+
+.site-quote-card--density-roomy .site-quote-card__mark svg {
+  width: 2.45rem;
+}
+
+/* ============================================================
+   Content
+============================================================ */
+
+.site-quote-card__content {
+  min-width: 0;
+}
+
+.site-quote-card__quote {
+  margin: 0;
+  color: var(--color-text-primary);
+  font-size: clamp(1.05rem, 1.25vw, 1.28rem);
+  font-weight: 820;
+  line-height: 1.22;
+  letter-spacing: -0.026em;
+  text-wrap: balance;
+}
+
+.site-quote-card__quote > span {
+  display: none;
+}
+
+.site-quote-card__body {
+  margin: 0.62rem 0 0;
+  color: var(--color-text-secondary);
+  font-size: clamp(0.9rem, 0.95vw, 1rem);
+  line-height: 1.48;
+  text-wrap: pretty;
+}
+
+.site-quote-card--density-compact .site-quote-card__quote {
+  font-size: clamp(0.98rem, 1vw, 1.08rem);
+  line-height: 1.24;
+}
+
+.site-quote-card--density-compact .site-quote-card__body {
+  margin-top: 0.48rem;
+  font-size: clamp(0.84rem, 0.88vw, 0.92rem);
+  line-height: 1.44;
+}
+
+.site-quote-card--density-roomy .site-quote-card__quote {
+  font-size: clamp(1.16rem, 1.45vw, 1.45rem);
+  line-height: 1.2;
+}
+
+.site-quote-card--density-roomy .site-quote-card__body {
+  margin-top: 0.72rem;
+  font-size: clamp(0.94rem, 1vw, 1.05rem);
+  line-height: 1.52;
+}
+
+/* ============================================================
+   Accent line
+============================================================ */
+
+.site-quote-card__accent-line {
+  display: block;
+  width: 2.45rem;
+  height: 2px;
+  margin-top: 1rem;
+  border-radius: var(--radius-pill);
+  background: var(--site-quote-accent);
+  box-shadow: 0 0 12px
+    color-mix(in srgb, var(--site-quote-accent) 38%, transparent);
+}
+
+.site-quote-card--density-compact .site-quote-card__accent-line {
+  width: 2rem;
+  margin-top: 0.8rem;
+}
+
+.site-quote-card--density-roomy .site-quote-card__accent-line {
+  width: 2.8rem;
+  margin-top: 1.2rem;
+}
+
+.site-quote-card--accent-bottom-left .site-quote-card__accent-line {
+  justify-self: start;
+}
+
+.site-quote-card--accent-bottom-center .site-quote-card__accent-line {
+  justify-self: center;
+}
+
+.site-quote-card--accent-bottom-right .site-quote-card__accent-line {
+  justify-self: end;
+}
+
+.site-quote-card--accent-none {
+  grid-template-rows: auto 1fr;
+}
+
+/* ============================================================
+   Responsive internal adjustments
+============================================================ */
+
+@media (max-width: 640px) {
+  .site-quote-card--density-default {
+    padding: 1.2rem 1.2rem 1.1rem;
+  }
+
+  .site-quote-card--density-roomy {
+    padding: 1.35rem 1.3rem 1.25rem;
+  }
+
+  .site-quote-card__quote {
+    font-size: clamp(1.06rem, 4.8vw, 1.25rem);
+  }
+
+  .site-quote-card__body {
+    font-size: clamp(0.91rem, 4vw, 0.99rem);
+  }
+}
+
+/* ============================================================
+   Reduced motion
+============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .site-quote-card {
+    scroll-behavior: auto;
+  }
+}

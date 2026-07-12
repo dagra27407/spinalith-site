@@ -154,6 +154,14 @@
   line-height: 1.62;
 }
 
+.home-hero__solution {
+  margin: 0;
+  color: var(--color-brand-primary);
+  font-size: 1.25rem;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
 /* ============================================================
    Home hero actions
 ============================================================ */
