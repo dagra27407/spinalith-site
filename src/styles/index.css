@@ -34,7 +34,7 @@
 /* Pages / sections */
 @import "./page/home/homeHero.css";
 @import "./page/home/homeProblem.css";
-@import "./page/home/homeSolution.css";
+@import "./page/home/homeVisualPlanning.css";
 @import "./page/home/homeConnected.css";
 @import "./page/home/homeWorkflows.css";
 @import "./page/home/homeMomentum.css";

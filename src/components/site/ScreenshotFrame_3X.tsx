@@ -101,9 +101,9 @@ export type ScreenshotFrame3XItem = {
 };
 
 type ScreenshotFrame3XProps = {
-  left: ScreenshotFrame3XItem;
-  center: ScreenshotFrame3XItem;
-  right: ScreenshotFrame3XItem;
+  left?: ScreenshotFrame3XItem;
+  center?: ScreenshotFrame3XItem;
+  right?: ScreenshotFrame3XItem;
   className?: string;
   eager?: boolean;
 };
@@ -206,9 +206,9 @@ export function ScreenshotFrame_3X({
 
   return (
     <div className={rootClassName}>
-      {renderScreenshot("left", left, eager)}
-      {renderScreenshot("center", center, eager)}
-      {renderScreenshot("right", right, eager)}
+      {left ? renderScreenshot("left", left, eager) : null}
+      {center ? renderScreenshot("center", center, eager) : null}
+      {right ? renderScreenshot("right", right, eager) : null}
     </div>
   );
 }

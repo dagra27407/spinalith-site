@@ -295,56 +295,79 @@
 
 
 /* ============================================================
-   Variant: Original Hero
-   Recreates the first-pass angled hero frame with a cleaner device edge.
+   Variants: Original Hero / Original Hero Flat
+
+   Both variants share the original hero device treatment.
+
+   original-hero:
+   - Includes the original built-in perspective tilt.
+   - Preserved for the established homepage hero composition.
+
+   original-hero-flat:
+   - Uses the same device edge, chrome, glow, and shadow.
+   - Leaves all positioning and tilt to the parent composition.
 ============================================================ */
 
-.screenshot-frame--original-hero {
+.screenshot-frame--original-hero,
+.screenshot-frame--original-hero-flat {
   border: 1px solid var(--screenshot-border);
   border-radius: 1rem;
   background: var(--screenshot-shell-bg);
   box-shadow:
     var(--screenshot-shadow),
     var(--shadow-card);
+}
+
+.screenshot-frame--original-hero {
   transform: perspective(1200px) rotateY(-3deg) rotateX(1deg);
   transform-origin: center;
 }
 
-.screenshot-frame--original-hero::before {
+.screenshot-frame--original-hero::before,
+.screenshot-frame--original-hero-flat::before {
   content: "";
   position: absolute;
   inset: 0;
+  z-index: 2;
   pointer-events: none;
   border-radius: inherit;
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.08), transparent 24%),
-    radial-gradient(circle at 18% 0%, rgba(139, 92, 246, 0.22), transparent 32rem);
+    radial-gradient(
+      circle at 18% 0%,
+      rgba(139, 92, 246, 0.22),
+      transparent 32rem
+    );
   opacity: 0.72;
-  z-index: 2;
 }
 
-.screenshot-frame--original-hero .screenshot-frame__chrome {
+.screenshot-frame--original-hero .screenshot-frame__chrome,
+.screenshot-frame--original-hero-flat .screenshot-frame__chrome {
   min-height: 2.1rem;
   padding: 0 1rem;
   border-bottom: 0;
   background: transparent;
 }
 
-.screenshot-frame--original-hero .screenshot-frame__dot {
+.screenshot-frame--original-hero .screenshot-frame__dot,
+.screenshot-frame--original-hero-flat .screenshot-frame__dot {
   width: 0.55rem;
   height: 0.55rem;
   background: rgba(255, 255, 255, 0.34);
 }
 
-.screenshot-frame--original-hero .screenshot-frame__dot--yellow {
+.screenshot-frame--original-hero .screenshot-frame__dot--yellow,
+.screenshot-frame--original-hero-flat .screenshot-frame__dot--yellow {
   background: rgba(255, 255, 255, 0.22);
 }
 
-.screenshot-frame--original-hero .screenshot-frame__dot--green {
+.screenshot-frame--original-hero .screenshot-frame__dot--green,
+.screenshot-frame--original-hero-flat .screenshot-frame__dot--green {
   background: rgba(255, 255, 255, 0.16);
 }
 
-.screenshot-frame--original-hero .screenshot-frame__media {
+.screenshot-frame--original-hero .screenshot-frame__media,
+.screenshot-frame--original-hero-flat .screenshot-frame__media {
   background: transparent;
 }
 

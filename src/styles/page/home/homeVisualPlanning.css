@@ -1,0 +1,430 @@
+/* ============================================================
+   Home Visual Planning
+============================================================ */
+
+.home-visual-planning {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: clamp(5.5rem, 8vw, 8.75rem) 0;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(3, 7, 22, 0.98) 0%,
+      rgba(4, 8, 25, 0.94) 34%,
+      rgba(5, 8, 28, 0.76) 64%,
+      rgba(4, 7, 22, 0.88) 100%
+    ),
+    url("/assets/images/home/visual-planner-nebula-backdrop.png")
+      center / cover no-repeat;
+}
+
+.home-visual-planning::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      circle at 17% 24%,
+      color-mix(
+        in srgb,
+        var(--color-brand-soft) 13%,
+        transparent
+      ),
+      transparent 31%
+    ),
+    radial-gradient(
+      circle at 78% 58%,
+      color-mix(
+        in srgb,
+        var(--color-accent-interactive) 12%,
+        transparent
+      ),
+      transparent 35%
+    );
+}
+
+.home-visual-planning::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  z-index: -1;
+  height: 28%;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    color-mix(in srgb, var(--color-background) 72%, transparent)
+  );
+}
+
+.home-visual-planning__inner {
+  display: grid;
+  grid-template-columns:
+    minmax(17rem, 0.78fr)
+    minmax(31rem, 1.62fr);
+  align-items: stretch;
+  gap: clamp(3rem, 5.5vw, 6.5rem);
+}
+
+/* ============================================================
+   Copy
+============================================================ */
+
+.home-visual-planning__content {
+  position: relative;
+  z-index: 2;
+  min-width: 0;
+}
+
+.home-visual-planning__header {
+  max-width: 34rem;
+}
+
+.home-visual-planning__kicker {
+  margin: 0 0 0.85rem;
+  color: var(--color-brand-soft);
+  font-size: clamp(0.78rem, 0.72rem + 0.18vw, 0.92rem);
+  font-weight: 800;
+  letter-spacing: 0.105em;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+.home-visual-planning__title {
+  display: flex;
+  flex-direction: column;
+  gap: 0.02em;
+  margin: 0;
+  color: var(--color-text);
+  font-size: clamp(2.4rem, 3.9vw, 4.7rem);
+  font-weight: 800;
+  letter-spacing: -0.048em;
+  line-height: 0.98;
+  text-wrap: balance;
+}
+
+.home-visual-planning__title-line {
+  display: block;
+}
+
+.home-visual-planning__title-accent {
+  color: var(--color-brand-soft);
+  font-weight: inherit;
+}
+
+.home-visual-planning__lede {
+  max-width: 32rem;
+  margin: clamp(1.35rem, 2vw, 1.85rem) 0 0;
+  color: var(--color-text);
+  font-size: clamp(1.05rem, 0.98rem + 0.25vw, 1.28rem);
+  font-weight: 650;
+  line-height: 1.48;
+}
+
+.home-visual-planning__body-copy {
+  max-width: 34rem;
+  margin: 1.15rem 0 0;
+  color: var(--color-text-soft);
+  font-size: clamp(0.94rem, 0.9rem + 0.13vw, 1.05rem);
+  line-height: 1.68;
+}
+
+/* ============================================================
+   Benefits
+============================================================ */
+
+.home-visual-planning__benefits {
+  display: grid;
+  margin-top: clamp(2rem, 3vw, 2.8rem);
+}
+
+.home-visual-planning__benefit {
+  position: relative;
+  padding-block: 1rem;
+}
+
+.home-visual-planning__benefit:first-child {
+  padding-top: 0;
+}
+
+.home-visual-planning__benefit:last-child {
+  padding-bottom: 0;
+}
+
+.home-visual-planning__benefit + .home-visual-planning__benefit::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: clamp(4.75rem, 5vw, 5.35rem);
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--color-border) 66%, transparent),
+    color-mix(in srgb, var(--color-border) 18%, transparent)
+  );
+}
+
+.home-visual-planning__support-line {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin: clamp(2rem, 3vw, 2.8rem) 0 0;
+  color: var(--color-brand-soft);
+  font-size: clamp(0.86rem, 0.82rem + 0.14vw, 0.98rem);
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.home-visual-planning__support-line svg {
+  width: 1.05rem;
+  height: 1.05rem;
+  flex: 0 0 auto;
+}
+
+/* ============================================================
+   Screenshot composition
+============================================================ */
+
+.home-visual-planning__visual {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  min-width: 0;
+  height: 100%;
+}
+
+.home-visual-planning__visual-heading {
+  position: relative;
+  z-index: 2;
+  margin: 0 0 clamp(1rem, 1.8vw, 1.5rem);
+  color: var(--color-text);
+  font-size: clamp(1rem, 0.94rem + 0.28vw, 1.25rem);
+  font-weight: 700;
+  line-height: 1.35;
+  text-align: center;
+  text-wrap: balance;
+}
+
+/*
+ * Constrains the transformed ScreenshotFrame_3X children to the
+ * available visual-column height.
+ */
+.home-visual-planning__frame-stage {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.home-visual-planning__frame-composition {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  aspect-ratio: auto;
+}
+
+.home-visual-planning__proof-line {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+  max-width: 48rem;
+  margin: clamp(1rem, 1.8vw, 1.5rem) auto 0;
+  color: var(--color-text);
+  font-size: clamp(0.98rem, 0.91rem + 0.28vw, 1.18rem);
+  font-weight: 600;
+  line-height: 1.45;
+  text-align: center;
+  text-wrap: balance;
+}
+
+.home-visual-planning__proof-line svg {
+  width: 1.3rem;
+  height: 1.3rem;
+  flex: 0 0 auto;
+  color: var(--color-brand-soft);
+}
+
+.home-visual-planning__proof-line strong {
+  color: var(--color-brand-soft);
+  font-weight: 800;
+}
+
+/* ============================================================
+   Large tablet
+============================================================ */
+
+@media (max-width: 1180px) {
+  .home-visual-planning__inner {
+    grid-template-columns:
+      minmax(16rem, 0.88fr)
+      minmax(27rem, 1.35fr);
+    gap: clamp(2.5rem, 4vw, 4rem);
+  }
+
+  .home-visual-planning__frame-composition {
+    width: 108%;
+    margin-left: -4%;
+  }
+}
+
+/* ============================================================
+   Tablet
+============================================================ */
+
+@media (max-width: 980px) {
+  .home-visual-planning {
+    padding-block: clamp(4.75rem, 8vw, 6.5rem);
+  }
+
+  .home-visual-planning__inner {
+    grid-template-columns:
+      minmax(16rem, 0.92fr)
+      minmax(23rem, 1.22fr);
+    gap: clamp(2rem, 3.6vw, 3rem);
+  }
+
+  .home-visual-planning__title {
+    font-size: clamp(2.25rem, 4.6vw, 3.65rem);
+  }
+
+  .home-visual-planning__body-copy {
+    line-height: 1.6;
+  }
+
+  .home-visual-planning__benefit {
+    padding-block: 0.85rem;
+  }
+
+  .home-visual-planning__frame-composition {
+    width: 116%;
+    margin-left: -8%;
+  }
+
+  .home-visual-planning__proof-line {
+    width: 112%;
+    margin-left: -6%;
+  }
+}
+
+/* ============================================================
+   Mobile layout
+============================================================ */
+
+@media (max-width: 1015px) {
+  .home-visual-planning {
+    padding-block: clamp(4.75rem, 8vw, 6.5rem);
+    background-position: 62% center;
+  }
+
+  .home-visual-planning__inner {
+    grid-template-columns: minmax(0, 1fr);
+    align-items: initial;
+    gap: clamp(2.5rem, 5vw, 3.5rem);
+  }
+
+  .home-visual-planning__content {
+    width: min(100%, 44rem);
+  }
+
+  .home-visual-planning__header {
+    max-width: 39rem;
+  }
+
+  .home-visual-planning__title {
+    max-width: 35rem;
+    font-size: clamp(2.45rem, 7vw, 4rem);
+  }
+
+  .home-visual-planning__lede,
+  .home-visual-planning__body-copy {
+    max-width: 38rem;
+  }
+
+  .home-visual-planning__benefits {
+    max-width: 39rem;
+  }
+
+  .home-visual-planning__support-line {
+    margin-top: 2.2rem;
+  }
+
+  .home-visual-planning__visual {
+    width: min(100%, 52rem);
+    height: auto;
+    margin-inline: auto;
+  }
+
+  .home-visual-planning__frame-stage {
+    aspect-ratio: 16 / 12.25;
+  }
+
+  .home-visual-planning__frame-composition {
+    width: 112%;
+    height: 100%;
+    margin-left: -6%;
+  }
+
+  .home-visual-planning__proof-line {
+    width: 100%;
+    margin-left: 0;
+  }
+}
+
+/* ============================================================
+   Small mobile
+============================================================ */
+
+@media (max-width: 520px) {
+  .home-visual-planning {
+    padding-block: 4rem;
+  }
+
+  .home-visual-planning__title {
+    font-size: clamp(2.2rem, 11.5vw, 3.15rem);
+    line-height: 1;
+  }
+
+  .home-visual-planning__lede {
+    font-size: 1.03rem;
+  }
+
+  .home-visual-planning__benefit + .home-visual-planning__benefit::before {
+    left: 4.15rem;
+  }
+
+  .home-visual-planning__frame-stage {
+    aspect-ratio: 16 / 13.2;
+  }
+
+  .home-visual-planning__frame-composition {
+    width: 118%;
+    margin-left: -9%;
+  }
+
+  .home-visual-planning__proof-line {
+    align-items: flex-start;
+    font-size: 0.94rem;
+  }
+
+  .home-visual-planning__proof-line svg {
+    margin-top: 0.12rem;
+  }
+}
+
+/* ============================================================
+   Reduced motion
+============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .home-visual-planning__frame-composition::before {
+    filter: none;
+  }
+}

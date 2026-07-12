@@ -19,7 +19,7 @@
 
 import { HomeHeroSection } from "../components/home/HomeHeroSection";
 import { HomeProblemSection } from "../components/home/HomeProblemSection";
-import { HomeSolutionSection } from "../components/home/HomeSolutionSection";
+import { HomeVisualPlanningSection } from "../components/home/HomeVisualPlanningSection";
 import { HomeConnectedSection } from "../components/home/HomeConnectedSection";
 import { HomeWorkflowsSection } from "@/components/home/HomeWorkflowsSection";
 import { HomeMomentumSection } from "@/components/home/HomeMomentumSection";
@@ -31,7 +31,7 @@ export function HomePage() {
     <>
       <HomeHeroSection />
       <HomeProblemSection />
-      <HomeSolutionSection />
+      <HomeVisualPlanningSection />
       <HomeConnectedSection />
       <HomeWorkflowsSection />
       <HomeMomentumSection />

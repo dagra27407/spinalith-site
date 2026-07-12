@@ -23,6 +23,7 @@ export type ScreenshotFrameVariant =
   | "browserClean"
   | "browserAngle"
   | "originalHero"
+  | "originalHeroFlat"
   | "glassCard"
   | "appWindow"
   | "minimal"
@@ -51,6 +52,7 @@ const variantClassMap: Record<ScreenshotFrameVariant, string> = {
   minimal: "screenshot-frame--minimal",
   flat: "screenshot-frame--flat",
   originalHero: "screenshot-frame--original-hero",
+  originalHeroFlat: "screenshot-frame--original-hero-flat",
   primaryColorEdge: "screenshot-frame--primary-color-edge",
   primaryColorHalo: "screenshot-frame--primary-color-halo",
   primaryColorTilt: "screenshot-frame--primary-color-tilt",
