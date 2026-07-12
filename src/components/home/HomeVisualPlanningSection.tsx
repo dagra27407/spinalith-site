@@ -151,9 +151,6 @@ export function HomeVisualPlanningSection() {
         </div>
 
         <div className="home-visual-planning__visual">
-          <p className="home-visual-planning__visual-heading">
-            Shape your story with visual, drag-and-drop planning
-          </p>
 
           <div className="home-visual-planning__frame-stage">
             <ScreenshotFrame_3X
