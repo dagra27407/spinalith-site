@@ -326,7 +326,7 @@ export function HomeConnectedMap() {
           Structure
         </text>
         <text className="home-connected-map__node-helper" x="66" y="42">
-          Plan the journey.
+          Plan the reader journey.
         </text>
       </g>
 
@@ -359,7 +359,7 @@ export function HomeConnectedMap() {
           Notes
         </text>
         <text className="home-connected-map__node-helper" x="66" y="42">
-          Capture everything.
+          Link, search, and track.
         </text>
       </g>
 
@@ -397,8 +397,8 @@ export function HomeConnectedMap() {
         </text>
 
         <text className="home-connected-map__hub-helper" x="56" y="95">
-          <tspan x="56">One connected</tspan>
-          <tspan x="56" dy="13.5">workspace</tspan>
+          <tspan x="56">Fully connected</tspan>
+          <tspan x="56" dy="13.5">story system</tspan>
         </text>
       </g>
     </svg>

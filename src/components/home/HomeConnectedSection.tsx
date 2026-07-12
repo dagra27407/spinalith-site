@@ -7,16 +7,19 @@
  * Homepage "Everything Connected" section.
  *
  * Responsibilities:
- * - Introduces Spinalith as a connected story workspace.
- * - Pairs a strong headline with the connected-map SVG illustration.
- * - Lets the map carry the section visually without a supporting screenshot.
- * - Preserves a distinct rhythm from the surrounding homepage sections.
+ * - Introduce Spinalith as a fully connected story system.
+ * - Pair a strong headline with the connected-map SVG illustration.
+ * - Explain how changes and story elements stay connected across tools.
+ * - Let the map carry the section visually without a supporting screenshot.
+ * - Preserve a distinct rhythm from the surrounding homepage sections.
  *
  * Notes:
  * - The connection map artwork lives in homeComponents/HomeConnectedMap.tsx.
  * - The section places and scales the map, but does not style map internals.
  * - Section-level layout styles live in src/styles/page/home/homeConnected.css.
  */
+
+import { Sparkles } from "lucide-react";
 
 import { HomeConnectedMap } from "./homeComponents/HomeConnectedMap";
 
@@ -41,7 +44,19 @@ export function HomeConnectedSection() {
             <HomeConnectedMap />
           </div>
         </div>
+
+        <div className="home-connected__closing">
+          <Sparkles aria-hidden="true" />
+
+          <p className="home-connected__lede">
+            Update one part of your story, and the connected pieces stay aligned everywhere else.
+          </p>
+
+          <Sparkles aria-hidden="true" />
+        </div>
       </div>
     </section>
   );
 }
+
+export default HomeConnectedSection;

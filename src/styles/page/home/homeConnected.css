@@ -10,6 +10,7 @@
  * - Creates a wide headline + connection-map layout.
  * - Lets the SVG map carry the section as the primary visual.
  * - Applies section-level atmosphere around the imported map without styling map internals.
+ * - Adds a full-width closing statement beneath the headline and map.
  * - Provides responsive stacking for tablet and mobile.
  *
  * Notes:
@@ -75,7 +76,11 @@
   z-index: -1;
   pointer-events: none;
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.026), transparent 22%),
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.026),
+      transparent 22%
+    ),
     radial-gradient(
       circle at 50% 50%,
       rgba(255, 255, 255, 0.018),
@@ -87,9 +92,12 @@
 .home-connected__inner {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(17rem, 0.68fr) minmax(36rem, 1.42fr);
-  gap: clamp(2rem, 5vw, 5.5rem);
+  grid-template-columns:
+    minmax(17rem, 0.68fr)
+    minmax(36rem, 1.42fr);
   align-items: center;
+  column-gap: clamp(2rem, 5vw, 5.5rem);
+  row-gap: clamp(2rem, 3vw, 3rem);
   padding-inline: clamp(0.75rem, 1.4vw, 1.5rem);
 }
 
@@ -120,8 +128,18 @@
 .home-connected__title-accent {
   color: var(--color-brand-soft);
   text-shadow:
-    0 0 30px color-mix(in srgb, var(--color-brand-primary) 32%, transparent),
-    0 0 62px color-mix(in srgb, var(--color-brand-primary) 18%, transparent);
+    0 0 30px
+      color-mix(
+        in srgb,
+        var(--color-brand-primary) 32%,
+        transparent
+      ),
+    0 0 62px
+      color-mix(
+        in srgb,
+        var(--color-brand-primary) 18%,
+        transparent
+      );
 }
 
 /* ============================================================
@@ -134,6 +152,50 @@
   width: min(100%, 58rem);
   min-width: 0;
   justify-self: end;
+}
+
+/* ============================================================
+   Closing statement
+============================================================ */
+
+.home-connected__closing {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.7rem, 1.4vw, 1rem);
+  width: min(100%, 72rem);
+  margin: 0 auto;
+  padding-top: clamp(1.25rem, 2vw, 1.85rem);
+  padding-bottom: clamp(0.6rem, 1vw, 0.9rem);
+  border-top: 1px solid
+    color-mix(
+      in srgb,
+      var(--color-border-soft) 72%,
+      transparent
+    );
+}
+
+.home-connected__closing > svg {
+  width: clamp(1rem, 1.2vw, 1.25rem);
+  height: clamp(1rem, 1.2vw, 1.25rem);
+  flex: 0 0 auto;
+  color: var(--color-brand-soft);
+}
+
+.home-connected__lede {
+  max-width: 61rem;
+  margin: 0;
+  color: var(--color-text-soft);
+  font-size: clamp(1rem, 0.93rem + 0.27vw, 1.22rem);
+  font-weight: 550;
+  line-height: 1.65;
+  text-align: center;
+  text-wrap: balance;
+}
+
+.home-connected__lede strong {
+  color: var(--color-brand-soft);
 }
 
 /* ============================================================
@@ -155,7 +217,11 @@
   background:
     radial-gradient(
       ellipse at center,
-      color-mix(in srgb, var(--color-brand-primary) 24%, transparent),
+      color-mix(
+        in srgb,
+        var(--color-brand-primary) 24%,
+        transparent
+      ),
       transparent 70%
     );
   filter: blur(38px);
@@ -172,7 +238,11 @@
   background:
     radial-gradient(
       ellipse at center,
-      color-mix(in srgb, var(--color-brand-faint) 20%, transparent),
+      color-mix(
+        in srgb,
+        var(--color-brand-faint) 20%,
+        transparent
+      ),
       transparent 72%
     );
   filter: blur(20px);
@@ -183,26 +253,56 @@
   position: relative;
   filter:
     drop-shadow(
-      0 0 18px color-mix(in srgb, var(--color-brand-primary) 24%, transparent)
+      0 0 18px
+        color-mix(
+          in srgb,
+          var(--color-brand-primary) 24%,
+          transparent
+        )
     )
     drop-shadow(
-      0 0 42px color-mix(in srgb, var(--color-brand-primary) 16%, transparent)
+      0 0 42px
+        color-mix(
+          in srgb,
+          var(--color-brand-primary) 16%,
+          transparent
+        )
     )
     drop-shadow(
-      0 0 78px color-mix(in srgb, var(--color-brand-faint) 9%, transparent)
+      0 0 78px
+        color-mix(
+          in srgb,
+          var(--color-brand-faint) 9%,
+          transparent
+        )
     );
 }
 
 .home-connected__drop-halo--strong {
   filter:
     drop-shadow(
-      0 0 24px color-mix(in srgb, var(--color-brand-primary) 34%, transparent)
+      0 0 24px
+        color-mix(
+          in srgb,
+          var(--color-brand-primary) 34%,
+          transparent
+        )
     )
     drop-shadow(
-      0 0 58px color-mix(in srgb, var(--color-brand-primary) 24%, transparent)
+      0 0 58px
+        color-mix(
+          in srgb,
+          var(--color-brand-primary) 24%,
+          transparent
+        )
     )
     drop-shadow(
-      0 0 96px color-mix(in srgb, var(--color-brand-faint) 14%, transparent)
+      0 0 96px
+        color-mix(
+          in srgb,
+          var(--color-brand-faint) 14%,
+          transparent
+        )
     );
 }
 
@@ -213,7 +313,8 @@
 @media (max-width: 1080px) {
   .home-connected__inner {
     grid-template-columns: 1fr;
-    gap: clamp(2rem, 5vw, 3.25rem);
+    column-gap: 0;
+    row-gap: clamp(2rem, 4vw, 3rem);
     padding-block: clamp(1.75rem, 4vw, 3rem);
     padding-inline: clamp(0.9rem, 2vw, 1.5rem);
   }
@@ -233,6 +334,12 @@
     margin-inline: auto;
     justify-self: center;
   }
+
+  .home-connected__closing {
+    width: min(100%, 52rem);
+    margin-inline: auto;
+    padding-top: clamp(1.15rem, 2.5vw, 1.65rem);
+  }
 }
 
 /* ============================================================
@@ -244,7 +351,11 @@
     background:
       radial-gradient(
         circle at 50% 18%,
-        color-mix(in srgb, var(--color-brand-primary) 12%, transparent),
+        color-mix(
+          in srgb,
+          var(--color-brand-primary) 12%,
+          transparent
+        ),
         transparent 22rem
       ),
       linear-gradient(
@@ -256,7 +367,7 @@
   }
 
   .home-connected__inner {
-    gap: 1.75rem;
+    row-gap: 1.75rem;
     padding-block: 1.5rem;
     padding-inline: 0.9rem;
   }
@@ -273,6 +384,24 @@
 
   .home-connected__map-shell {
     width: 100%;
+  }
+
+  .home-connected__closing {
+    align-items: flex-start;
+    gap: 0.6rem;
+    width: 100%;
+    margin: 0;
+    padding-top: 1.15rem;
+  }
+
+  .home-connected__closing > svg {
+    margin-top: 0.3rem;
+  }
+
+  .home-connected__lede {
+    font-size: 0.98rem;
+    line-height: 1.58;
+    text-align: left;
   }
 
   .home-connected__map-halo::before {
