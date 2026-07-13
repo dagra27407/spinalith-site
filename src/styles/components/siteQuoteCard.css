@@ -8,6 +8,7 @@
  *
  * Responsibilities:
  * - Style the card surface, border, glow, quotation mark, copy, and accent line.
+ * - Optionally place a short eyebrow label beside the quotation mark.
  * - Support compact, default, and roomy density variants.
  * - Support automatic and equal-height card behavior.
  * - Support left, center, right, or hidden bottom accent-line placement.
@@ -17,6 +18,7 @@
  * - Parent sections own card-grid layout and responsive column changes.
  * - Section CSS may place or size the card but should avoid overriding its internals.
  * - The default visual treatment is intentionally restrained so repeated cards read as one set.
+ * - Cards without an eyebrow preserve the original Problem-section structure and spacing.
  * - The local --site-quote-accent variable is supplied by SiteQuoteCard.tsx.
  */
 
@@ -98,13 +100,15 @@
 }
 
 .site-quote-card--density-default {
-  padding: clamp(1.15rem, 1.5vw, 1.45rem)
+  padding:
+    clamp(1.15rem, 1.5vw, 1.45rem)
     clamp(1.15rem, 1.65vw, 1.55rem)
     clamp(1.05rem, 1.4vw, 1.35rem);
 }
 
 .site-quote-card--density-roomy {
-  padding: clamp(1.35rem, 2vw, 1.8rem)
+  padding:
+    clamp(1.35rem, 2vw, 1.8rem)
     clamp(1.35rem, 2.15vw, 1.95rem)
     clamp(1.25rem, 1.8vw, 1.65rem);
 }
@@ -146,6 +150,53 @@
 
 .site-quote-card--density-roomy .site-quote-card__mark svg {
   width: 2.45rem;
+}
+
+/* ============================================================
+   Optional eyebrow header
+============================================================ */
+
+.site-quote-card__header {
+  display: flex;
+  align-items: center;
+  gap: 0.78rem;
+  min-width: 0;
+  margin-bottom: 0.72rem;
+}
+
+.site-quote-card__header .site-quote-card__mark {
+  flex: 0 0 auto;
+  margin-bottom: 0;
+}
+
+.site-quote-card__eyebrow {
+  min-width: 0;
+  margin: 0;
+  color: var(--site-quote-accent);
+  font-size: 0.7rem;
+  font-weight: 850;
+  letter-spacing: var(--tracking-label);
+  line-height: 1.25;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+.site-quote-card--density-compact .site-quote-card__header {
+  gap: 0.65rem;
+  margin-bottom: 0.58rem;
+}
+
+.site-quote-card--density-compact .site-quote-card__eyebrow {
+  font-size: 0.64rem;
+}
+
+.site-quote-card--density-roomy .site-quote-card__header {
+  gap: 0.88rem;
+  margin-bottom: 0.85rem;
+}
+
+.site-quote-card--density-roomy .site-quote-card__eyebrow {
+  font-size: 0.72rem;
 }
 
 /* ============================================================
@@ -260,6 +311,16 @@
 
   .site-quote-card__body {
     font-size: clamp(0.91rem, 4vw, 0.99rem);
+  }
+
+  .site-quote-card__header {
+    align-items: flex-start;
+    gap: 0.7rem;
+  }
+
+  .site-quote-card__eyebrow {
+    padding-top: 0.08rem;
+    font-size: 0.66rem;
   }
 }
 
