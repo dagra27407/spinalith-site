@@ -7,36 +7,61 @@
  * Homepage Start With Momentum section styling.
  *
  * Responsibilities:
- * - Create an open, full-width section for templates, demos, genre templates, and blank start.
- * - Keep the section premium/dark/purple-forward without enclosing it in a large bordered card.
- * - Control section layout, spacing, responsive grid behavior, and CTA styling.
+ * - Create an open, full-width section for templates, demos, genre templates,
+ *   and a blank start.
+ * - Keep the section premium, dark, and purple-forward without enclosing it
+ *   inside a large bordered panel.
+ * - Control section layout, spacing, responsive gallery behavior, and CTA styling.
  *
  * Notes:
- * - SiteBenefitItem owns benefit item visuals, sizing, icon shape, copy sizing, and internal spacing.
- * - SiteGalleryCard owns gallery card visuals, media treatment, copy sizing, pill, meta row, and blank state.
- * - This file should compose reusable components, not override their internals.
+ * - SiteBenefitItem owns benefit-item visuals, sizing, icon shape, copy sizing,
+ *   and internal spacing.
+ * - SiteGalleryCard owns gallery-card visuals, media treatment, copy sizing,
+ *   pill, metadata row, and blank state.
+ * - This file should compose reusable components rather than override their internals.
  */
+
+/* ============================================================
+   Section shell
+============================================================ */
 
 .home-momentum {
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  padding: clamp(5.5rem, 8vw, 8rem) 0 clamp(5.25rem, 7vw, 7.5rem);
+  padding: clamp(5.5rem, 8vw, 8rem) 0
+    clamp(5.25rem, 7vw, 7.5rem);
   background:
     radial-gradient(
       ellipse at 18% 24%,
-      color-mix(in srgb, var(--color-brand-primary) 16%, transparent),
+      color-mix(
+        in srgb,
+        var(--color-brand-primary) 16%,
+        transparent
+      ),
       transparent 34rem
     ),
     radial-gradient(
       ellipse at 72% 50%,
-      color-mix(in srgb, var(--color-accent-interactive) 7%, transparent),
+      color-mix(
+        in srgb,
+        var(--color-accent-interactive) 7%,
+        transparent
+      ),
       transparent 40rem
     ),
     linear-gradient(
       180deg,
-      color-mix(in srgb, var(--color-bg-page) 98%, transparent),
-      color-mix(in srgb, var(--color-bg-section) 62%, var(--color-bg-page))
+      color-mix(
+        in srgb,
+        var(--color-bg-page) 98%,
+        transparent
+      ),
+      color-mix(
+        in srgb,
+        var(--color-bg-section) 62%,
+        var(--color-bg-page)
+      )
     );
 }
 
@@ -49,14 +74,26 @@
   background:
     linear-gradient(
       90deg,
-      color-mix(in srgb, var(--color-bg-page) 100%, transparent),
+      color-mix(
+        in srgb,
+        var(--color-bg-page) 100%,
+        transparent
+      ),
       transparent 24%,
       transparent 76%,
-      color-mix(in srgb, var(--color-bg-page) 86%, transparent)
+      color-mix(
+        in srgb,
+        var(--color-bg-page) 86%,
+        transparent
+      )
     ),
     radial-gradient(
       circle at 36% 78%,
-      color-mix(in srgb, var(--color-brand-soft) 8%, transparent),
+      color-mix(
+        in srgb,
+        var(--color-brand-soft) 8%,
+        transparent
+      ),
       transparent 22rem
     );
 }
@@ -67,9 +104,16 @@
 
 .home-momentum__body {
   display: grid;
-  grid-template-columns: minmax(15.5rem, 0.58fr) minmax(0, 2.25fr);
-  gap: clamp(2.25rem, 4vw, 4.25rem);
+  grid-template-columns:
+    minmax(20rem, 22rem)
+    minmax(0, 1fr);
+  gap: clamp(2.75rem, 4vw, 5rem);
   align-items: start;
+}
+
+.home-momentum__title {
+  max-width: 7.75em;
+  font-size: clamp(2.45rem, 2.8vw, 3.25rem);
 }
 
 .home-momentum__intro {
@@ -95,29 +139,49 @@
 }
 
 .home-momentum__title {
-  max-width: 8.2em;
+  max-width: 7.4em;
   margin: 0;
   color: var(--color-text-primary);
-  font-size: clamp(2.25rem, 3.25vw, 3.55rem);
+  font-size: clamp(2.15rem, 2.45vw, 2.95rem);
   font-weight: 900;
-  line-height: 1;
+  line-height: 0.98;
   letter-spacing: -0.064em;
   text-wrap: balance;
   text-shadow:
-    0 0 24px color-mix(in srgb, var(--color-brand-primary) 10%, transparent),
-    0 2px 18px color-mix(in srgb, var(--color-bg-page) 68%, transparent);
+    0 0 24px
+      color-mix(
+        in srgb,
+        var(--color-brand-primary) 10%,
+        transparent
+      ),
+    0 2px 18px
+      color-mix(
+        in srgb,
+        var(--color-bg-page) 68%,
+        transparent
+      );
 }
 
 .home-momentum__title-accent {
   color: var(--color-brand-primary);
   text-shadow:
-    0 0 20px color-mix(in srgb, var(--color-brand-primary) 38%, transparent),
-    0 0 44px color-mix(in srgb, var(--color-brand-primary) 20%, transparent);
+    0 0 20px
+      color-mix(
+        in srgb,
+        var(--color-brand-primary) 38%,
+        transparent
+      ),
+    0 0 44px
+      color-mix(
+        in srgb,
+        var(--color-brand-primary) 20%,
+        transparent
+      );
 }
 
 .home-momentum__lede {
-  max-width: 22rem;
-  margin: clamp(1rem, 1.5vw, 1.25rem) 0 0;
+  max-width: 21rem;
+  margin: clamp(1.65rem, 2.5vw, 2.5rem) 0 0;
   color: var(--color-text-secondary);
   font-size: clamp(0.93rem, 0.92vw, 1.02rem);
   line-height: 1.58;
@@ -149,12 +213,27 @@
   width: min(100%, 18.5rem);
   margin-top: clamp(1.5rem, 2.25vw, 2rem);
   padding: 0.86rem 1.05rem;
-  border: 1px solid color-mix(in srgb, var(--color-brand-faint) 30%, transparent);
+  border: 1px solid
+    color-mix(
+      in srgb,
+      var(--color-brand-faint) 30%,
+      transparent
+    );
   border-radius: var(--radius-md);
   background: var(--button-primary-bg);
   box-shadow:
-    0 18px 38px color-mix(in srgb, var(--color-brand-primary) 25%, transparent),
-    0 0 34px color-mix(in srgb, var(--color-brand-primary) 18%, transparent);
+    0 18px 38px
+      color-mix(
+        in srgb,
+        var(--color-brand-primary) 25%,
+        transparent
+      ),
+    0 0 34px
+      color-mix(
+        in srgb,
+        var(--color-brand-primary) 18%,
+        transparent
+      );
   color: var(--button-primary-text);
   font-size: 0.92rem;
   font-weight: 850;
@@ -169,16 +248,41 @@
 
 .home-momentum__cta:hover {
   transform: translateY(-2px);
-  border-color: color-mix(in srgb, var(--color-accent-interactive-hover) 48%, transparent);
+  border-color:
+    color-mix(
+      in srgb,
+      var(--color-accent-interactive-hover) 48%,
+      transparent
+    );
   box-shadow:
-    0 22px 48px color-mix(in srgb, var(--color-brand-primary) 30%, transparent),
-    0 0 48px color-mix(in srgb, var(--color-brand-primary) 22%, transparent),
-    0 0 28px color-mix(in srgb, var(--color-accent-interactive) 12%, transparent);
+    0 22px 48px
+      color-mix(
+        in srgb,
+        var(--color-brand-primary) 30%,
+        transparent
+      ),
+    0 0 48px
+      color-mix(
+        in srgb,
+        var(--color-brand-primary) 22%,
+        transparent
+      ),
+    0 0 28px
+      color-mix(
+        in srgb,
+        var(--color-accent-interactive) 12%,
+        transparent
+      );
   filter: saturate(1.06);
 }
 
 .home-momentum__cta:focus-visible {
-  outline: 3px solid color-mix(in srgb, var(--button-focus-ring) 72%, transparent);
+  outline: 3px solid
+    color-mix(
+      in srgb,
+      var(--button-focus-ring) 72%,
+      transparent
+    );
   outline-offset: 4px;
 }
 
@@ -228,22 +332,52 @@
   width: 1rem;
   height: 1rem;
   color: var(--color-brand-faint);
-  fill: color-mix(in srgb, var(--color-brand-faint) 32%, transparent);
-  filter: drop-shadow(
-    0 0 10px color-mix(in srgb, var(--color-brand-primary) 48%, transparent)
-  );
+  fill:
+    color-mix(
+      in srgb,
+      var(--color-brand-faint) 32%,
+      transparent
+    );
+  filter:
+    drop-shadow(
+      0 0 10px
+        color-mix(
+          in srgb,
+          var(--color-brand-primary) 48%,
+          transparent
+        )
+    );
 }
 
 /* ============================================================
-   Responsive
+   Narrow desktop
 ============================================================ */
 
-@media (max-width: 1180px) and (min-width: 1121px) {
+@media (max-width: 1240px) and (min-width: 1121px) {
   .home-momentum__body {
-    grid-template-columns: minmax(15rem, 0.64fr) minmax(0, 2fr);
-    gap: clamp(2rem, 3.5vw, 3.35rem);
+    grid-template-columns:
+      minmax(16.5rem, 18rem)
+      minmax(0, 1fr);
+    gap: clamp(2rem, 3vw, 3rem);
+  }
+
+  .home-momentum__title {
+    max-width: 7.25em;
+    font-size: clamp(2rem, 2.45vw, 2.6rem);
+  }
+
+  .home-momentum__lede {
+    max-width: 19rem;
+  }
+
+  .home-momentum__gallery {
+    gap: 0.9rem;
   }
 }
+
+/* ============================================================
+   Tablet / stacked section layout
+============================================================ */
 
 @media (max-width: 1120px) {
   .home-momentum {
@@ -256,17 +390,19 @@
   }
 
   .home-momentum__intro {
-    max-width: 46rem;
+    max-width: 48rem;
     padding-top: 0;
   }
 
   .home-momentum__title {
-    max-width: 10em;
-    font-size: clamp(2.75rem, 7vw, 4.35rem);
+    max-width: 10.5em;
+    font-size: clamp(2.6rem, 6vw, 3.75rem);
+    line-height: 0.96;
   }
 
   .home-momentum__lede {
-    max-width: 38rem;
+    max-width: 39rem;
+    margin-top: clamp(1.25rem, 2vw, 1.75rem);
   }
 
   .home-momentum__benefits {
@@ -289,7 +425,20 @@
   }
 }
 
+/* ============================================================
+   Small tablet
+============================================================ */
+
 @media (max-width: 820px) {
+  .home-momentum__title {
+    max-width: 9em;
+    font-size: clamp(2.45rem, 8vw, 3.35rem);
+  }
+
+  .home-momentum__lede {
+    max-width: 35rem;
+  }
+
   .home-momentum__benefits {
     grid-template-columns: 1fr;
   }
@@ -303,17 +452,29 @@
   }
 }
 
+/* ============================================================
+   Mobile
+============================================================ */
+
 @media (max-width: 560px) {
   .home-momentum {
     padding-block: 4.25rem 4.75rem;
   }
 
+  .home-momentum__body {
+    gap: 2.5rem;
+  }
+
   .home-momentum__title {
-    font-size: clamp(2.45rem, 12vw, 3.3rem);
+    max-width: 8.75em;
+    font-size: clamp(2.35rem, 11.5vw, 3.05rem);
+    line-height: 0.98;
     letter-spacing: -0.065em;
   }
 
   .home-momentum__lede {
+    max-width: none;
+    margin-top: 1.35rem;
     font-size: 0.98rem;
     line-height: 1.62;
   }
@@ -334,23 +495,31 @@
 }
 
 /* ============================================================
-   Large desktop layout scale-up
+   Large desktop scale-up
 ============================================================ */
 
 @media (min-width: 1320px) {
   .home-momentum__body {
-    grid-template-columns: minmax(16rem, 0.54fr) minmax(0, 2.46fr);
-    gap: clamp(2.75rem, 4.4vw, 5.5rem);
+    grid-template-columns:
+      minmax(18.5rem, 20rem)
+      minmax(0, 1fr);
+    gap: clamp(3rem, 4vw, 5rem);
   }
 
   .home-momentum__gallery {
-    gap: clamp(1.1rem, 1.25vw, 1.45rem);
+    gap: clamp(1.05rem, 1.2vw, 1.35rem);
   }
 }
 
 @media (min-width: 1680px) {
   .home-momentum__body {
-    grid-template-columns: minmax(16rem, 0.5fr) minmax(0, 2.6fr);
-    gap: clamp(3rem, 4vw, 6rem);
+    grid-template-columns:
+      20.5rem
+      minmax(0, 1fr);
+    gap: clamp(3.5rem, 4vw, 5.75rem);
+  }
+
+  .home-momentum__title {
+    font-size: 3rem;
   }
 }

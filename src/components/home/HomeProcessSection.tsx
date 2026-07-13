@@ -49,26 +49,26 @@ const processBenefits: ProcessBenefit[] = [
     accentColor: "var(--color-brand-soft)",
   },
   {
-    title: "We organize",
-    body: "Structure, notes, arcs, timelines, and connections stay in one place.",
+    title: "Keep it organized",
+    body: "Characters, notes, arcs, timelines, and connections stay in one place.",
     Icon: LayoutGrid,
     accentColor: "var(--color-accent-interactive)",
   },
   {
     title: "You decide",
-    body: "Change anything. Your story evolves with you.",
+    body: "Your plan can change whenever your story does.",
     Icon: SlidersHorizontal,
     accentColor: "var(--color-brand-soft)",
   },
   {
-    title: "See the whole picture",
-    body: "Track moving parts before the draft becomes hard to untangle.",
+    title: "See how it all fits",
+    body: "Check how the pieces work together before rewriting.",
     Icon: Eye,
     accentColor: "var(--color-brand-soft)",
   },
   {
     title: "Keep your voice",
-    body: "Spinalith supports your process without replacing your creativity.",
+    body: "The tool helps you plan. The writing still sounds like you.",
     Icon: UserRound,
     accentColor: "var(--color-accent-interactive)",
   },
@@ -88,8 +88,8 @@ export function HomeProcessSection() {
             </h2>
 
             <p className="home-process__lede">
-              Spinalith is a workspace for writers who want clarity without
-              giving up control. We provide the tools. You shape the story.
+              Spinalith helps you plan and organize your story without telling 
+              you what to write. You make the choices. The story stays yours.
             </p>
           </div>
 
@@ -116,7 +116,7 @@ export function HomeProcessSection() {
 
           <p className="home-process__proof-line">
             <Sparkles aria-hidden="true" />
-            <span>Built for writers now. Evolving with writers always.</span>
+            <span>Built to support your process, not replace it.</span>
           </p>
         </div>
       </div>

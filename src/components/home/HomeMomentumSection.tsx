@@ -70,15 +70,15 @@ const benefits: MomentumBenefit[] = [
     Icon: BookOpenText,
   },
   {
-    title: "Yours from the start",
-    body: "Every template and demo is fully editable. You stay in control of your story.",
+    title: "Make it your own",
+    body: "Change, remove, or rebuild anything as the story takes shape.",
     Icon: PencilLine,
   },
 ];
 
 const galleryItems: MomentumGalleryItem[] = [
   {
-    pillText: "Structure",
+    pillText: "Story Structure",
     title: "Three Act Structure",
     summary: "The classic setup, confrontation, and resolution framework.",
     imageSrc: "/assets/images/home/three-act-structure-dinner.png",
@@ -89,7 +89,7 @@ const galleryItems: MomentumGalleryItem[] = [
     accentColor: "var(--color-brand-soft)",
   },
   {
-    pillText: "Structure",
+    pillText: "Story Structure",
     title: "Heroic Journey",
     summary: "A universal adventure structure for epic character arcs.",
     imageSrc: "/assets/images/home/heroic-journey-threshold.png",
@@ -100,7 +100,7 @@ const galleryItems: MomentumGalleryItem[] = [
     accentColor: "var(--color-brand-soft)",
   },
   {
-    pillText: "Structure",
+    pillText: "Story Structure",
     title: "Story Beat Sheet",
     summary: "A beat-by-beat roadmap to keep your story on track.",
     imageSrc: "/assets/images/home/story-beat-sheet-modern-desk.png",
@@ -111,7 +111,7 @@ const galleryItems: MomentumGalleryItem[] = [
     accentColor: "var(--color-brand-soft)",
   },
   {
-    pillText: "Structure",
+    pillText: "Genre Structure",
     title: "Mystery Structure",
     summary: "Build suspense, clues, and revelations that connect.",
     imageSrc: "/assets/images/home/mystery-structure-blue-noir-street.png",
@@ -122,7 +122,7 @@ const galleryItems: MomentumGalleryItem[] = [
     accentColor: "var(--color-brand-soft)",
   },
   {
-    pillText: "Genre",
+    pillText: "Genre Structure",
     title: "Romance Structure",
     summary: "Relationship arcs, turning points, and emotional payoff.",
     imageSrc: "/assets/images/home/romance-structure-bookstore.png",
@@ -156,7 +156,7 @@ const galleryItems: MomentumGalleryItem[] = [
     accentColor: "var(--color-accent-interactive)",
   },
   {
-    pillText: "Blank",
+    pillText: "Blank Slate",
     title: "Start from Scratch",
     summary:
       "Create a blank workspace and build your story your way from the ground up.",
@@ -176,14 +176,14 @@ export function HomeMomentumSection() {
             <p className="home-momentum__kicker">Start with Momentum</p>
 
             <h2 id="home-momentum-title" className="home-momentum__title">
-              Start with a structure, a demo, or a{" "}
-              <span className="home-momentum__title-accent">blank slate.</span>
+              Choose how{" "}
+              <p><span className="home-momentum__title-accent">you want to start.</span></p>
             </h2>
 
             <p className="home-momentum__lede">
-              Choose a trusted story shape, explore a finished demo project, or
-              begin from scratch. Spinalith gives you a starting point without
-              taking control away from you.
+              Start with a proven story structure, explore a finished demo, or begin 
+              with a blank project. Whichever path you choose, you can change everything 
+              and make the story your own.
             </p>
 
             <div className="home-momentum__benefits" aria-label="Starting options">
@@ -242,9 +242,9 @@ export function HomeMomentumSection() {
             <p className="home-momentum__note">
               <Sparkles aria-hidden="true" />
               <span>
-                All templates and demos are fully customizable. Change, remove,
-                or rebuild anything.
+                Every template and demo is fully customizable. Change, remove, or rebuild anything.
               </span>
+              <Sparkles aria-hidden="true" />
             </p>
           </div>
         </div>

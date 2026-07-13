@@ -61,7 +61,7 @@ const membershipPlans: MembershipPriceCard[] = [
     price: "$69.99",
     cadence: "/year",
     regularPrice: "$99.99/year",
-    savingsLine: "Save $30/year • 30% total savings",
+    savingsLine: "30% founder savings",
     badge: "Best value",
     Icon: CalendarCheck,
   },
@@ -77,19 +77,18 @@ export function HomeMembershipSection() {
           <h2 id="home-membership-title" className="home-membership__title">
             <span>One membership.</span>
             <span className="home-membership__title-accent">
-              Full workspace.
+             Everything you need to plan your story.
             </span>
           </h2>
 
           <p className="home-membership__lede">
-            Start with every planning view, template, demo, and
-            story-development tool included.
+            Simple pricing. Every tool you need to plan your story.
           </p>
 
           <p className="home-membership__discount-pill">
             <Sparkles aria-hidden="true" />
             <span>
-              <strong>Founder pricing:</strong> save 20% monthly or 30% annually.
+              <strong>Founder pricing:</strong> Lock in your rate while your membership stays active.
             </span>
           </p>
         </div>
@@ -178,9 +177,6 @@ export function HomeMembershipSection() {
           </div>
         </div>
 
-        <p className="home-membership__closing-line">
-          Simple pricing. Full access. Built for long-form story development.
-        </p>
       </div>
     </section>
   );
