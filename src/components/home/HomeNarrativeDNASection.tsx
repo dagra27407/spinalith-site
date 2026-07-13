@@ -145,9 +145,7 @@ export function HomeNarrativeDNASection() {
             </div>
 
             <p className="home-narrative-dna__connection-copy">
-              Those details do not stop at their profile pages. Connect them to
-              the chapters, scenes, beats, arcs, and timelines where they
-              matter.
+              Keep those details connected to the chapters, scenes, beats, arcs, and timelines where they matter.
             </p>
           </div>
 
@@ -161,7 +159,7 @@ export function HomeNarrativeDNASection() {
             <ScreenshotFrame
               src="/assets/screenshots/home/dnav-characters-grid.png"
               alt="Spinalith Narrative DNA showing a character grid inside the story development workspace."
-              variant="primaryColorHalo"
+              variant="originalHeroFlat"
               className="home-narrative-dna__frame"
             />
           </div>
