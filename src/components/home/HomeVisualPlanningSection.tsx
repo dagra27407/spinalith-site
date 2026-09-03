@@ -63,7 +63,7 @@ const visualPlanningBenefits: VisualPlanningBenefit[] = [
     accentColor: "var(--color-accent-interactive)",
   },
   {
-    title: "See chapter flow before drafting",
+    title: "See how your chapters flow as the story takes shape",
     body:
       "Lay chapters out in order so slow stretches, missing turns, and crowded sections are easier to spot.",
     Icon: BookOpenText,

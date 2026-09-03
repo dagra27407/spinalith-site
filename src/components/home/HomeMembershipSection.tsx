@@ -77,12 +77,12 @@ export function HomeMembershipSection() {
           <h2 id="home-membership-title" className="home-membership__title">
             <span>One membership.</span>
             <span className="home-membership__title-accent">
-             Everything you need to plan your story.
+             Everything you need to build and organize your story.
             </span>
           </h2>
 
           <p className="home-membership__lede">
-            Simple pricing. Every tool you need to plan your story.
+            Simple pricing. Every tool you need to build and organize your story.
           </p>
 
           <p className="home-membership__discount-pill">

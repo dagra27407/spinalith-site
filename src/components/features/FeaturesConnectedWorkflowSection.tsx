@@ -69,9 +69,9 @@ export function FeaturesConnectedWorkflowSection() {
           </h2>
 
           <p className="features-connected-workflow__lede">
-            Plan your structure, build your world, organize chapters, and keep
-            everything connected as the story changes. Spinalith is designed so
-            you do not have to rebuild the same information in different places.
+            Change story information once and keep it aligned across 
+            your planning views, chapters, and Narrative DNA. Spinalith 
+            is designed to reduce duplicate updates and keep one connected source of truth for your story.
           </p>
 
           <div

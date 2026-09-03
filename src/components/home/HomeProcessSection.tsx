@@ -68,7 +68,7 @@ const processBenefits: ProcessBenefit[] = [
   },
   {
     title: "Keep your voice",
-    body: "The tool helps you plan. The writing still sounds like you.",
+    body: "The tool helps you organize the story. The writing still sounds like you.",
     Icon: UserRound,
     accentColor: "var(--color-accent-interactive)",
   },

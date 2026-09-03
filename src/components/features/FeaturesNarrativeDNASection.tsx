@@ -75,8 +75,8 @@ export function FeaturesNarrativeDNASection() {
           </h2>
 
           <p className="features-detail-section__lede">
-            Characters, locations, lore, relationships, and worldbuilding stay
-            connected everywhere they appear.
+            Change a character, location, relationship, or piece of lore once, 
+            and that information stays connected wherever it appears across your story.
           </p>
 
           <div

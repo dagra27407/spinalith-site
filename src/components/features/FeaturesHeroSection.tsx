@@ -43,10 +43,8 @@ export function FeaturesHeroSection() {
           </h1>
 
           <p className="features-hero__lede">
-            Spinalith brings together visual planning, story structure,
-            worldbuilding, character management, and chapter organization so
-            you can shape your story before you write or keep it all organized
-            as it grows.
+            Spinalith brings your story structure, chapters, characters, worldbuilding, 
+            and timelines into one connected workspace, whether you plan ahead or organize as you go.
           </p>
 
           <div className="features-hero__actions">

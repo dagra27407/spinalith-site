@@ -76,8 +76,9 @@ export function FeaturesChapterPlannerSection() {
           </h2>
 
           <p className="features-detail-section__lede">
-            Organize chapters visually, in an outline, or on a timeline. 
-            Every view stays in sync, so you can work the way that feels natural.
+            Move or edit a chapter in one view and the same chapter data 
+            stays updated in the others. Switch between board, outline, 
+            and timeline views without rebuilding your structure.
           </p>
 
           <div

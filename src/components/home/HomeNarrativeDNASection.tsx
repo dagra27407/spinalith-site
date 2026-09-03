@@ -150,7 +150,7 @@ export function HomeNarrativeDNASection() {
           </div>
 
           <p className="home-narrative-dna__closing">
-            The details stay part of the plan.
+            The details stay part of the story.
           </p>
         </div>
 

@@ -38,8 +38,7 @@ export function SiteFooter() {
               </Link>
 
               <p className="text-muted">
-                A story development workspace for writers building the story
-                before they write the draft.
+                A story development workspace for writers planning ahead or organizing the story as it grows.
               </p>
             </div>
 

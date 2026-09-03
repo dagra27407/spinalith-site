@@ -76,8 +76,8 @@ export function FeaturesVisualPlanningSection() {
           </h2>
 
           <p className="features-detail-section__lede">
-            Plan ahead or organize as you go. Arrange scenes, compare timelines,
-            track story threads, and see how the pieces fit together.
+            Move scenes, beats, and chapters into place, compare timelines, 
+            and track story threads without rebuilding the rest of your structure.
           </p>
 
           <div
