@@ -28,24 +28,24 @@ export function HomeHeroSection() {
       <div className="site-container home-hero__inner">
         <div className="home-hero__copy">
           <div className="home-hero__copy-main">
-            <p className="home-hero__eyebrow">
-              Story planning software for writers
+            <p className="section-kicker">
+              Story Development & Organization
             </p>
 
             <h1 id="home-hero-title" className="home-hero__title">
-              <span>Helping WRITERS</span>
-              <span>Organize and PLAN</span>
+              <span>Great Ideas</span>
               <span>
-                <strong>THEIR STORIES</strong>
+                <strong>GET COMPLICATED</strong>
               </span>
             </h1>
 
             <p className="home-hero__lede">
-              Writers rarely run out of ideas. They get stuck when the story becomes
-               too complicated to keep clear, connected, and moving forward.
+              Stories are full of details. Whether you plan ahead or
+              discover the story as you write, you need a way to track the people,
+              places, events, and ideas that matter and see how they all fit together.
             </p>
             <p className="home-hero__solution">
-              <strong>That’s where Spinalith comes in.</strong>
+              <strong>That’s the problem Spinalith solves.</strong>
             </p>
           </div>
 
