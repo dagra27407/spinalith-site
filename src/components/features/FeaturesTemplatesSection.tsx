@@ -76,9 +76,9 @@ export function FeaturesTemplatesSection() {
           </h2>
 
           <p className="features-detail-section__lede">
-            Choose a story structure and Spinalith sets up the major pieces for
-            you. From there, move things around, rename them, remove them, or
-            build on top of them as your story takes shape.
+            Choose a story structure and Spinalith can set up the acts, chapters, beats,
+            and timelines for you. Then move, rename, remove, or rebuild anything as the
+            story takes shape.
           </p>
 
           <div
