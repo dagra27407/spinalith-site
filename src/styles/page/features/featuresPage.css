@@ -1,0 +1,289 @@
+/* src/styles/page/features/featuresPage.css */
+
+/**
+ * File: src/styles/page/features/featuresPage.css
+ *
+ * Purpose:
+ * Shared layout styling for recurring sections on the Spinalith Features page.
+ *
+ * Responsibilities:
+ * - Provides the common copy + product-media section composition.
+ * - Supports standard and reversed layouts for alternating feature sections.
+ * - Styles shared feature chips and takeaway lines.
+ * - Provides responsive stacking for tablet and mobile.
+ *
+ * Notes:
+ * - Use this file for repeated Features page layout patterns.
+ * - Individual sections should only add dedicated CSS when their composition
+ *   genuinely differs from the shared pattern.
+ * - Shared video framing lives in src/styles/components/videoFrame.css.
+ * - Shared buttons, containers, typography, and design tokens remain global.
+ */
+
+/* ============================================================
+   Section shell
+============================================================ */
+
+.features-detail-section {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: clamp(5.5rem, 7.5vw, 7.5rem) 0;
+  border-bottom: 1px solid
+    color-mix(in srgb, var(--color-border-soft) 72%, transparent);
+  background:
+    radial-gradient(
+      ellipse at 16% 30%,
+      color-mix(in srgb, var(--color-brand-primary) 8%, transparent),
+      transparent 30rem
+    ),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--color-bg-page) 98%, transparent),
+      color-mix(in srgb, var(--color-bg-section) 42%, var(--color-bg-page))
+    );
+}
+
+.features-detail-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      ellipse at 78% 56%,
+      color-mix(in srgb, var(--color-brand-soft) 4%, transparent),
+      transparent 28rem
+    );
+}
+
+/* ============================================================
+   Main layout
+============================================================ */
+
+.features-detail-section__inner {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns:
+    minmax(22rem, 0.78fr)
+    minmax(34rem, 1.22fr);
+  align-items: center;
+  gap: clamp(3rem, 5vw, 5.5rem);
+}
+
+.features-detail-section__copy,
+.features-detail-section__media {
+  min-width: 0;
+}
+
+/* ============================================================
+   Copy
+============================================================ */
+
+.features-detail-section__copy {
+  display: grid;
+  align-content: center;
+  gap: 1.15rem;
+  max-width: 36rem;
+}
+
+.features-detail-section__kicker {
+  display: block;
+  width: fit-content;
+  margin: 0;
+  color: var(--color-brand-faint);
+  font-size: 0.72rem;
+  font-weight: 850;
+  letter-spacing: var(--tracking-label);
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.features-detail-section__title {
+  max-width: 9.5em;
+  margin: 0;
+  color: var(--color-text-primary);
+  font-size: clamp(2.35rem, 3.15vw, 3.75rem);
+  font-weight: 900;
+  line-height: 0.98;
+  letter-spacing: -0.062em;
+  text-wrap: balance;
+}
+
+.features-detail-section__lede {
+  max-width: 34rem;
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: clamp(1rem, 1.05vw, 1.12rem);
+  line-height: 1.65;
+}
+
+/* ============================================================
+   Feature list
+============================================================ */
+
+.features-detail-section__feature-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.7rem;
+  margin-top: 0.35rem;
+}
+
+.features-detail-section__feature-chip {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  min-width: 0;
+  padding: 0.72rem 0.8rem;
+  border: 1px solid
+    color-mix(in srgb, var(--color-border-brand) 78%, transparent);
+  border-radius: var(--radius-md);
+  background:
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--color-surface-soft) 22%, transparent),
+      color-mix(in srgb, var(--color-bg-page) 54%, transparent)
+    );
+  color: var(--color-text-secondary);
+  box-shadow: var(--shadow-soft);
+}
+
+.features-detail-section__feature-chip svg {
+  width: 1rem;
+  height: 1rem;
+  flex: 0 0 auto;
+  color: var(--color-brand-soft);
+}
+
+.features-detail-section__feature-chip span {
+  min-width: 0;
+  font-size: 0.9rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+/* ============================================================
+   Takeaway
+============================================================ */
+
+.features-detail-section__takeaway {
+  margin: 0.35rem 0 0;
+  color: var(--color-brand-soft);
+  font-size: clamp(0.9rem, 0.95vw, 1rem);
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+/* ============================================================
+   Media
+============================================================ */
+
+.features-detail-section__media {
+  width: 100%;
+}
+
+/* ============================================================
+   Reversed layout
+============================================================ */
+
+.features-detail-section--reverse .features-detail-section__inner {
+  grid-template-columns:
+    minmax(34rem, 1.22fr)
+    minmax(22rem, 0.78fr);
+}
+
+.features-detail-section--reverse .features-detail-section__copy {
+  grid-column: 2;
+  max-width: 38rem;
+}
+
+.features-detail-section--reverse .features-detail-section__title {
+  max-width: 10.5em;
+}
+
+.features-detail-section--reverse .features-detail-section__media {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+/* ============================================================
+   Responsive
+============================================================ */
+
+@media (max-width: 1100px) {
+  .features-detail-section__inner {
+    grid-template-columns:
+      minmax(20rem, 0.82fr)
+      minmax(30rem, 1.18fr);
+    gap: clamp(2.5rem, 4vw, 4rem);
+  }
+
+  .features-detail-section--reverse .features-detail-section__inner {
+    grid-template-columns:
+      minmax(30rem, 1.18fr)
+      minmax(20rem, 0.82fr);
+  }
+
+  .features-detail-section__title {
+    font-size: clamp(2.2rem, 3.4vw, 3.35rem);
+  }
+}
+
+@media (max-width: 900px) {
+  .features-detail-section {
+    padding: clamp(4.5rem, 7vw, 5.75rem) 0;
+  }
+
+  .features-detail-section__inner,
+  .features-detail-section--reverse .features-detail-section__inner {
+    grid-template-columns: 1fr;
+    gap: 2.75rem;
+  }
+
+  .features-detail-section__copy,
+  .features-detail-section--reverse .features-detail-section__copy {
+    max-width: 44rem;
+  }
+
+  .features-detail-section__lede {
+    max-width: 42rem;
+  }
+
+  .features-detail-section__media {
+    width: 100%;
+  }
+
+  .features-detail-section--reverse .features-detail-section__copy,
+  .features-detail-section--reverse .features-detail-section__media {
+    grid-column: auto;
+    grid-row: auto;
+  }
+
+  .features-detail-section--reverse .features-detail-section__title {
+    max-width: 9.5em;
+  }
+}
+
+@media (max-width: 640px) {
+  .features-detail-section {
+    padding: 4rem 0 4.5rem;
+  }
+
+  .features-detail-section__copy {
+    gap: 1.05rem;
+  }
+
+  .features-detail-section__title {
+    font-size: clamp(2.05rem, 9vw, 2.85rem);
+  }
+
+  .features-detail-section__feature-list {
+    grid-template-columns: 1fr;
+  }
+
+  .features-detail-section__feature-chip {
+    padding: 0.74rem 0.8rem;
+  }
+}

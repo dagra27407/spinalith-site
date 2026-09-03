@@ -1,0 +1,82 @@
+/* src/styles/page/features/featuresTemplates.css */
+
+/**
+ * File: src/styles/page/features/featuresTemplates.css
+ *
+ * Purpose:
+ * Supporting styling for the Templates section on the Spinalith Features page.
+ *
+ * Responsibilities:
+ * - Adds lightweight template example labels beneath the product demonstration.
+ * - Keeps the Templates section visually distinct without creating a new page layout.
+ * - Preserves the shared Features page copy + media composition.
+ *
+ * Notes:
+ * - Core section layout comes from src/styles/page/features/featuresPage.css.
+ * - Shared video framing comes from src/styles/components/videoFrame.css.
+ * - Keep this file intentionally small.
+ * - Do not duplicate shared feature-section layout rules here.
+ */
+
+/* ============================================================
+   Media composition
+============================================================ */
+
+.features-templates__media {
+  display: grid;
+  gap: 1rem;
+}
+
+/* ============================================================
+   Template examples
+============================================================ */
+
+.features-templates__examples {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.55rem;
+}
+
+.features-templates__example {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2rem;
+  padding: 0.42rem 0.72rem;
+  border: 1px solid
+    color-mix(in srgb, var(--color-border-brand) 68%, transparent);
+  border-radius: 999px;
+  background:
+    color-mix(
+      in srgb,
+      var(--color-surface-soft) 34%,
+      transparent
+    );
+  color: var(--color-text-muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+/* ============================================================
+   Responsive
+============================================================ */
+
+@media (max-width: 900px) {
+  .features-templates__examples {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 640px) {
+  .features-templates__examples {
+    gap: 0.45rem;
+  }
+
+  .features-templates__example {
+    padding: 0.4rem 0.65rem;
+    font-size: 0.74rem;
+  }
+}

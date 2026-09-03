@@ -1,0 +1,293 @@
+/* src/styles/page/features/featuresHero.css */
+
+/**
+ * File: src/styles/page/features/featuresHero.css
+ *
+ * Purpose:
+ * Section-specific styles for the Spinalith Features page hero.
+ *
+ * Responsibilities:
+ * - Creates the copy + product-video hero composition.
+ * - Keeps the product demonstration visually dominant.
+ * - Matches the Spinalith.com dark premium visual system without duplicating
+ *   the homepage hero treatment.
+ * - Provides responsive stacking for tablet and mobile.
+ *
+ * Notes:
+ * - This hero should feel more direct and product-focused than the homepage hero.
+ * - Shared buttons, containers, typography, and design tokens remain global.
+ * - Video content is owned by FeaturesHeroSection.tsx.
+ * - Keep raw palette values out of this file whenever semantic tokens exist.
+ */
+
+/* ============================================================
+   Section shell
+============================================================ */
+
+.features-hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: clamp(5rem, 7vw, 7rem) 0 clamp(5.5rem, 8vw, 8rem);
+  border-bottom: 1px solid
+    color-mix(in srgb, var(--color-border-soft) 76%, transparent);
+  background:
+    radial-gradient(
+      ellipse at 22% 12%,
+      color-mix(in srgb, var(--color-brand-primary) 18%, transparent),
+      transparent 30rem
+    ),
+    radial-gradient(
+      ellipse at 78% 18%,
+      color-mix(in srgb, var(--color-accent-interactive) 7%, transparent),
+      transparent 34rem
+    ),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--color-bg-page) 96%, transparent),
+      color-mix(in srgb, var(--color-bg-section) 58%, var(--color-bg-page))
+    );
+}
+
+.features-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      circle at 50% 42%,
+      color-mix(in srgb, var(--color-brand-soft) 6%, transparent),
+      transparent 34rem
+    ),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--color-text-primary) 2%, transparent),
+      transparent 24%
+    );
+  opacity: 0.8;
+}
+
+/* ============================================================
+   Main layout
+============================================================ */
+
+.features-hero__inner {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns:
+    minmax(30rem, 0.9fr)
+    minmax(36rem, 1.1fr);
+  align-items: center;
+  gap: clamp(3rem, 4vw, 5rem);
+}
+
+.features-hero__copy,
+.features-hero__media {
+  min-width: 0;
+}
+
+/* ============================================================
+   Copy
+============================================================ */
+
+.features-hero__copy {
+  display: grid;
+  align-content: center;
+  gap: 1.25rem;
+  max-width: 40rem;
+}
+
+.features-hero__kicker {
+  display: block;
+  width: fit-content;
+  margin: 0;
+  color: var(--color-brand-faint);
+  font-size: 0.74rem;
+  font-weight: 850;
+  letter-spacing: var(--tracking-label);
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.features-hero__title {
+  display: grid;
+  gap: 0.03em;
+  margin: 0;
+  color: var(--color-text-primary);
+  font-size: clamp(2.45rem, 3.2vw, 3.9rem);
+  font-weight: 900;
+  line-height: 0.98;
+  letter-spacing: -0.068em;
+}
+
+.features-hero__title span,
+.features-hero__title strong {
+  display: block;
+}
+
+.features-hero__title strong {
+  margin-top: 0.08em;
+  color: var(--color-brand-primary);
+  font-size: 0.92em;
+  font-weight: inherit;
+  text-shadow:
+    0 0 26px
+      color-mix(in srgb, var(--color-brand-primary) 34%, transparent),
+    0 0 54px
+      color-mix(in srgb, var(--color-brand-primary) 16%, transparent);
+}
+
+.features-hero__lede {
+  max-width: 33rem;
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: clamp(1rem, 1.1vw, 1.15rem);
+  line-height: 1.65;
+}
+
+/* ============================================================
+   Actions
+============================================================ */
+
+.features-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.8rem;
+  margin-top: 0.35rem;
+}
+
+.features-hero__button {
+  min-height: 3rem;
+  padding: 0.85rem 1.15rem;
+  border-radius: var(--radius-lg);
+}
+
+/* ============================================================
+   Video
+============================================================ */
+
+.features-hero__media {
+  display: grid;
+  gap: 0.9rem;
+  align-self: start;
+  padding-top: clamp(3.25rem, 5vw, 4.75rem);
+}
+
+.features-hero__video-shell {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--screenshot-border);
+  border-radius: var(--radius-xl);
+  background:
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--color-surface-soft) 62%, transparent),
+      color-mix(in srgb, var(--color-bg-page) 86%, transparent)
+    ),
+    var(--screenshot-shell-bg);
+  box-shadow:
+    var(--screenshot-shadow),
+    0 28px 88px rgba(0, 0, 0, 0.42);
+}
+
+.features-hero__video-shell::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  border-radius: inherit;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.features-hero__video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  background: var(--screenshot-bg);
+}
+
+.features-hero__video-caption {
+  max-width: 48rem;
+  margin: 0 auto;
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  text-align: center;
+}
+
+/* ============================================================
+   Responsive
+============================================================ */
+
+@media (max-width: 1100px) {
+  .features-hero__inner {
+    grid-template-columns:
+      minmax(26rem, 0.92fr)
+      minmax(30rem, 1.08fr);
+    gap: clamp(2.5rem, 3.5vw, 3.5rem);
+  }
+
+  .features-hero__title {
+    font-size: clamp(2.35rem, 3.8vw, 3.75rem);
+  }
+}
+
+@media (max-width: 900px) {
+  .features-hero {
+    padding: clamp(4.5rem, 7vw, 5.75rem) 0;
+  }
+
+  .features-hero__inner {
+    grid-template-columns: 1fr;
+    gap: 2.75rem;
+  }
+
+  .features-hero__copy {
+    max-width: 44rem;
+  }
+
+  .features-hero__lede {
+    max-width: 42rem;
+  }
+
+  .features-hero__media {
+  width: 100%;
+  padding-top: 0;
+}
+}
+
+@media (max-width: 640px) {
+  .features-hero {
+    padding: 4rem 0 4.5rem;
+  }
+
+  .features-hero__copy {
+    gap: 1.1rem;
+  }
+
+  .features-hero__title {
+    font-size: clamp(2.2rem, 10vw, 3.15rem);
+  }
+
+  .features-hero__actions {
+    align-items: stretch;
+  }
+
+  .features-hero__button {
+    width: 100%;
+  }
+
+  .features-hero__video-shell {
+    border-radius: var(--radius-lg);
+  }
+
+  .features-hero__video-caption {
+    font-size: 0.84rem;
+  }
+}

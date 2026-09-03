@@ -1,0 +1,121 @@
+/* src/styles/components/videoFrame.css */
+
+/**
+ * File: src/styles/components/videoFrame.css
+ *
+ * Purpose:
+ * Shared branded video-frame styling for Spinalith.com marketing sections.
+ *
+ * Responsibilities:
+ * - Styles reusable product-video shells and captions.
+ * - Provides glow, clean, and minimal visual variants.
+ * - Keeps video framing consistent across public site sections.
+ * - Preserves responsive behavior without owning parent section layout.
+ *
+ * Notes:
+ * - Parent sections should control width, grid placement, and surrounding spacing.
+ * - VideoFrame.tsx owns the media markup and playback behavior.
+ * - Shared palette values should come from semantic design tokens.
+ * - Avoid section-specific overrides unless the composition genuinely requires them.
+ */
+
+/* ============================================================
+   Base frame
+============================================================ */
+
+.video-frame {
+  width: 100%;
+  margin: 0;
+}
+
+.video-frame__shell {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  border: 1px solid var(--screenshot-border);
+  border-radius: var(--radius-xl);
+  background: var(--screenshot-shell-bg);
+}
+
+.video-frame__shell::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  border-radius: inherit;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.video-frame__video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  background: var(--screenshot-bg);
+}
+
+/* ============================================================
+   Caption
+============================================================ */
+
+.video-frame__caption {
+  max-width: 48rem;
+  margin: 0.9rem auto 0;
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  text-align: center;
+}
+
+/* ============================================================
+   Product glow variant
+============================================================ */
+
+.video-frame--product-glow .video-frame__shell {
+  background:
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--color-surface-soft) 52%, transparent),
+      color-mix(in srgb, var(--color-bg-page) 86%, transparent)
+    ),
+    var(--screenshot-shell-bg);
+  box-shadow:
+  0 0 48px
+    color-mix(in srgb, var(--color-brand-primary) 2%, transparent),
+  0 28px 88px rgba(0, 0, 0, 0.42);
+}
+
+/* ============================================================
+   Product clean variant
+============================================================ */
+
+.video-frame--product-clean .video-frame__shell {
+  background: var(--screenshot-shell-bg);
+  box-shadow: var(--shadow-card);
+}
+
+/* ============================================================
+   Minimal variant
+============================================================ */
+
+.video-frame--minimal .video-frame__shell {
+  border-color: var(--color-border-soft);
+  border-radius: var(--radius-lg);
+  background: var(--screenshot-bg);
+  box-shadow: none;
+}
+
+/* ============================================================
+   Responsive
+============================================================ */
+
+@media (max-width: 640px) {
+  .video-frame__shell {
+    border-radius: var(--radius-lg);
+  }
+
+  .video-frame__caption {
+    font-size: 0.84rem;
+  }
+}

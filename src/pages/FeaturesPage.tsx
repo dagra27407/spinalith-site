@@ -4,30 +4,38 @@
  * File: src/pages/FeaturesPage.tsx
  *
  * Purpose:
- * Placeholder route page for the future Spinalith.com Features page.
+ * Composes the public Spinalith Features page from independent feature sections.
  *
  * Responsibilities:
- * - Keeps the /features route compilable during the website rebuild.
- * - Provides a simple test surface for routing, layout, header, and footer.
+ * - Defines the order of sections on the Features page.
+ * - Keeps page assembly simple and easy to scan.
+ * - Lets individual sections be moved, removed, or redesigned independently.
  *
  * Notes:
- * - Final feature sections should be built after the homepage spine is validated.
+ * - Section-specific markup belongs in src/components/features/.
+ * - Section-specific styling belongs in src/styles/page/features/.
+ * - Keep this file intentionally simple. Its main job is section order.
+ * - Add new feature sections here only after their component is created and tested.
  */
+
+import { FeaturesHeroSection } from "../components/features/FeaturesHeroSection";
+import { FeaturesVisualPlanningSection } from "../components/features/FeaturesVisualPlanningSection";
+import { FeaturesNarrativeDNASection } from "../components/features/FeaturesNarrativeDNASection";
+import { FeaturesChapterPlannerSection } from "../components/features/FeaturesChapterPlannerSection";
+import { FeaturesTemplatesSection } from "../components/features/FeaturesTemplatesSection";
+import { FeaturesExportSection } from "../components/features/FeaturesExportSection";
+import { FeaturesConnectedWorkflowSection } from "../components/features/FeaturesConnectedWorkflowSection";
 
 export function FeaturesPage() {
   return (
-    <section className="site-section">
-      <div className="site-container-narrow">
-        <span className="eyebrow">Features</span>
-
-        <h1>Features page placeholder</h1>
-
-        <p className="section-lede">
-          This route is wired. The final page will explain Spinalith’s core
-          planning workflows, connected story elements, templates, and
-          writer-owned story development process.
-        </p>
-      </div>
-    </section>
+    <>
+      <FeaturesHeroSection />
+      <FeaturesVisualPlanningSection />
+      <FeaturesNarrativeDNASection />
+      <FeaturesChapterPlannerSection />
+      <FeaturesTemplatesSection />
+      <FeaturesExportSection />
+      <FeaturesConnectedWorkflowSection />
+    </>
   );
 }

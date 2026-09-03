@@ -1,0 +1,174 @@
+/* src/styles/page/features/featuresExport.css */
+
+/**
+ * File: src/styles/page/features/featuresExport.css
+ *
+ * Purpose:
+ * Section-specific styling for the Export section on the Spinalith Features page.
+ *
+ * Responsibilities:
+ * - Creates a compact horizontal band between larger feature sections.
+ * - Keeps export copy prominent without using another full product-video layout.
+ * - Arranges export feature cards responsively.
+ *
+ * Notes:
+ * - Shared feature-card styling lives in src/styles/components/siteFeatureCard.css.
+ * - Shared containers, typography, colors, and design tokens remain global.
+ * - Keep this section visually tighter than the main feature-detail sections.
+ */
+
+/* ============================================================
+   Section shell
+============================================================ */
+
+.features-export {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: clamp(4.75rem, 6vw, 6rem) 0;
+  border-bottom: 1px solid
+    color-mix(in srgb, var(--color-border-soft) 72%, transparent);
+  background:
+    radial-gradient(
+      ellipse at 18% 50%,
+      color-mix(in srgb, var(--color-brand-primary) 7%, transparent),
+      transparent 28rem
+    ),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--color-bg-section) 34%, var(--color-bg-page)),
+      var(--color-bg-page)
+    );
+}
+
+/* ============================================================
+   Main layout
+============================================================ */
+
+.features-export__inner {
+  display: grid;
+  grid-template-columns:
+    minmax(22rem, 0.82fr)
+    minmax(34rem, 1.18fr);
+  align-items: center;
+  gap: clamp(3rem, 5vw, 5rem);
+}
+
+/* ============================================================
+   Copy
+============================================================ */
+
+.features-export__copy {
+  display: grid;
+  gap: 1.1rem;
+  max-width: 35rem;
+}
+
+.features-export__kicker {
+  display: block;
+  width: fit-content;
+  margin: 0;
+  color: var(--color-brand-faint);
+  font-size: 0.72rem;
+  font-weight: 850;
+  letter-spacing: var(--tracking-label);
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.features-export__title {
+  max-width: 9em;
+  margin: 0;
+  color: var(--color-text-primary);
+  font-size: clamp(2.3rem, 3vw, 3.45rem);
+  font-weight: 900;
+  line-height: 0.98;
+  letter-spacing: -0.06em;
+  text-wrap: balance;
+}
+
+.features-export__lede {
+  max-width: 34rem;
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: clamp(1rem, 1.05vw, 1.1rem);
+  line-height: 1.65;
+}
+
+.features-export__takeaway {
+  margin: 0.2rem 0 0;
+  color: var(--color-brand-soft);
+  font-size: 0.96rem;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+/* ============================================================
+   Cards
+============================================================ */
+
+.features-export__cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.features-export__card {
+  min-width: 0;
+}
+
+/* ============================================================
+   Responsive
+============================================================ */
+
+@media (max-width: 1000px) {
+  .features-export__inner {
+    grid-template-columns:
+      minmax(20rem, 0.9fr)
+      minmax(28rem, 1.1fr);
+    gap: 2.5rem;
+  }
+
+  .features-export__cards {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 900px) {
+  .features-export {
+    padding: clamp(4.25rem, 7vw, 5.25rem) 0;
+  }
+
+  .features-export__inner {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .features-export__copy {
+    max-width: 44rem;
+  }
+
+  .features-export__lede {
+    max-width: 42rem;
+  }
+
+  .features-export__cards {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 700px) {
+  .features-export__cards {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .features-export {
+    padding: 4rem 0 4.5rem;
+  }
+
+  .features-export__title {
+    font-size: clamp(2.05rem, 9vw, 2.85rem);
+  }
+}

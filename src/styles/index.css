@@ -30,6 +30,7 @@
 @import "./components/siteBenefitItem.css";
 @import "./components/siteGalleryCard.css";
 @import "./components/ScreenshotFrame_3X.css";
+@import "./components/videoFrame.css";
 
 /* Pages / sections */
 @import "./page/home/homeHero.css";
@@ -41,6 +42,11 @@
 @import "./page/home/homeProcess.css";
 @import "./page/home/homeMembership.css";
 
+@import "./page/features/featuresHero.css";
+@import "./page/features/featuresPage.css";
+@import "./page/features/featuresTemplates.css";
+@import "./page/features/featuresExport.css";
+@import "./page/features/featuresConnectedWorkflow.css";
 
 /* ============================================================
    Base reset

@@ -1,0 +1,222 @@
+/* src/styles/page/features/featuresConnectedWorkflow.css */
+
+/**
+ * File: src/styles/page/features/featuresConnectedWorkflow.css
+ *
+ * Purpose:
+ * Final connected-workflow and CTA styling for the Spinalith Features page.
+ *
+ * Responsibilities:
+ * - Creates a strong visual conclusion to the Features page.
+ * - Centers the final connected-workspace message and membership CTA.
+ * - Adds subtle atmospheric depth without overpowering the product-focused page.
+ * - Keeps the final feature proof points responsive across screen sizes.
+ *
+ * Notes:
+ * - Shared buttons, containers, typography, and design tokens remain global.
+ * - This section intentionally feels more conclusive than the sections above it.
+ * - Keep atmosphere restrained and consistent with the Spinalith visual system.
+ */
+
+/* ============================================================
+   Section shell
+============================================================ */
+
+.features-connected-workflow {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: clamp(6rem, 9vw, 9rem) 0;
+  background:
+    radial-gradient(
+      ellipse at 50% 42%,
+      color-mix(in srgb, var(--color-brand-primary) 12%, transparent),
+      transparent 34rem
+    ),
+    radial-gradient(
+      ellipse at 18% 80%,
+      color-mix(in srgb, var(--color-brand-soft) 5%, transparent),
+      transparent 28rem
+    ),
+    radial-gradient(
+      ellipse at 82% 72%,
+      color-mix(in srgb, var(--color-accent-interactive) 4%, transparent),
+      transparent 30rem
+    ),
+    linear-gradient(
+      180deg,
+      var(--color-bg-page),
+      color-mix(in srgb, var(--color-bg-section) 42%, var(--color-bg-page))
+    );
+}
+
+.features-connected-workflow::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      180deg,
+      transparent,
+      color-mix(in srgb, var(--color-brand-primary) 3%, transparent)
+    );
+}
+
+/* ============================================================
+   Layout
+============================================================ */
+
+.features-connected-workflow__inner {
+  position: relative;
+  z-index: 1;
+}
+
+.features-connected-workflow__content {
+  display: grid;
+  justify-items: center;
+  gap: 1.25rem;
+  max-width: 54rem;
+  margin: 0 auto;
+  text-align: center;
+}
+
+/* ============================================================
+   Copy
+============================================================ */
+
+.features-connected-workflow__kicker {
+  display: block;
+  width: fit-content;
+  margin: 0;
+  color: var(--color-brand-faint);
+  font-size: 0.72rem;
+  font-weight: 850;
+  letter-spacing: var(--tracking-label);
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.features-connected-workflow__title {
+  max-width: 10em;
+  margin: 0;
+  color: var(--color-text-primary);
+  font-size: clamp(2.75rem, 4.8vw, 4.8rem);
+  font-weight: 900;
+  line-height: 0.96;
+  letter-spacing: -0.07em;
+  text-wrap: balance;
+}
+
+.features-connected-workflow__title span {
+  color: var(--color-brand-primary);
+}
+
+.features-connected-workflow__lede {
+  max-width: 46rem;
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: clamp(1rem, 1.15vw, 1.15rem);
+  line-height: 1.7;
+}
+
+/* ============================================================
+   Feature proof
+============================================================ */
+
+.features-connected-workflow__feature-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.8rem;
+  width: min(100%, 42rem);
+  margin-top: 0.5rem;
+}
+
+.features-connected-workflow__feature {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  min-width: 0;
+  padding: 0.85rem 0.95rem;
+  border: 1px solid
+    color-mix(in srgb, var(--color-border-brand) 72%, transparent);
+  border-radius: var(--radius-md);
+  background:
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--color-surface-soft) 26%, transparent),
+      color-mix(in srgb, var(--color-bg-page) 48%, transparent)
+    );
+  color: var(--color-text-secondary);
+  box-shadow: var(--shadow-soft);
+  text-align: left;
+}
+
+.features-connected-workflow__feature svg {
+  width: 1rem;
+  height: 1rem;
+  flex: 0 0 auto;
+  color: var(--color-brand-soft);
+}
+
+.features-connected-workflow__feature span {
+  font-size: 0.9rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+/* ============================================================
+   Takeaway and CTA
+============================================================ */
+
+.features-connected-workflow__takeaway {
+  margin: 0.4rem 0 0;
+  color: var(--color-brand-soft);
+  font-size: clamp(0.95rem, 1vw, 1.05rem);
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.features-connected-workflow__actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 0.8rem;
+}
+
+.features-connected-workflow__button {
+  min-width: 13rem;
+}
+
+/* ============================================================
+   Responsive
+============================================================ */
+
+@media (max-width: 700px) {
+  .features-connected-workflow {
+    padding: clamp(5rem, 10vw, 6.5rem) 0;
+  }
+
+  .features-connected-workflow__content {
+    justify-items: start;
+    text-align: left;
+  }
+
+  .features-connected-workflow__title {
+    max-width: 9em;
+    font-size: clamp(2.35rem, 10vw, 3.3rem);
+  }
+
+  .features-connected-workflow__lede {
+    max-width: 34rem;
+  }
+
+  .features-connected-workflow__feature-list {
+    grid-template-columns: 1fr;
+    width: 100%;
+  }
+
+  .features-connected-workflow__actions {
+    justify-content: flex-start;
+  }
+}
