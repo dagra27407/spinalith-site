@@ -128,7 +128,7 @@
   max-width: 11em;
   margin: 0;
   color: var(--color-text-primary);
-  font-size: clamp(3rem, 5.7vw, 6.2rem);
+  font-size: clamp(2.4rem, 4.56vw, 4.96rem);
   font-weight: 900;
   line-height: 0.96;
   letter-spacing: -0.073em;
@@ -350,7 +350,7 @@
 
 .home-membership__price {
   color: var(--color-text-primary);
-  font-size: clamp(3.25rem, 5vw, 5.15rem);
+  font-size: clamp(2.6rem, 4vw, 4.12rem);
   font-weight: 900;
   line-height: 0.9;
   letter-spacing: -0.075em;
@@ -523,7 +523,7 @@
   }
 
   .home-membership__title {
-    font-size: clamp(2.8rem, 9vw, 5rem);
+    font-size: clamp(2.24rem, 7.2vw, 4rem);
   }
 
   .home-membership__cards {
@@ -550,7 +550,7 @@
   }
 
   .home-membership__title {
-    font-size: clamp(2.6rem, 13vw, 3.75rem);
+    font-size: clamp(2.08rem, 10.4vw, 3rem);
     letter-spacing: -0.067em;
   }
 
@@ -581,7 +581,7 @@
   }
 
   .home-membership__price {
-    font-size: clamp(3.05rem, 15vw, 4.2rem);
+    font-size: clamp(2.44rem, 12vw, 3.36rem);
   }
 
   .home-membership__cta {

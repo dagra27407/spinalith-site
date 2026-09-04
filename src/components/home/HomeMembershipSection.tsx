@@ -7,15 +7,17 @@
  * Homepage membership / pricing / final CTA section.
  *
  * Responsibilities:
- * - Present founder pricing clearly.
- * - Show monthly and annual pricing without implying plan selection on the marketing page.
- * - Highlight the founder discount and annual savings.
+ * - Invite qualified homepage visitors to try Spinalith with their own story.
+ * - Present founder monthly and annual pricing clearly without implying plan selection on the marketing page.
+ * - Make the 14-day full-access trial the immediate next step while keeping post-trial pricing visible.
+ * - Explain the founder-rate lock-in benefit without making discounting the main sales message.
  * - Provide a single CTA to the app account creation flow.
- * - Close the homepage before the footer with a clear membership offer.
+ * - Close the homepage before the footer with a low-friction trial offer.
  *
  * Notes:
  * - Plan selection happens inside the app after account creation.
  * - Pricing cards are informational, not interactive/selectable controls.
+ * - The CTA begins the account creation flow, not Stripe Checkout directly.
  * - Background image asset lives at public/assets/images/home/membership-nebula-backdrop.png.
  */
 
@@ -52,7 +54,7 @@ const membershipPlans: MembershipPriceCard[] = [
     price: "$7.99",
     cadence: "/mo",
     regularPrice: "$9.99/mo",
-    savingsLine: "20% founder savings",
+    savingsLine: "14-day free trial, then $7.99/mo",
     Icon: Calendar,
   },
   {
@@ -61,7 +63,7 @@ const membershipPlans: MembershipPriceCard[] = [
     price: "$69.99",
     cadence: "/year",
     regularPrice: "$99.99/year",
-    savingsLine: "30% founder savings",
+    savingsLine: "14-day free trial, then $69.99/year",
     badge: "Best value",
     Icon: CalendarCheck,
   },
@@ -72,23 +74,25 @@ export function HomeMembershipSection() {
     <section className="home-membership" aria-labelledby="home-membership-title">
       <div className="site-container">
         <div className="home-membership__header">
-          <p className="home-membership__kicker">Membership</p>
+          <p className="home-membership__kicker">Try Spinalith with your story</p>
 
           <h2 id="home-membership-title" className="home-membership__title">
-            <span>One membership.</span>
+            <span>See what changes when</span>
             <span className="home-membership__title-accent">
-             Everything you need to build and organize your story.
+              your whole story is connected.
             </span>
           </h2>
 
           <p className="home-membership__lede">
-            Simple pricing. Every tool you need to build and organize your story.
+            Use the full Spinalith workspace with your own project for 14 days and
+            see if it gives you a better way to keep everything straight.
           </p>
 
           <p className="home-membership__discount-pill">
             <Sparkles aria-hidden="true" />
             <span>
-              <strong>Founder pricing:</strong> Lock in your rate while your membership stays active.
+              <strong>Founder pricing:</strong> Lock in your selected rate while
+              your membership stays active.
             </span>
           </p>
         </div>
@@ -157,12 +161,12 @@ export function HomeMembershipSection() {
             className="home-membership__cta"
             href={COMMON_LINKS.app.startMembership}
           >
-            <span>Start Your Free Trial</span>
+            <span>Start My 14-Day Trial</span>
             <ArrowRight aria-hidden="true" />
           </a>
 
           <p className="home-membership__trial-note">
-            14-day free trial. Cancel anytime.
+            Full access for 14 days. Cancel anytime.
           </p>
 
           <div className="home-membership__trust-row" aria-label="Membership details">
@@ -176,11 +180,10 @@ export function HomeMembershipSection() {
             </span>
             <span>
               <BadgeCheck aria-hidden="true" />
-              14-day free trial
+              Cancel anytime
             </span>
           </div>
         </div>
-
       </div>
     </section>
   );
