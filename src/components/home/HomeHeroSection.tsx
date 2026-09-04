@@ -50,20 +50,26 @@ export function HomeHeroSection() {
           </div>
 
           <div className="home-hero__action-area">
-            <div className="home-hero__actions" aria-label="Hero actions">
-              <a
-                className="site-button site-button-primary home-hero__button"
-                href={COMMON_LINKS.app.signup}
-              >
-                Start Building Your Story
-              </a>
+            <div className="home-hero__action-area">
+              <div className="home-hero__actions" aria-label="Hero actions">
+                <a
+                  className="site-button site-button-primary home-hero__button"
+                  href={COMMON_LINKS.app.signup}
+                >
+                  Start Building Your Story
+                </a>
 
-              <a
-                className="site-button site-button-secondary home-hero__button"
-                href="#how-it-works"
-              >
-                See How It Works
-              </a>
+                <a
+                  className="site-button site-button-secondary home-hero__button"
+                  href="#how-it-works"
+                >
+                  See How It Works
+                </a>
+              </div>
+
+              <p className="home-hero__trial-note">
+                14-day free trial. Cancel anytime.
+              </p>
             </div>
           </div>
         </div>

@@ -157,9 +157,13 @@ export function HomeMembershipSection() {
             className="home-membership__cta"
             href={COMMON_LINKS.app.startMembership}
           >
-            <span>Start Your Membership</span>
+            <span>Start Your Free Trial</span>
             <ArrowRight aria-hidden="true" />
           </a>
+
+          <p className="home-membership__trial-note">
+            14-day free trial. Cancel anytime.
+          </p>
 
           <div className="home-membership__trust-row" aria-label="Membership details">
             <span>
@@ -172,7 +176,7 @@ export function HomeMembershipSection() {
             </span>
             <span>
               <BadgeCheck aria-hidden="true" />
-              Simple membership
+              14-day free trial
             </span>
           </div>
         </div>

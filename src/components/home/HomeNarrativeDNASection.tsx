@@ -110,10 +110,10 @@ export function HomeNarrativeDNASection() {
             </h2>
 
             <p className="home-narrative-dna__lede">
-              Your characters, relationships, locations, worldbuilding, conflicts,
-              and the details your story depends on are the DNA of your story.
-              Narrative DNA gives each one a place to live, so you are not relying
-              on scattered notes or memory to keep everything straight.
+              Narrative DNA is where the people, places, relationships, worldbuilding,
+              conflicts, and other details that shape your story live and connect. It gives
+              each one a clear home, so you are not relying on scattered notes or memory to
+              keep everything straight.
             </p>
           </header>
 

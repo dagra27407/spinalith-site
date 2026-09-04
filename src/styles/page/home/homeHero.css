@@ -162,6 +162,14 @@
   line-height: 1.35;
 }
 
+.home-hero__trial-note {
+  margin: 0.9rem 0 0;
+  text-align: center;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: var(--color-text);
+}
+
 /* ============================================================
    Home hero actions
 ============================================================ */

@@ -49,7 +49,7 @@ export function HomeConnectedSection() {
           <Sparkles aria-hidden="true" />
 
           <p className="home-connected__lede">
-            Update one part of your story, and the connected pieces stay aligned everywhere else.
+            Update one part of your story, and the connected pieces stay in sync everywhere else.
           </p>
 
           <Sparkles aria-hidden="true" />
