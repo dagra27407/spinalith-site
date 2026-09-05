@@ -38,7 +38,7 @@ import {
 import { VideoFrame } from "../site/VideoFrame";
 
 const FEATURE_PLACEHOLDER_VIDEO =
-  "/assets/videos/features/features_NarrativeDNA.mp4";
+  "/assets/videos/features/features_NarativeDNA.mp4";
 
 const narrativeDNACallouts = [
   {
