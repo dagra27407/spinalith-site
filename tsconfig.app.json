@@ -24,11 +24,12 @@
     "noUncheckedSideEffectImports": true,
 
     /* ShadCN UI path alias support */
-    "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src", "supabase/supabaseClient.ts"]
+  "paths": {
+  "@/*": ["./src/*"]
+}
 }
 

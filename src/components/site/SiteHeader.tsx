@@ -1,7 +1,7 @@
-// src/components/marketing/SiteHeader.tsx
+// src/components/site/SiteHeader.tsx
 
 /**
- * File: src/components/marketing/SiteHeader.tsx
+ * File: src/components/site/SiteHeader.tsx
  *
  * Purpose:
  * Shared public website header/navigation for Spinalith.com.
@@ -10,21 +10,22 @@
  * - Displays the Spinalith brand mark/name.
  * - Provides public-site navigation links.
  * - Provides primary calls to action for the marketing site.
+ * - Highlights the active public-site route.
  *
  * Notes:
  * - This is public website navigation, not Spinalith app navigation.
- * - Keep nav labels focused on launch-site pages and visitor needs.
- * - Legal/static pages may remain in /public until migrated into React routes.
+ * - Public-site routing is handled by Vike.
+ * - Active link state comes from Vike pageContext.urlPathname.
  */
 
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
-import { NavLink } from "react-router-dom";
+import { usePageContext } from "vike-react/usePageContext";
 
 import { COMMON_LINKS } from "@/routes/CommonLinks";
 
 const navItems = [
-  { label: "Home", to: COMMON_LINKS.site.home, end: true },
+  { label: "Home", to: COMMON_LINKS.site.home },
   { label: "Features", to: COMMON_LINKS.site.features },
   { label: "Pricing", to: COMMON_LINKS.site.pricing },
   { label: "About", to: COMMON_LINKS.site.about },
@@ -33,16 +34,21 @@ const navItems = [
 
 export function SiteHeader() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const pageContext = usePageContext();
 
   const closeMobileMenu = () => {
     setIsMobileMenuOpen(false);
   };
 
+  const isActiveRoute = (to: string) => {
+    return pageContext.urlPathname === to;
+  };
+
   return (
     <header className="site-header">
       <div className="site-container site-header__inner">
-        <NavLink
-          to={COMMON_LINKS.site.home}
+        <a
+          href={COMMON_LINKS.site.home}
           className="site-logo"
           aria-label="Spinalith home"
           onClick={closeMobileMenu}
@@ -51,14 +57,23 @@ export function SiteHeader() {
             S
           </span>
           <span>Spinalith</span>
-        </NavLink>
+        </a>
 
         <nav className="site-nav" aria-label="Primary navigation">
-          {navItems.map((item) => (
-            <NavLink key={item.to} to={item.to} end={item.end}>
-              {item.label}
-            </NavLink>
-          ))}
+          {navItems.map((item) => {
+            const isActive = isActiveRoute(item.to);
+
+            return (
+              <a
+                key={item.to}
+                href={item.to}
+                className={isActive ? "active" : undefined}
+                aria-current={isActive ? "page" : undefined}
+              >
+                {item.label}
+              </a>
+            );
+          })}
         </nav>
 
         <div className="site-header__actions">
@@ -100,16 +115,21 @@ export function SiteHeader() {
           aria-label="Mobile navigation"
         >
           <div className="site-container site-mobile-menu__inner">
-            {navItems.map((item) => (
-              <NavLink
-                key={item.to}
-                to={item.to}
-                end={item.end}
-                onClick={closeMobileMenu}
-              >
-                {item.label}
-              </NavLink>
-            ))}
+            {navItems.map((item) => {
+              const isActive = isActiveRoute(item.to);
+
+              return (
+                <a
+                  key={item.to}
+                  href={item.to}
+                  className={isActive ? "active" : undefined}
+                  aria-current={isActive ? "page" : undefined}
+                  onClick={closeMobileMenu}
+                >
+                  {item.label}
+                </a>
+              );
+            })}
 
             <a
               className="site-mobile-menu__signin"

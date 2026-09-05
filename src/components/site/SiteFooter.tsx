@@ -1,7 +1,7 @@
-// src/components/marketing/SiteFooter.tsx
+// src/components/site/SiteFooter.tsx
 
 /**
- * File: src/components/marketing/SiteFooter.tsx
+ * File: src/components/site/SiteFooter.tsx
  *
  * Purpose:
  * Shared public website footer for Spinalith.com.
@@ -9,15 +9,13 @@
  * Responsibilities:
  * - Provides brand positioning at the bottom of public pages.
  * - Provides core public-site navigation links.
- * - Links to legal/static pages that currently live in /public.
+ * - Links to legal pages and app destinations.
  *
  * Notes:
  * - This footer is for the public marketing/content site.
- * - Privacy and Terms currently resolve as static public files.
- * - If legal pages are later migrated to React routes, update those links here.
+ * - Public-site routing is handled by Vike.
+ * - Internal public-site links use standard anchors.
  */
-
-import { Link } from "react-router-dom";
 
 import { COMMON_LINKS } from "@/routes/CommonLinks";
 
@@ -30,31 +28,32 @@ export function SiteFooter() {
         <div className="site-card site-card-pad">
           <div className="grid grid-3">
             <div className="stack">
-              <Link to="/" className="site-logo" aria-label="Spinalith home">
+              <a href="/" className="site-logo" aria-label="Spinalith home">
                 <span className="site-logo-mark" aria-hidden="true">
                   S
                 </span>
                 <span>Spinalith</span>
-              </Link>
+              </a>
 
               <p className="text-muted">
-                A story development workspace for writers planning ahead or organizing the story as it grows.
+                A story development workspace for writers planning ahead or
+                organizing the story as it grows.
               </p>
             </div>
 
             <div className="stack">
               <h3>Product</h3>
-              <Link to={COMMON_LINKS.site.features}>Features</Link>
-              <Link to={COMMON_LINKS.site.pricing}>Pricing</Link>
+              <a href={COMMON_LINKS.site.features}>Features</a>
+              <a href={COMMON_LINKS.site.pricing}>Pricing</a>
               <a href={COMMON_LINKS.app.login}>Sign In</a>
             </div>
 
             <div className="stack">
               <h3>Company</h3>
-              <Link to={COMMON_LINKS.site.about}>About</Link>
-              <Link to={COMMON_LINKS.site.contact}>Contact</Link>
-              <Link to={COMMON_LINKS.site.privacy}>Privacy</Link>
-              <Link to={COMMON_LINKS.site.terms}>Terms</Link>
+              <a href={COMMON_LINKS.site.about}>About</a>
+              <a href={COMMON_LINKS.site.contact}>Contact</a>
+              <a href={COMMON_LINKS.site.privacy}>Privacy</a>
+              <a href={COMMON_LINKS.site.terms}>Terms</a>
             </div>
           </div>
 
