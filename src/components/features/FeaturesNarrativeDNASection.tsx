@@ -38,7 +38,7 @@ import {
 import { VideoFrame } from "../site/VideoFrame";
 
 const FEATURE_PLACEHOLDER_VIDEO =
-  "/assets/videos/features/spinalith-feature-placeholder-8s.MP4";
+  "/assets/videos/features/features_NarrativeDNA.MP4";
 
 const narrativeDNACallouts = [
   {
