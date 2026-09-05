@@ -1,22 +1,22 @@
-/* src/styles/page/features/featuresTemplates.css */
+/* src/styles/page/features/featuresVisualPlanning.css */
 
 /**
- * File: src/styles/page/features/featuresTemplates.css
+ * File: src/styles/page/features/featuresVisualPlanning.css
  *
  * Purpose:
- * Dedicated layout styling for the Templates section on the Spinalith Features page.
+ * Dedicated layout styling for the Visual Planning section on the Spinalith Features page.
  *
  * Responsibilities:
- * - Preserves the standard copy-left + video-right layout in the first desktop row.
- * - Keeps template example pills associated with the product demonstration.
- * - Adds a second 1x2 row beneath the intro for five detailed template callouts.
+ * - Preserves the original copy + video composition in the first desktop row.
+ * - Adds a second 1x2 row beneath it for the five detailed feature callouts.
  * - Keeps three callouts stacked in the left column and two stacked in the right.
- * - Removes divider lines and uses spacing between callouts.
- * - Keeps the takeaway aligned beneath the second row.
+ * - Removes the divider-line treatment used by the shared callout pattern.
+ * - Uses spacing instead of horizontal rules to separate callouts.
+ * - Places the takeaway beneath the feature-callout row.
  * - Collapses both rows into one stacked column for tablet and mobile.
  *
  * Notes:
- * - This file mirrors the Visual Planning section layout pattern.
+ * - This file owns only the layout and visual treatment unique to Visual Planning.
  * - Shared feature typography and callout base styles live in:
  *   src/styles/page/features/featuresPage.css.
  * - Shared video framing lives in:
@@ -28,7 +28,7 @@
    Section wrapper
 ============================================================ */
 
-.features-templates__inner {
+.features-visual-planning__inner {
   position: relative;
   z-index: 1;
   display: grid;
@@ -39,7 +39,7 @@
    Row 1: intro + video
 ============================================================ */
 
-.features-templates__top-row {
+.features-visual-planning__top-row {
   display: grid;
   grid-template-columns:
     minmax(22rem, 0.78fr)
@@ -48,51 +48,27 @@
   gap: clamp(3rem, 5vw, 5.5rem);
 }
 
-.features-templates__intro,
-.features-templates__media {
+.features-visual-planning__intro,
+.features-visual-planning__media {
   min-width: 0;
 }
 
-.features-templates__intro {
+.features-visual-planning__intro {
   display: grid;
   align-content: center;
   gap: 1.15rem;
   max-width: 36rem;
 }
 
-.features-templates__media {
-  display: grid;
-  gap: 1rem;
+.features-visual-planning__media {
   width: 100%;
-}
-
-/* ============================================================
-   Template examples
-============================================================ */
-
-.features-templates__examples {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.65rem;
-}
-
-.features-templates__example {
-  padding: 0.5rem 0.75rem;
-  border: 1px solid
-    color-mix(in srgb, var(--color-border-brand) 62%, transparent);
-  border-radius: 999px;
-  color: var(--color-text-muted);
-  font-size: 0.84rem;
-  font-weight: 700;
-  line-height: 1;
 }
 
 /* ============================================================
    Row 2: feature callouts
 ============================================================ */
 
-.features-templates__feature-row {
+.features-visual-planning__feature-row {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   align-items: start;
@@ -100,7 +76,7 @@
   width: 100%;
 }
 
-.features-templates__callout-column {
+.features-visual-planning__callout-column {
   display: grid;
   align-content: start;
   gap: 1.5rem;
@@ -108,20 +84,24 @@
 }
 
 /* Remove shared divider treatment for this section only. */
-.features-templates .features-detail-section__callout {
+.features-visual-planning .features-detail-section__callout {
+  padding: 0;
+  border-bottom: 0;
+}
+
+/* Preserve clean spacing between the icon and explanatory copy. */
+.features-visual-planning .features-detail-section__callout {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
   align-items: start;
   gap: 0.9rem;
-  padding: 0;
-  border-bottom: 0;
 }
 
 /* ============================================================
    Takeaway
 ============================================================ */
 
-.features-templates__takeaway {
+.features-visual-planning__takeaway {
   margin: -0.25rem 0 0;
 }
 
@@ -130,71 +110,67 @@
 ============================================================ */
 
 @media (max-width: 1100px) {
-  .features-templates__top-row {
+  .features-visual-planning__top-row {
     grid-template-columns:
       minmax(20rem, 0.82fr)
       minmax(30rem, 1.18fr);
     gap: clamp(2.5rem, 4vw, 4rem);
   }
 
-  .features-templates__feature-row {
+  .features-visual-planning__feature-row {
     gap: clamp(2.5rem, 4vw, 4rem);
   }
 }
 
 @media (max-width: 900px) {
-  .features-templates__inner {
+  .features-visual-planning__inner {
     gap: 2.75rem;
   }
 
-  .features-templates__top-row,
-  .features-templates__feature-row {
+  .features-visual-planning__top-row,
+  .features-visual-planning__feature-row {
     grid-template-columns: 1fr;
     gap: 2.75rem;
   }
 
-  .features-templates__intro {
+  .features-visual-planning__intro {
     max-width: 44rem;
   }
 
-  .features-templates__media {
+  .features-visual-planning__media {
     width: 100%;
   }
 
-  .features-templates__callout-column {
+  .features-visual-planning__callout-column {
     max-width: 44rem;
   }
 
-  .features-templates__callout-column + .features-templates__callout-column {
+  .features-visual-planning__callout-column + .features-visual-planning__callout-column {
     margin-top: -1.25rem;
   }
 
-  .features-templates__takeaway {
+  .features-visual-planning__takeaway {
     max-width: 44rem;
     margin-top: -0.25rem;
   }
 }
 
 @media (max-width: 640px) {
-  .features-templates__inner,
-  .features-templates__top-row,
-  .features-templates__feature-row {
+  .features-visual-planning__inner,
+  .features-visual-planning__top-row,
+  .features-visual-planning__feature-row {
     gap: 2.25rem;
   }
 
-  .features-templates__callout-column {
+  .features-visual-planning__callout-column {
     gap: 1.35rem;
   }
 
-  .features-templates__callout-column + .features-templates__callout-column {
+  .features-visual-planning__callout-column + .features-visual-planning__callout-column {
     margin-top: -0.9rem;
   }
 
-  .features-templates .features-detail-section__callout {
+  .features-visual-planning .features-detail-section__callout {
     gap: 0.8rem;
-  }
-
-  .features-templates__examples {
-    justify-content: flex-start;
   }
 }

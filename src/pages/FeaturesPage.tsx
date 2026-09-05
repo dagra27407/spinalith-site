@@ -24,7 +24,8 @@ import { FeaturesNarrativeDNASection } from "../components/features/FeaturesNarr
 import { FeaturesChapterPlannerSection } from "../components/features/FeaturesChapterPlannerSection";
 import { FeaturesTemplatesSection } from "../components/features/FeaturesTemplatesSection";
 import { FeaturesExportSection } from "../components/features/FeaturesExportSection";
-import { FeaturesConnectedWorkflowSection } from "../components/features/FeaturesConnectedWorkflowSection";
+// import { FeaturesConnectedWorkflowSection } from "../components/features/FeaturesConnectedWorkflowSection";
+import HomeMembershipSection from "@/components/home/HomeMembershipSection";
 
 export function FeaturesPage() {
   return (
@@ -35,7 +36,8 @@ export function FeaturesPage() {
       <FeaturesChapterPlannerSection />
       <FeaturesTemplatesSection />
       <FeaturesExportSection />
-      <FeaturesConnectedWorkflowSection />
+      {/* <FeaturesConnectedWorkflowSection /> */}
+      <HomeMembershipSection />
     </>
   );
 }

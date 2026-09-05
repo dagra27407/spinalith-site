@@ -166,6 +166,15 @@
   border-radius: var(--radius-lg);
 }
 
+
+.features-hero__trial-note {
+  margin: -0.45rem 0 0;
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+
 /* ============================================================
    Video
 ============================================================ */

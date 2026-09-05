@@ -7,14 +7,17 @@
  * Hero section for the Spinalith Features page.
  *
  * Responsibilities:
- * - Introduces the Features page and its core connected-workspace promise.
- * - Provides the primary membership CTA.
+ * - Introduces the Features page as a workspace that supports different writing styles.
+ * - Frames the page around how Spinalith fits into a writer's workflow.
+ * - Provides the primary 14-day free-trial CTA.
  * - Presents the overview feature video using the shared VideoFrame component.
- * - Gives visitors a quick understanding of what the rest of the page will demonstrate.
+ * - Shows that the same story can be viewed and worked with across multiple Spinalith workspaces.
  *
  * Notes:
  * - This is a product-focused hero, not a second homepage hero.
  * - The product video should remain the primary visual evidence in this section.
+ * - The hero video is intended to move quickly across multiple workspaces using the same story.
+ * - The video caption should describe the specific behavior being demonstrated rather than repeat the headline.
  * - The placeholder video can be replaced later without changing this component layout.
  * - Features-specific layout styling lives in:
  *   src/styles/page/features/featuresHero.css.
@@ -37,14 +40,16 @@ export function FeaturesHeroSection() {
           <span className="features-hero__kicker">Features</span>
 
           <h1 className="features-hero__title">
-            <span>Everything you need</span>
-            <span>to plan your story.</span>
-            <strong>One connected workspace.</strong>
+            <span>A workspace for</span>
+            <strong>any writing style.</strong>
           </h1>
 
           <p className="features-hero__lede">
-            Spinalith brings your story structure, chapters, characters, worldbuilding, 
-            and timelines into one connected workspace, whether you plan ahead or organize as you go.
+            Spinalith adapts to how you work. Plan every beat or discover the story as you go,
+            and keep your chapters, timelines, characters, and story details connected as the
+            story evolves. Whether you are rearranging events to see how the story plays out or
+            tracking the small details that matter, Spinalith fits into your workflow instead of
+            forcing you into one.
           </p>
 
           <div className="features-hero__actions">
@@ -52,16 +57,20 @@ export function FeaturesHeroSection() {
               className="site-button site-button-primary features-hero__button"
               href={COMMON_LINKS.app.startMembership}
             >
-              Start Your Membership
+              Start My 14-Day Trial
             </a>
           </div>
+
+          <p className="features-hero__trial-note">
+            Full access for 14 days. Cancel anytime.
+          </p>
         </div>
 
         <div className="features-hero__media">
           <VideoFrame
             src={FEATURE_PLACEHOLDER_VIDEO}
             ariaLabel="Spinalith connected workspace feature overview"
-            caption="Changes carry across your story workspace."
+            caption="Same story. Different ways to see it."
             showCaption
             variant="productGlow"
           />

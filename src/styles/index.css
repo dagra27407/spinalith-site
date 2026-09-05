@@ -47,6 +47,9 @@
 @import "./page/features/featuresTemplates.css";
 @import "./page/features/featuresExport.css";
 @import "./page/features/featuresConnectedWorkflow.css";
+@import "./page/features/featuresVisualPlanning.css";
+@import "./page/features/featuresNarrativeDNA.css";
+@import "./page/features/featuresChapterPlanner.css";
 
 /* ============================================================
    Base reset

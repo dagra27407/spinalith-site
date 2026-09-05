@@ -7,26 +7,32 @@
  * Templates section for the Spinalith Features page.
  *
  * Responsibilities:
- * - Explains what a Spinalith template actually provides inside a project.
- * - Shows that templates create a usable starting framework rather than a rigid structure.
- * - Highlights the major story-planning pieces that can be created from a template.
- * - Presents the template demonstration using the shared VideoFrame component.
+ * - Explains how templates reduce blank-project setup friction.
+ * - Shows that Spinalith templates create a usable framework inside the actual workspace.
+ * - Highlights five practical ways templates help writers start faster without locking them into a method.
+ * - Preserves the standard Features-page orientation with copy on the left and video on the right.
  *
  * Notes:
- * - This section is intentionally different from the homepage Momentum section.
+ * - This section intentionally differs from the homepage Momentum section.
  * - The homepage helps visitors choose how they want to start.
  * - This section explains what happens after a template is chosen.
- * - Shared video framing lives in src/components/site/VideoFrame.tsx.
- * - Shared Features page layout styling lives in:
+ * - The first row keeps the original copy-left + video-right composition.
+ * - The second row contains five detailed template callouts in two columns.
+ * - Divider lines are removed so spacing separates the callouts.
+ * - Responsive layouts collapse both rows into one stacked column.
+ * - Shared feature typography and callout base styles live in:
  *   src/styles/page/features/featuresPage.css.
- * - Templates-specific supporting styles live in:
+ * - Templates-specific layout styling lives in:
  *   src/styles/page/features/featuresTemplates.css.
+ * - Shared video framing lives in:
+ *   src/components/site/VideoFrame.tsx.
  */
 
 import {
-  BookOpen,
-  Layers3,
-  ListChecks,
+  BookOpenCheck,
+  Boxes,
+  Gauge,
+  GraduationCap,
   PencilRuler,
 } from "lucide-react";
 
@@ -35,93 +41,119 @@ import { VideoFrame } from "../site/VideoFrame";
 const FEATURE_PLACEHOLDER_VIDEO =
   "/assets/videos/features/spinalith-feature-placeholder-8s.MP4";
 
-const templateFeatures = [
+const templateCallouts = [
   {
-    label: "Story beats included",
-    Icon: ListChecks,
+    title: "Start faster",
+    description:
+      "Choose a structure and begin with the major pieces already in place instead of building the project from scratch.",
+    Icon: Gauge,
   },
   {
-    label: "Acts and chapters ready",
-    Icon: BookOpen,
+    title: "Use a framework you already know",
+    description:
+      "Start with structures like Three Act, Heroic Journey, Beat Sheet, Mystery, or Romance without manually recreating them.",
+    Icon: BookOpenCheck,
   },
   {
-    label: "Timelines set up",
-    Icon: Layers3,
+    title: "See the structure inside the workspace",
+    description:
+      "Acts, chapters, beats, and timelines are created where you will actually use them, not as a separate reference document.",
+    Icon: Boxes,
   },
   {
-    label: "Change anything",
+    title: "Change anything",
+    description:
+      "Rename, move, remove, add, or rebuild pieces as the story changes. The template is a starting point, not a rulebook.",
     Icon: PencilRuler,
   },
+  {
+    title: "Learn by example",
+    description:
+      "Use sample projects to see how Spinalith is set up and how a finished story framework can look before building your own.",
+    Icon: GraduationCap,
+  },
 ];
 
-const templateExamples = [
-  "Three Act",
-  "Heroic Journey",
-  "Beat Sheet",
-  "Mystery",
-  "Romance",
-];
+function TemplateCallout({
+  title,
+  description,
+  Icon,
+}: (typeof templateCallouts)[number]) {
+  return (
+    <div className="features-detail-section__callout">
+      <div className="features-detail-section__callout-icon">
+        <Icon aria-hidden="true" />
+      </div>
+
+      <div className="features-detail-section__callout-copy">
+        <h3>{title}</h3>
+        <p>{description}</p>
+      </div>
+    </div>
+  );
+}
 
 export function FeaturesTemplatesSection() {
+  const leftCallouts = templateCallouts.slice(0, 3);
+  const rightCallouts = templateCallouts.slice(3);
+
   return (
     <section className="features-detail-section features-templates">
-      <div className="site-container features-detail-section__inner">
-        <div className="features-detail-section__copy">
-          <span className="features-detail-section__kicker">
-            Templates
-          </span>
+      <div className="site-container features-templates__inner">
+        <div className="features-templates__top-row">
+          <div className="features-templates__intro">
+            <span className="features-detail-section__kicker">
+              Templates
+            </span>
 
-          <h2 className="features-detail-section__title">
-            Start with a framework already in place.
-          </h2>
+            <h2 className="features-detail-section__title">
+              Start with a framework already in place.
+            </h2>
 
-          <p className="features-detail-section__lede">
-            Choose a story structure and Spinalith can set up the acts, chapters, beats,
-            and timelines for you. Then move, rename, remove, or rebuild anything as the
-            story takes shape.
-          </p>
+            <p className="features-detail-section__lede">
+              Starting from a blank project can be intimidating, even when you know
+              the kind of story you want to tell. Choose a familiar structure and
+              Spinalith can build the starting framework for you. Use it as-is,
+              change what does not fit, or strip it down as the story becomes your own.
+            </p>
+          </div>
 
-          <div
-            className="features-detail-section__feature-list"
-            aria-label="Template features"
-          >
-            {templateFeatures.map(({ label, Icon }) => (
-              <div
-                className="features-detail-section__feature-chip"
-                key={label}
-              >
-                <Icon aria-hidden="true" />
-                <span>{label}</span>
-              </div>
+          <div className="features-templates__media">
+            <VideoFrame
+              src={FEATURE_PLACEHOLDER_VIDEO}
+              ariaLabel="Spinalith template feature demonstration"
+              variant="productGlow"
+            />
+
+          </div>
+        </div>
+
+        <div
+          className="features-templates__feature-row"
+          aria-label="Template features"
+        >
+          <div className="features-templates__callout-column">
+            {leftCallouts.map((callout) => (
+              <TemplateCallout
+                key={callout.title}
+                {...callout}
+              />
             ))}
           </div>
 
-          <p className="features-detail-section__takeaway">
-            A starting point, not a set of rules.
-          </p>
-        </div>
-
-        <div className="features-detail-section__media features-templates__media">
-          <VideoFrame
-            src={FEATURE_PLACEHOLDER_VIDEO}
-            ariaLabel="Spinalith template feature demonstration"
-            variant="productGlow"
-          />
-
-          <div
-            className="features-templates__examples"
-            aria-label="Available template examples"
-          >
-            {templateExamples.map((template) => (
-              <span
-                className="features-templates__example"
-                key={template}
-              >
-                {template}
-              </span>
+          <div className="features-templates__callout-column">
+            {rightCallouts.map((callout) => (
+              <TemplateCallout
+                key={callout.title}
+                {...callout}
+              />
             ))}
           </div>
         </div>
+
+        <p className="features-detail-section__takeaway features-templates__takeaway">
+          A starting point, not a set of rules.
+        </p>
       </div>
     </section>
   );

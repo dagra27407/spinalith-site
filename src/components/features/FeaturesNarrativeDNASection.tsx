@@ -7,26 +7,32 @@
  * Narrative DNA section for the Spinalith Features page.
  *
  * Responsibilities:
- * - Explains how story details stay organized and connected across Spinalith.
- * - Highlights the core Narrative DNA entity types and discovery tools.
- * - Reinforces that changes made in one place remain connected across the story workspace.
- * - Presents the Narrative DNA demonstration using the shared VideoFrame component.
+ * - Explains Narrative DNA through the everyday problem of keeping track of story details.
+ * - Preserves the original reversed Features-page layout with video on the left and copy on the right.
+ * - Adds a second 1x2 row beneath the original layout for six detailed feature callouts.
+ * - Keeps three callouts stacked in the left column and three stacked in the right column.
+ * - Shows how story information can be stored, connected, updated, noted, searched, and expanded over time.
  *
  * Notes:
- * - This section reuses the shared Features page copy + media layout.
- * - The reversed modifier places media on the left and copy on the right on desktop.
- * - Shared video framing lives in src/components/site/VideoFrame.tsx.
- * - Shared Features page layout styling lives in:
+ * - The first row intentionally reuses the original shared reversed layout from featuresPage.css.
+ * - The second row mirrors the Visual Planning section's two-column callout layout.
+ * - Divider lines are removed for this section so spacing separates the callouts.
+ * - Responsive layouts collapse the second row into one column.
+ * - Shared feature typography and reversed layout styling lives in:
  *   src/styles/page/features/featuresPage.css.
+ * - Narrative DNA callout-row styling lives in:
+ *   src/styles/page/features/featuresNarrativeDNA.css.
+ * - Shared video framing lives in:
+ *   src/components/site/VideoFrame.tsx.
  */
 
 import {
-  Image,
-  MapPin,
+  FileText,
+  Link2,
   Network,
   Search,
-  ScrollText,
-  Users,
+  Sparkles,
+  Tags,
 } from "lucide-react";
 
 import { VideoFrame } from "../site/VideoFrame";
@@ -34,36 +40,70 @@ import { VideoFrame } from "../site/VideoFrame";
 const FEATURE_PLACEHOLDER_VIDEO =
   "/assets/videos/features/spinalith-feature-placeholder-8s.MP4";
 
-const narrativeDNAFeatures = [
+const narrativeDNACallouts = [
   {
-    label: "Characters",
-    Icon: Users,
+    title: "Give every detail a home",
+    description:
+      "Keep characters, locations, relationships, lore, items, worldbuilding, and other story details somewhere intentional instead of scattered across notes.",
+    Icon: Tags,
   },
   {
-    label: "Relationships",
+    title: "Connect the people, places, and ideas",
+    description:
+      "Link story elements together so the people, places, relationships, chapters, scenes, and other details that matter can stay tied to each other.",
     Icon: Network,
   },
   {
-    label: "Locations",
-    Icon: MapPin,
+    title: "Update it once",
+    description:
+      "Change a story detail in one place and the same underlying information stays current wherever that story element is referenced.",
+    Icon: Link2,
   },
   {
-    label: "Lore",
-    Icon: ScrollText,
+    title: "Capture notes where they belong",
+    description:
+      "Make a quick note for the story as a whole, or tie it to one or more specific story elements so you can find the idea again in the right context later.",
+    Icon: FileText,
   },
   {
-    label: "Images",
-    Icon: Image,
-  },
-  {
-    label: "Search",
+    title: "Find what you need fast",
+    description:
+      "Search and move through related story information instead of trying to remember which notebook, document, or random file has the detail you need.",
     Icon: Search,
+  },
+  {
+    title: "Build it as the story grows",
+    description:
+      "You do not have to know everything up front. Add characters, relationships, world details, notes, and other information as you discover them.",
+    Icon: Sparkles,
   },
 ];
 
-export function FeaturesNarrativeDNASection() {
+function NarrativeDNACallout({
+  title,
+  description,
+  Icon,
+}: (typeof narrativeDNACallouts)[number]) {
   return (
-    <section className="features-detail-section features-detail-section--reverse">
+    <div className="features-detail-section__callout">
+      <div className="features-detail-section__callout-icon">
+        <Icon aria-hidden="true" />
+      </div>
+
+      <div className="features-detail-section__callout-copy">
+        <h3>{title}</h3>
+        <p>{description}</p>
+      </div>
+    </div>
+  );
+}
+
+export function FeaturesNarrativeDNASection() {
+  const leftCallouts = narrativeDNACallouts.slice(0, 3);
+  const rightCallouts = narrativeDNACallouts.slice(3);
+
+  return (
+    <section className="features-detail-section features-detail-section--reverse features-narrative-dna">
       <div className="site-container features-detail-section__inner">
         <div className="features-detail-section__copy">
           <span className="features-detail-section__kicker">
@@ -75,27 +115,10 @@ export function FeaturesNarrativeDNASection() {
           </h2>
 
           <p className="features-detail-section__lede">
-            Change a character, location, relationship, or piece of lore once, 
-            and that information stays connected wherever it appears across your story.
-          </p>
-
-          <div
-            className="features-detail-section__feature-list"
-            aria-label="Narrative DNA features"
-          >
-            {narrativeDNAFeatures.map(({ label, Icon }) => (
-              <div
-                className="features-detail-section__feature-chip"
-                key={label}
-              >
-                <Icon aria-hidden="true" />
-                <span>{label}</span>
-              </div>
-            ))}
-          </div>
-
-          <p className="features-detail-section__takeaway">
-            Edit once. See it everywhere.
+            How do you keep track of story details as you write? A notebook?
+            Index cards? Your head? Ever tried to remember a character's eye
+            color at 2 a.m.? Had a random idea for a location you wanted to use
+            later, then couldn't remember where you wrote it down?
           </p>
         </div>
 
@@ -106,6 +129,29 @@ export function FeaturesNarrativeDNASection() {
             variant="productGlow"
           />
         </div>
+      </div>
+
+      <div className="site-container">
+        <div
+          className="features-narrative-dna__feature-row"
+          aria-label="Narrative DNA features"
+        >
+          <div className="features-narrative-dna__callout-column">
+            {leftCallouts.map((callout) => (
+              <NarrativeDNACallout key={callout.title} {...callout} />
+            ))}
+          </div>
+
+          <div className="features-narrative-dna__callout-column">
+            {rightCallouts.map((callout) => (
+              <NarrativeDNACallout key={callout.title} {...callout} />
+            ))}
+          </div>
+        </div>
+
+        <p className="features-detail-section__takeaway features-narrative-dna__takeaway">
+          Edit once. See it everywhere.
+        </p>
       </div>
     </section>
   );
