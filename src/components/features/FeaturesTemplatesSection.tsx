@@ -122,6 +122,7 @@ export function FeaturesTemplatesSection() {
             <VideoFrame
               src={FEATURE_PLACEHOLDER_VIDEO}
               ariaLabel="Spinalith template feature demonstration"
+              ariaDescription="Demonstration: A story template is selected and a new project is created. Spinalith automatically builds the starting story structure inside the workspace, including acts, chapters, beats, timelines, or other template elements. The populated project is then shown ready to edit. The demonstration shows that templates create usable story structure inside the workspace rather than acting as separate reference documents."
               variant="productGlow"
             />
 

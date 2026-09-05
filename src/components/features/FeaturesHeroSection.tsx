@@ -70,6 +70,7 @@ export function FeaturesHeroSection() {
           <VideoFrame
             src={FEATURE_PLACEHOLDER_VIDEO}
             ariaLabel="Spinalith connected workspace feature overview"
+            ariaDescription="Demonstration: The Timeline Planner opens with the story structure visible. A beat is moved to a new position. A linked character is then opened in Narrative DNA and a visible character detail is changed. Returning to the planning workspace shows the updated connected information. The Chapter Planner then opens with the same story represented there, showing that these are different ways of working with the same connected story."
             caption="Same story. Different ways to see it."
             showCaption
             variant="productGlow"

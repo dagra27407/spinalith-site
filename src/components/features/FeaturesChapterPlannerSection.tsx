@@ -177,6 +177,7 @@ export function FeaturesChapterPlannerSection() {
             <VideoFrame
               src={FEATURE_PLACEHOLDER_VIDEO}
               ariaLabel="Spinalith Chapter Planner feature demonstration"
+              ariaDescription="Demonstration: The Chapter Planner opens in Board View and a chapter is moved to a new position. The planner then switches to Outline View, where the updated chapter order is already reflected. It then switches to Print Preview, where the same order remains in place. The demonstration shows that the different Chapter Planner views use the same underlying chapter data and stay synchronized when the structure changes."
               variant="productGlow"
             />
           </div>

@@ -126,6 +126,7 @@ export function FeaturesNarrativeDNASection() {
           <VideoFrame
             src={FEATURE_PLACEHOLDER_VIDEO}
             ariaLabel="Spinalith Narrative DNA feature demonstration"
+            ariaDescription="Demonstration: A character is opened in Narrative DNA and a visible character detail is changed. Another part of the story is then opened where that same character is referenced, and the updated detail appears there automatically. The demonstration returns to the character profile and shows a linked relationship or location, illustrating that characters and other story elements are connected rather than stored as isolated records."
             variant="productGlow"
           />
         </div>

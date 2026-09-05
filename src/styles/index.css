@@ -22,6 +22,9 @@
  /* Theme tokens */
 @import "./tokens.css";
 
+/* Accessibility utilities */
+@import "./utilities/accessibility.css";
+
 /* Components */
 @import "./site/siteHeader.css";
 @import "./components/screenshotFrame.css";

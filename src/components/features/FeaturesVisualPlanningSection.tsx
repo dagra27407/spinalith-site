@@ -129,6 +129,7 @@ export function FeaturesVisualPlanningSection() {
             <VideoFrame
               src={FEATURE_PLACEHOLDER_VIDEO}
               ariaLabel="Spinalith visual planning feature demonstration"
+              ariaDescription="Demonstration: The story opens in a visual planning view with chapters, beats, arcs, and other story elements arranged across the project. A story element is dragged to a new position. The view then switches to the Timeline Planner, where a second timeline is revealed and the story is shown at a wider scale. The demonstration shows how story structure can be rearranged visually and viewed across multiple timelines without rebuilding the plan."
               variant="productGlow"
             />
           </div>

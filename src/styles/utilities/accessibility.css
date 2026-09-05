@@ -1,0 +1,26 @@
+/**
+ * File: src/styles/utilities/accessibility.css
+ *
+ * Purpose:
+ * Shared accessibility utility styles used across the public site.
+ *
+ * Responsibilities:
+ * - Provides reusable nonvisual helper classes for assistive technology.
+ * - Keeps accessibility-specific utilities centralized.
+ *
+ * Notes:
+ * - Use .sr-only for meaningful text that should remain available to screen
+ *   readers and other nonvisual user agents without being visually displayed.
+ */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

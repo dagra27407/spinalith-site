@@ -11,14 +11,18 @@
  * - Supports multiple frame variants for flexible product presentation.
  * - Keeps video shell styling, caption behavior, and media settings reusable.
  * - Provides sensible autoplay, loop, muted, and inline-playback defaults.
+ * - Supports accessible video names and longer descriptive text for screen readers.
  *
  * Notes:
  * - Video files should generally live in public/assets/videos/.
  * - Pass public asset paths like /assets/videos/features/example.mp4.
  * - Keep section-specific placement and sizing outside this component.
+ * - Keep section-specific accessibility descriptions in the section that owns the video.
  * - CSS lives in src/styles/components/videoFrame.css.
  * - Shared colors and visual behavior should use semantic design tokens.
  */
+
+import { useId } from "react";
 
 type VideoFrameVariant =
   | "productGlow"
@@ -28,6 +32,7 @@ type VideoFrameVariant =
 type VideoFrameProps = {
   src: string;
   ariaLabel: string;
+  ariaDescription?: string;
   caption?: string;
   showCaption?: boolean;
   variant?: VideoFrameVariant;
@@ -49,6 +54,7 @@ const variantClassMap: Record<VideoFrameVariant, string> = {
 export function VideoFrame({
   src,
   ariaLabel,
+  ariaDescription,
   caption,
   showCaption = false,
   variant = "productGlow",
@@ -60,6 +66,8 @@ export function VideoFrame({
   playsInline = true,
   preload = "metadata",
 }: VideoFrameProps) {
+  const descriptionId = useId();
+
   const frameClasses = [
     "video-frame",
     variantClassMap[variant],
@@ -68,11 +76,15 @@ export function VideoFrame({
     .filter(Boolean)
     .join(" ");
 
-  const videoClasses = ["video-frame__video", videoClassName ?? ""]
+  const videoClasses = [
+    "video-frame__video",
+    videoClassName ?? "",
+  ]
     .filter(Boolean)
     .join(" ");
 
   const shouldShowCaption = showCaption && Boolean(caption);
+  const shouldShowDescription = Boolean(ariaDescription);
 
   return (
     <figure className={frameClasses}>
@@ -85,10 +97,22 @@ export function VideoFrame({
           playsInline={playsInline}
           preload={preload}
           aria-label={ariaLabel}
+          aria-describedby={
+            shouldShowDescription ? descriptionId : undefined
+          }
         >
           <source src={src} type="video/mp4" />
         </video>
       </div>
+
+      {shouldShowDescription ? (
+        <p
+          id={descriptionId}
+          className="sr-only"
+        >
+          {ariaDescription}
+        </p>
+      ) : null}
 
       {shouldShowCaption ? (
         <figcaption className="video-frame__caption">
