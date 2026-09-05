@@ -40,7 +40,7 @@ import {
 import { VideoFrame } from "../site/VideoFrame";
 
 const FEATURE_PLACEHOLDER_VIDEO =
-  "/assets/videos/features/spinalith-feature-placeholder-8s.MP4";
+  "/assets/videos/features/features_Visual_Planning.mp4";
 
 const visualPlanningCallouts = [
   {
