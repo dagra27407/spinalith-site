@@ -100,16 +100,16 @@ export function AboutPage() {
             </p>
 
             <p>
-              Whether you map the story before drafting or discover it as you go, 
-              the pieces still need somewhere to stay connected.
-            </p>
-            
-            <p>
               Characters end up in one document. Timelines live somewhere
               else. Lore, locations, scenes, ideas, and revisions collect
               across notebooks, spreadsheets, apps, and memory. Eventually,
               understanding the story means searching through several places
               and trying to remember how everything fits together.
+            </p>
+
+            <p>
+              Whether you map the story before drafting or discover it as you go, 
+              the pieces still need somewhere to stay connected.
             </p>
 
             <p>
