@@ -54,6 +54,7 @@ export function SiteFooter() {
               <a href={COMMON_LINKS.site.contact}>Contact</a>
               <a href={COMMON_LINKS.site.privacy}>Privacy</a>
               <a href={COMMON_LINKS.site.terms}>Terms</a>
+              <a href={COMMON_LINKS.site.accessibility}>Accessibility</a>
             </div>
           </div>
 

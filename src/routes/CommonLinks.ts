@@ -39,6 +39,7 @@ export const COMMON_LINKS = {
     contact: "/contact",
     privacy: "/privacy",
     terms: "/terms",
+    accessibility: "/accessibility",
   },
 } as const;
 
