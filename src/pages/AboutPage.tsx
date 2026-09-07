@@ -94,15 +94,16 @@ export function AboutPage() {
 
           <div className="about-story__copy">
             <p>
-              Whether you map the story before drafting or discover it as you go, 
-              the pieces still need somewhere to stay connected.
-            </p>
-            <p>
               Writers already have plenty of places to keep notes. The harder
               problem is keeping those notes useful once the story becomes
               complicated.
             </p>
 
+            <p>
+              Whether you map the story before drafting or discover it as you go, 
+              the pieces still need somewhere to stay connected.
+            </p>
+            
             <p>
               Characters end up in one document. Timelines live somewhere
               else. Lore, locations, scenes, ideas, and revisions collect
