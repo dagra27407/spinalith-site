@@ -114,25 +114,20 @@ export function AccessibilityPage() {
             </section>
 
             <section>
-              <h2>Scope of this statement</h2>
+            <h2>Scope of this statement</h2>
 
-              <p>
-                This accessibility statement applies to the public marketing
-                website available at spinalith.com.
-              </p>
+            <p>
+                This accessibility statement applies to the public marketing website
+                available at spinalith.com.
+            </p>
 
-              <p>
-                The Spinalith application at app.spinalith.com contains more
-                complex interactive features, including visual planning tools,
-                grids, dialogs, and drag-and-drop interactions. Accessibility
-                for those product experiences is being considered separately
-                from this public-site review.
-              </p>
-
-              <p>
-                We do not currently represent that every feature of the
-                Spinalith application conforms to WCAG 2.2 Level AA.
-              </p>
+            <p>
+                The Spinalith application at app.spinalith.com contains more complex
+                interactive functionality, including visual planning tools, grids,
+                dialogs, and drag-and-drop interactions. Accessibility for those product
+                experiences is being evaluated separately as part of our ongoing
+                accessibility work.
+            </p>
             </section>
 
             <section>
