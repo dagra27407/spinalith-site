@@ -58,6 +58,9 @@
 /* Pages / Contact */
 @import "./page/contact/contactPage.css";
 
+/* Pages / policy pages (legal) */
+@import "./page/legal/legalPage.css";
+
 /* ============================================================
    Base reset
 ============================================================ */

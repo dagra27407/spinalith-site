@@ -1,0 +1,158 @@
+/* src/styles/page/legal/legalPage.css */
+
+/**
+ * File: src/styles/page/legal/legalPage.css
+ *
+ * Purpose:
+ * Shared presentation for public Spinalith legal and policy pages.
+ *
+ * Responsibilities:
+ * - Keep long-form policy content readable and consistent with the site theme.
+ * - Provide reusable typography for Privacy, Terms, and Accessibility pages.
+ * - Avoid duplicating page-specific legal styles.
+ *
+ * Notes:
+ * - Shared site typography, containers, buttons, and color tokens remain in
+ *   src/styles/index.css and src/styles/tokens.css.
+ */
+
+/* ============================================================
+   Page
+============================================================ */
+
+.legal-page {
+  position: relative;
+  overflow: hidden;
+}
+
+/* ============================================================
+   Hero
+============================================================ */
+
+.legal-page__hero {
+  position: relative;
+  padding:
+    clamp(7rem, 11vw, 9rem)
+    0
+    clamp(3.5rem, 6vw, 5rem);
+}
+
+.legal-page__hero::before {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(
+      circle at 20% 20%,
+      rgba(139, 92, 246, 0.18),
+      transparent 30rem
+    ),
+    radial-gradient(
+      circle at 82% 5%,
+      rgba(56, 189, 248, 0.06),
+      transparent 28rem
+    );
+  content: "";
+  pointer-events: none;
+}
+
+.legal-page__hero h1 {
+  margin-bottom: 1.4rem;
+}
+
+.legal-page__updated {
+  margin-top: 1.4rem;
+  margin-bottom: 0;
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+}
+
+/* ============================================================
+   Document
+============================================================ */
+
+.legal-page__content {
+  padding:
+    0
+    0
+    clamp(6rem, 10vw, 9rem);
+}
+
+.legal-page__document {
+  padding: clamp(1.75rem, 5vw, 3.5rem);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-2xl);
+  background:
+    linear-gradient(
+      180deg,
+      rgba(139, 92, 246, 0.035),
+      rgba(255, 255, 255, 0.01)
+    ),
+    var(--card-bg);
+  box-shadow: var(--shadow-card);
+}
+
+.legal-page__document section + section {
+  margin-top: clamp(2.75rem, 5vw, 4rem);
+  padding-top: clamp(2.75rem, 5vw, 4rem);
+  border-top: 1px solid var(--color-border-soft);
+}
+
+.legal-page__document h2 {
+  margin-bottom: 1.25rem;
+  font-size: clamp(1.55rem, 3vw, 2.1rem);
+}
+
+.legal-page__document h3 {
+  margin-top: 2rem;
+  margin-bottom: 0.8rem;
+  font-size: clamp(1.08rem, 2vw, 1.25rem);
+}
+
+.legal-page__document p,
+.legal-page__document li {
+  font-size: clamp(0.98rem, 1.5vw, 1.05rem);
+  line-height: 1.8;
+}
+
+.legal-page__document p {
+  margin-bottom: 1rem;
+}
+
+.legal-page__document p:last-child {
+  margin-bottom: 0;
+}
+
+.legal-page__document ul,
+.legal-page__document ol {
+  display: grid;
+  gap: 0.65rem;
+  margin: 1.25rem 0 0;
+  padding-left: 1.5rem;
+  color: var(--color-text-secondary);
+}
+
+.legal-page__document strong {
+  color: var(--color-text-primary);
+}
+
+.legal-page__inline-link {
+  display: inline-flex;
+  margin-top: 0.5rem;
+  font-weight: 700;
+}
+
+/* ============================================================
+   Responsive
+============================================================ */
+
+@media (max-width: 640px) {
+  .legal-page__hero {
+    padding-top: 5.5rem;
+  }
+
+  .legal-page__document {
+    padding: 1.4rem;
+    border-radius: var(--radius-xl);
+  }
+}
