@@ -30,7 +30,7 @@ import { COMMON_LINKS } from "../../routes/CommonLinks";
 import { VideoFrame } from "../site/VideoFrame";
 
 const FEATURE_PLACEHOLDER_VIDEO =
-  "/assets/videos/features/spinalith-feature-placeholder-8s.MP4";
+  "/assets/videos/features/features_Hero.mp4";
 
 export function FeaturesHeroSection() {
   return (
