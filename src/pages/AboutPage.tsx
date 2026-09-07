@@ -43,7 +43,7 @@ const beliefs = [
   {
     title: "Structure should serve the story.",
     description:
-      "Frameworks, timelines, boards, and plans are tools—not rules. Use what helps and change what does not.",
+      "Frameworks, timelines, boards, and story maps are tools... Not Rules.",
     Icon: Waypoints,
   },
 ];
@@ -94,6 +94,10 @@ export function AboutPage() {
 
           <div className="about-story__copy">
             <p>
+              Whether you map the story before drafting or discover it as you go, 
+              the pieces still need somewhere to stay connected.
+            </p>
+            <p>
               Writers already have plenty of places to keep notes. The harder
               problem is keeping those notes useful once the story becomes
               complicated.
@@ -130,7 +134,7 @@ export function AboutPage() {
             <p className="section-kicker">What we believe</p>
 
             <h2 id="about-beliefs-title">
-              Planning should make the story clearer.
+              Your tools should make the story clearer.
             </h2>
           </div>
 
