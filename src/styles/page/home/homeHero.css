@@ -393,7 +393,7 @@
 
   .home-hero__visual {
     justify-self: stretch;
-    margin-top: 0.25rem;
+    margin-top: clamp(2.5rem, 9vw, 3.5rem);
   }
 
   .home-hero__visual-frame {
