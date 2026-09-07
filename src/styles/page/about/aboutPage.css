@@ -1,0 +1,273 @@
+/* src/styles/page/about/aboutPage.css */
+
+/**
+ * File: src/styles/page/about/aboutPage.css
+ *
+ * Purpose:
+ * Page-specific presentation for the Spinalith About page.
+ *
+ * Responsibilities:
+ * - Create a compact editorial layout distinct from the more demonstration-heavy
+ *   Homepage and Features page.
+ * - Reuse the global Spinalith token system and site primitives.
+ * - Provide responsive treatment for the mission, beliefs, and closing CTA.
+ *
+ * Notes:
+ * - Shared typography, containers, buttons, eyebrow styles, and tokens remain
+ *   defined in src/styles/index.css and src/styles/tokens.css.
+ * - Keep this file limited to About-page-specific layout and presentation.
+ */
+
+/* ============================================================
+   Page
+============================================================ */
+
+.about-page {
+  position: relative;
+  overflow: hidden;
+}
+
+/* ============================================================
+   Hero
+============================================================ */
+
+.about-hero {
+  position: relative;
+  padding:
+    clamp(7rem, 12vw, 10rem)
+    0
+    clamp(6rem, 10vw, 8.5rem);
+}
+
+.about-hero::before {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(
+      circle at 20% 30%,
+      rgba(139, 92, 246, 0.2),
+      transparent 32rem
+    ),
+    radial-gradient(
+      circle at 82% 12%,
+      rgba(56, 189, 248, 0.08),
+      transparent 30rem
+    );
+  content: "";
+  pointer-events: none;
+}
+
+.about-hero__title {
+  max-width: 960px;
+  margin-bottom: 2rem;
+}
+
+.about-hero__title-accent {
+  color: var(--color-brand-soft);
+}
+
+.about-hero__lede {
+  max-width: 780px;
+  margin-bottom: 2.5rem;
+  font-size: clamp(1.1rem, 2vw, 1.35rem);
+  line-height: 1.75;
+}
+
+.about-hero__statement {
+  display: grid;
+  gap: 0.1rem;
+  margin-bottom: 0;
+  color: var(--color-text-primary);
+  font-size: clamp(1.45rem, 3vw, 2.15rem);
+  font-weight: 750;
+  line-height: 1.25;
+}
+
+.about-hero__statement span {
+  color: var(--color-brand-soft);
+}
+
+/* ============================================================
+   Why Spinalith exists
+============================================================ */
+
+.about-story {
+  padding: clamp(5rem, 9vw, 8rem) 0;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.015),
+      transparent
+    );
+}
+
+.about-story__layout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: clamp(3rem, 7vw, 6rem);
+  align-items: start;
+}
+
+.about-story__title {
+  margin-bottom: 0;
+  font-size: clamp(2.1rem, 4vw, 3.6rem);
+}
+
+.about-story__copy {
+  display: grid;
+  gap: 1.35rem;
+}
+
+.about-story__copy p {
+  margin-bottom: 0;
+  font-size: clamp(1rem, 1.6vw, 1.1rem);
+  line-height: 1.8;
+}
+
+.about-story__belief {
+  margin-top: 0.75rem;
+  padding-left: 1.4rem;
+  border-left: 2px solid var(--color-brand-primary);
+  color: var(--color-text-primary) !important;
+  font-size: clamp(1.15rem, 2vw, 1.35rem) !important;
+  font-weight: 700;
+}
+
+/* ============================================================
+   Beliefs
+============================================================ */
+
+.about-beliefs {
+  padding: clamp(5rem, 9vw, 8rem) 0;
+}
+
+.about-beliefs__header {
+  max-width: 760px;
+  margin-bottom: clamp(2.5rem, 5vw, 4rem);
+}
+
+.about-beliefs__header h2 {
+  margin-bottom: 0;
+}
+
+.about-beliefs__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+.about-beliefs__card {
+  min-height: 100%;
+  padding: clamp(1.5rem, 3vw, 2rem);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-xl);
+  background:
+    linear-gradient(
+      180deg,
+      rgba(139, 92, 246, 0.06),
+      rgba(255, 255, 255, 0.015)
+    ),
+    var(--card-bg);
+  box-shadow: var(--shadow-soft);
+}
+
+.about-beliefs__icon {
+  display: grid;
+  width: 3rem;
+  height: 3rem;
+  margin-bottom: 1.4rem;
+  place-items: center;
+  border: 1px solid var(--color-border-brand);
+  border-radius: var(--radius-md);
+  background: rgba(139, 92, 246, 0.11);
+  color: var(--color-brand-soft);
+}
+
+.about-beliefs__icon svg {
+  width: 1.35rem;
+  height: 1.35rem;
+}
+
+.about-beliefs__card h3 {
+  margin-bottom: 0.8rem;
+  font-size: clamp(1.2rem, 2vw, 1.45rem);
+}
+
+.about-beliefs__card p {
+  margin-bottom: 0;
+  line-height: 1.7;
+}
+
+/* ============================================================
+   CTA
+============================================================ */
+
+.about-cta {
+  padding: clamp(5rem, 9vw, 8rem) 0;
+}
+
+.about-cta__panel {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(2.25rem, 5vw, 4rem);
+  border: 1px solid var(--color-border-brand);
+  border-radius: var(--radius-2xl);
+  background:
+    radial-gradient(
+      circle at 20% 0%,
+      rgba(139, 92, 246, 0.2),
+      transparent 28rem
+    ),
+    var(--gradient-card),
+    var(--card-bg);
+  box-shadow:
+    var(--shadow-brand-glow),
+    var(--shadow-card);
+}
+
+.about-cta__panel h2 {
+  max-width: 720px;
+  margin-bottom: 1rem;
+}
+
+.about-cta__panel > p:not(.section-kicker) {
+  max-width: 680px;
+  margin-bottom: 2rem;
+  font-size: clamp(1rem, 1.8vw, 1.15rem);
+}
+
+.about-cta__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+}
+
+/* ============================================================
+   Responsive
+============================================================ */
+
+@media (max-width: 900px) {
+  .about-story__layout {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .about-beliefs__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .about-hero {
+    padding-top: 5.5rem;
+  }
+
+  .about-cta__actions {
+    flex-direction: column;
+  }
+
+  .about-cta__actions .site-button {
+    width: 100%;
+  }
+}
