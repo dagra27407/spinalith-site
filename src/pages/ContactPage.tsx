@@ -227,7 +227,7 @@ export function ContactPage() {
   }
 
   return (
-    <main className="contact-page">
+    <div className="contact-page">
       <section
         className="contact-hero"
         aria-labelledby="contact-page-title"
@@ -358,6 +358,6 @@ export function ContactPage() {
           </div>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

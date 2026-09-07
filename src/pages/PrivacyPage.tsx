@@ -24,7 +24,7 @@ import { COMMON_LINKS } from "@/routes/CommonLinks";
 
 export function PrivacyPage() {
   return (
-    <main className="legal-page">
+    <div className="legal-page">
       <section className="legal-page__hero">
         <div className="site-container-narrow">
           <span className="eyebrow">Privacy</span>
@@ -323,6 +323,6 @@ export function PrivacyPage() {
           </div>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

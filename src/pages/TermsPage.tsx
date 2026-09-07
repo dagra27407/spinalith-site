@@ -25,7 +25,7 @@ import { COMMON_LINKS } from "@/routes/CommonLinks";
 
 export function TermsPage() {
   return (
-    <main className="legal-page">
+    <div className="legal-page">
       <section className="legal-page__hero">
         <div className="site-container-narrow">
           <span className="eyebrow">Terms</span>
@@ -357,6 +357,6 @@ export function TermsPage() {
           </div>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

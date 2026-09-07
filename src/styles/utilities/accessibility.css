@@ -2,17 +2,41 @@
  * File: src/styles/utilities/accessibility.css
  *
  * Purpose:
- * Shared accessibility utility styles used across the public site.
+ * Shared accessibility utility styles used across the public Spinalith website.
  *
  * Responsibilities:
  * - Provides reusable nonvisual helper classes for assistive technology.
- * - Keeps accessibility-specific utilities centralized.
+ * - Provides keyboard-navigation helpers such as the skip-to-content link.
+ * - Keeps accessibility-specific utility behavior centralized instead of
+ *   duplicating it across individual page and component stylesheets.
  *
  * Notes:
  * - Use .sr-only for meaningful text that should remain available to screen
  *   readers and other nonvisual user agents without being visually displayed.
+ * - Use .skip-link for the global "Skip to main content" control rendered by
+ *   the site layout.
+ * - Additional accessibility helpers such as reduced-motion handling can be
+ *   added to this file as the accessibility pass continues.
  */
 
+/* ============================================================
+   Screen-reader-only content
+============================================================ */
+
+/**
+ * Purpose:
+ * Visually hides meaningful content while keeping it available to screen
+ * readers and other assistive technologies.
+ *
+ * Use for:
+ * - Longer descriptions of visual media.
+ * - Additional context that should not be visually displayed.
+ * - Accessible labels or supporting text that remains part of the document.
+ *
+ * Do not use:
+ * - For content that should be hidden from everyone.
+ * - As a substitute for aria-hidden on purely decorative elements.
+ */
 .sr-only {
   position: absolute;
   width: 1px;
@@ -23,4 +47,69 @@
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
+}
+
+/* ============================================================
+   Skip-to-content link
+============================================================ */
+
+/**
+ * Purpose:
+ * Allows keyboard and assistive-technology users to bypass the repeated
+ * site header/navigation and jump directly to the page's main content.
+ *
+ * Behavior:
+ * - Hidden above the viewport during normal browsing.
+ * - Becomes visible as soon as it receives keyboard focus.
+ * - Links to #main-content on the global site <main> element.
+ *
+ * Location:
+ * - The matching anchor is rendered in pages/+Layout.tsx.
+ */
+.skip-link {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 9999;
+
+  padding: 0.75rem 1rem;
+
+  border: 2px solid var(--color-accent-interactive);
+  border-radius: var(--radius-md);
+
+  background: var(--color-bg-elevated);
+  color: var(--color-text-primary);
+
+  font-weight: 700;
+  text-decoration: none;
+
+  transform: translateY(-200%);
+  transition:
+    transform var(--transition-fast),
+    background var(--transition-base),
+    border-color var(--transition-base),
+    color var(--transition-base);
+}
+
+/**
+ * Purpose:
+ * Reveals the skip link when reached by keyboard navigation.
+ *
+ * Note:
+ * :focus-visible is preferred so the link appears for keyboard-focused users
+ * without unnecessarily showing during pointer interaction.
+ */
+.skip-link:focus-visible {
+  transform: translateY(0);
+}
+
+/**
+ * Purpose:
+ * Keeps the skip link visually clear while it is focused.
+ */
+.skip-link:hover,
+.skip-link:focus-visible {
+  background: var(--color-surface-brand-strong);
+  color: var(--color-text-primary);
+  text-decoration: none;
 }

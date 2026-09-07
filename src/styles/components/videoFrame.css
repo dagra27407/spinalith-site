@@ -11,6 +11,18 @@
  * - Provides glow, clean, and minimal visual variants.
  * - Keeps video framing consistent across public site sections.
  * - Preserves responsive behavior without owning parent section layout.
+ * - Provides an unobtrusive hover/focus action layer for video controls.
+ *
+ * Accessibility:
+ * - Video controls remain visually quiet during normal viewing.
+ * - Controls become visible when the video frame is hovered.
+ * - Controls also become visible when keyboard focus enters the frame.
+ * - Keyboard focus remains clearly visible through the site's global
+ *   focus-visible styling.
+ *
+ * Future extension:
+ * - .video-frame__actions is intended to support additional controls such as
+ *   fullscreen/enlarge, replay, captions, or transcript actions later.
  *
  * Notes:
  * - Parent sections should control width, grid placement, and surrounding spacing.
@@ -56,6 +68,94 @@
 }
 
 /* ============================================================
+   Video action layer
+============================================================ */
+
+/**
+ * Purpose:
+ * Provides a reusable location for contextual video actions.
+ *
+ * Default behavior:
+ * - Visually hidden so normal autoplaying marketing videos remain clean.
+ * - Revealed when the video frame is hovered.
+ * - Revealed when any control inside the frame receives keyboard focus.
+ *
+ * Future controls such as fullscreen/enlarge can be added to this container.
+ */
+.video-frame__actions {
+  position: absolute;
+  right: 0.75rem;
+  bottom: 0.75rem;
+  z-index: 3;
+
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+
+  opacity: 0;
+  pointer-events: none;
+
+  transform: translateY(0.25rem);
+
+  transition:
+    opacity var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.video-frame__shell:hover .video-frame__actions,
+.video-frame__shell:focus-within .video-frame__actions {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+/**
+ * Purpose:
+ * Small contextual control used for Pause / Play and future video actions.
+ *
+ * The control is intentionally understated so it does not compete visually
+ * with the product demonstration.
+ */
+.video-frame__action-button {
+  display: grid;
+  width: 2.35rem;
+  height: 2.35rem;
+  padding: 0;
+
+  place-items: center;
+
+  border: 1px solid var(--color-border-medium);
+  border-radius: var(--radius-md);
+
+  background: rgba(7, 5, 15, 0.82);
+  color: var(--color-text-primary);
+
+  box-shadow: var(--shadow-soft);
+
+  cursor: pointer;
+
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  transition:
+    background var(--transition-fast),
+    border-color var(--transition-fast),
+    color var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.video-frame__action-button:hover {
+  border-color: var(--color-border-interactive);
+  background: rgba(19, 15, 34, 0.94);
+  color: var(--color-accent-interactive-hover);
+  transform: translateY(-1px);
+}
+
+.video-frame__action-button:active {
+  transform: translateY(0);
+}
+
+/* ============================================================
    Caption
 ============================================================ */
 
@@ -80,10 +180,15 @@
       color-mix(in srgb, var(--color-bg-page) 86%, transparent)
     ),
     var(--screenshot-shell-bg);
+
   box-shadow:
-  0 0 48px
-    color-mix(in srgb, var(--color-brand-primary) 2%, transparent),
-  0 28px 88px rgba(0, 0, 0, 0.42);
+    0 0 48px
+      color-mix(
+        in srgb,
+        var(--color-brand-primary) 2%,
+        transparent
+      ),
+    0 28px 88px rgba(0, 0, 0, 0.42);
 }
 
 /* ============================================================
@@ -117,5 +222,15 @@
 
   .video-frame__caption {
     font-size: 0.84rem;
+  }
+
+  .video-frame__actions {
+    right: 0.55rem;
+    bottom: 0.55rem;
+  }
+
+  .video-frame__action-button {
+    width: 2.25rem;
+    height: 2.25rem;
   }
 }

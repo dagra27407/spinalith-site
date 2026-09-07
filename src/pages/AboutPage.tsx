@@ -50,7 +50,7 @@ const beliefs = [
 
 export function AboutPage() {
   return (
-    <main className="about-page">
+    <div className="about-page">
       <section
         className="about-hero"
         aria-labelledby="about-hero-title"
@@ -190,6 +190,6 @@ export function AboutPage() {
           </div>
         </div>
       </section>
-    </main>
+    </div>
   );
 }
