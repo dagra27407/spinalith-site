@@ -97,17 +97,17 @@ export function HomeSceneWriterSection() {
               id="home-scene-writer-title"
               className="home-scene-writer__title"
             >
-              <span>Plan the scene.</span>
+              <span>Write the scene.</span>
               <span className="home-scene-writer__title-accent">
-                Then write it.
+                Keep it connected.
               </span>
             </h2>
 
             <p className="home-scene-writer__lede">
-              Your story plan does not have to live in one place while the actual
-              writing lives somewhere else. Open a scene, draft it where it belongs,
-              and keep the writing tied to the same story structure you are already
-              building.
+              Your draft should not have to live in a separate tool from the story you
+              are building around it. Open a scene, write where it belongs, and keep
+              the draft connected to the chapters, structure, and story details that
+              shape it.
             </p>
           </header>
 
