@@ -200,8 +200,8 @@
   --header-border: var(--color-border-soft);
   --header-shadow: 0 16px 44px rgba(0, 0, 0, 0.28);
 
-  --button-primary-bg: var(--gradient-brand);
-  --button-primary-bg-hover: var(--gradient-brand-with-action);
+  --button-primary-bg: var(--color-brand-primary);
+  --button-primary-bg-hover: var(--color-brand-soft);
   --button-primary-text: var(--theme-white);
   --button-primary-shadow: 0 18px 48px rgba(139, 92, 246, 0.32);
 
