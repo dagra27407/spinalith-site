@@ -1,0 +1,303 @@
+/* src/styles/page/home/homeSceneWriter.css */
+
+/**
+ * File: src/styles/page/home/homeSceneWriter.css
+ *
+ * Purpose:
+ * Section-level styling for the homepage Scene Writer section.
+ *
+ * Responsibilities:
+ * - Create the screenshot-left, copy-right desktop composition.
+ * - Give Scene Writer a distinct but familiar site atmosphere.
+ * - Position the shared ScreenshotFrame and SiteBenefitItem components.
+ * - Provide responsive tablet and mobile stacking.
+ *
+ * Notes:
+ * - ScreenshotFrame owns screenshot-frame internals and visual treatment.
+ * - SiteBenefitItem owns benefit-item internals and visual treatment.
+ * - This file controls section composition, atmosphere, spacing, and responsive placement only.
+ */
+
+/* ============================================================
+   Section shell
+============================================================ */
+
+.home-scene-writer {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: clamp(5.5rem, 8vw, 8.25rem) 0;
+  border-bottom: 1px solid
+    color-mix(in srgb, var(--color-border-soft) 72%, transparent);
+  background:
+    radial-gradient(
+      ellipse at 24% 50%,
+      color-mix(in srgb, var(--color-brand-primary) 16%, transparent),
+      transparent 34rem
+    ),
+    radial-gradient(
+      ellipse at 78% 30%,
+      color-mix(in srgb, var(--color-accent-interactive) 7%, transparent),
+      transparent 30rem
+    ),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--color-bg-section) 76%, var(--color-bg-page)),
+      var(--color-bg-page)
+    );
+}
+
+.home-scene-writer::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--color-brand-primary) 5%, transparent),
+      transparent 42%
+    ),
+    radial-gradient(
+      circle at 62% 38%,
+      color-mix(in srgb, var(--color-brand-soft) 6%, transparent),
+      transparent 26rem
+    );
+}
+
+/* ============================================================
+   Main layout
+============================================================ */
+
+.home-scene-writer__inner {
+  display: grid;
+  grid-template-columns:
+    minmax(0, 1.3fr)
+    minmax(20rem, 0.78fr);
+  align-items: center;
+  gap: clamp(3rem, 5vw, 6rem);
+}
+
+.home-scene-writer__visual,
+.home-scene-writer__content {
+  min-width: 0;
+}
+
+/* ============================================================
+   Product visual
+============================================================ */
+
+.home-scene-writer__visual {
+  position: relative;
+}
+
+.home-scene-writer__frame-shell {
+  position: relative;
+  min-width: 0;
+}
+
+.home-scene-writer__frame-shell::before {
+  content: "";
+  position: absolute;
+  inset: 8% 7% -8%;
+  z-index: -1;
+  pointer-events: none;
+  border-radius: 50%;
+  background:
+    radial-gradient(
+      ellipse,
+      color-mix(in srgb, var(--color-brand-primary) 24%, transparent),
+      transparent 68%
+    );
+  filter: blur(28px);
+}
+
+.home-scene-writer__frame {
+  width: 100%;
+  margin: 0;
+}
+
+.home-scene-writer__proof-line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  max-width: 46rem;
+  margin: clamp(1.35rem, 2vw, 1.8rem) auto 0;
+  color: var(--color-text-secondary);
+  font-size: clamp(0.94rem, 0.9rem + 0.16vw, 1.08rem);
+  font-weight: 600;
+  line-height: 1.5;
+  text-align: center;
+  text-wrap: balance;
+}
+
+.home-scene-writer__proof-line svg {
+  width: 1.15rem;
+  height: 1.15rem;
+  flex: 0 0 auto;
+  color: var(--color-brand-soft);
+}
+
+.home-scene-writer__proof-line strong {
+  color: var(--color-brand-soft);
+  font-weight: 800;
+}
+
+/* ============================================================
+   Copy
+============================================================ */
+
+.home-scene-writer__header {
+  max-width: 36rem;
+}
+
+.home-scene-writer__kicker {
+  margin: 0 0 0.9rem;
+  color: var(--color-brand-soft);
+  font-size: clamp(0.76rem, 0.71rem + 0.15vw, 0.9rem);
+  font-weight: 800;
+  letter-spacing: var(--tracking-label);
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.home-scene-writer__title {
+  display: grid;
+  gap: 0.08em;
+  margin: 0;
+  color: var(--color-text-primary);
+  font-size: clamp(2.35rem, 3.65vw, 4.35rem);
+  font-weight: 900;
+  line-height: 0.98;
+  letter-spacing: -0.06em;
+  text-wrap: balance;
+}
+
+.home-scene-writer__title span {
+  display: block;
+}
+
+.home-scene-writer__title-accent {
+  color: var(--color-brand-soft);
+  text-shadow:
+    0 0 24px
+      color-mix(in srgb, var(--color-brand-primary) 30%, transparent),
+    0 0 48px
+      color-mix(in srgb, var(--color-brand-primary) 14%, transparent);
+}
+
+.home-scene-writer__lede {
+  max-width: 35rem;
+  margin: clamp(1.25rem, 2vw, 1.7rem) 0 0;
+  color: var(--color-text-secondary);
+  font-size: clamp(1rem, 0.96rem + 0.15vw, 1.12rem);
+  line-height: 1.66;
+  text-wrap: pretty;
+}
+
+/* ============================================================
+   Benefits
+============================================================ */
+
+.home-scene-writer__benefits {
+  display: grid;
+  margin-top: clamp(2rem, 3vw, 2.75rem);
+}
+
+.home-scene-writer__benefit {
+  position: relative;
+  padding-block: 1rem;
+}
+
+.home-scene-writer__benefit:first-child {
+  padding-top: 0;
+}
+
+.home-scene-writer__benefit:last-child {
+  padding-bottom: 0;
+}
+
+.home-scene-writer__benefit + .home-scene-writer__benefit::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: clamp(4.75rem, 5vw, 5.35rem);
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--color-border-soft) 72%, transparent),
+    transparent
+  );
+}
+
+/* ============================================================
+   Tablet
+============================================================ */
+
+@media (max-width: 1050px) {
+  .home-scene-writer__inner {
+    grid-template-columns: minmax(0, 1fr);
+    gap: clamp(3rem, 6vw, 4.5rem);
+  }
+
+  .home-scene-writer__visual {
+    width: min(100%, 58rem);
+    margin-inline: auto;
+  }
+
+  .home-scene-writer__content {
+    width: min(100%, 44rem);
+    margin-inline: auto;
+  }
+
+  .home-scene-writer__header {
+    max-width: 42rem;
+  }
+
+  .home-scene-writer__lede {
+    max-width: 41rem;
+  }
+
+  .home-scene-writer__benefits {
+    max-width: 42rem;
+  }
+}
+
+/* ============================================================
+   Mobile
+============================================================ */
+
+@media (max-width: 640px) {
+  .home-scene-writer {
+    padding-block: clamp(4.25rem, 13vw, 5.25rem);
+  }
+
+  .home-scene-writer__inner {
+    gap: 2.75rem;
+  }
+
+  .home-scene-writer__title {
+    font-size: clamp(2.3rem, 11vw, 3.35rem);
+  }
+
+  .home-scene-writer__lede {
+    font-size: 1rem;
+    line-height: 1.58;
+  }
+
+  .home-scene-writer__proof-line {
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .home-scene-writer__proof-line svg {
+    margin-top: 0.22rem;
+  }
+
+  .home-scene-writer__benefit {
+    padding-block: 0.9rem;
+  }
+}
