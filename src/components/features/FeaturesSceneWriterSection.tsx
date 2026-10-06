@@ -9,7 +9,7 @@
  * Responsibilities:
  * - Explains how Scene Writer brings drafting into the same connected workspace as story planning.
  * - Shows that writers can move through chapters and scenes while drafting.
- * - Explains that scene drafts remain attached when the story structure changes.
+ * - Explains how reorganizing scenes keeps the draft manuscript aligned with story structure.
  * - Shows that chapters and scenes can continue to grow while the writer is drafting.
  * - Presents a temporary feature video using the shared VideoFrame component.
  *
@@ -47,33 +47,33 @@ const sceneWriterCallouts = [
     Icon: FilePenLine,
   },
   {
-    title: "Move through the story scene by scene",
+    title: "Open the scene you already planned",
     description:
-      "Use the chapter and scene list beside the editor to move through the draft without losing where each piece belongs.",
+      "Move from your chapter structure into the scene itself and start drafting with the surrounding story still close at hand.",
     Icon: Rows3,
   },
   {
-    title: "Keep the draft with the scene",
+    title: "Reorganize without losing sync",
     description:
-      "Reorder a scene in Chapter Planner or Timeline Planner and its writing stays attached to that scene instead of becoming another piece to reorganize.",
+      "Change the scene order or move a scene to another chapter, and Spinalith keeps the draft manuscript aligned with the updated story structure.",
     Icon: Link2,
   },
   {
-    title: "Add scenes while you are writing",
+    title: "Follow the story when it changes",
     description:
-      "Create a new scene or pull an unassigned scene into the chapter without leaving Scene Writer when the draft takes the story somewhere new.",
+      "Create a new scene or pull an unassigned scene into the chapter when the draft takes you somewhere you did not plan.",
     Icon: ListPlus,
   },
   {
-    title: "Keep building the chapter",
+    title: "Keep building while you write",
     description:
-      "Add the next chapter from the writing workspace and keep moving when the story grows beyond what you originally planned.",
+      "Add the next chapter from Scene Writer and keep moving when the story grows beyond the structure you started with.",
     Icon: BookOpenText,
   },
   {
-    title: "Let changes stay synchronized",
+    title: "Move through the draft scene by scene",
     description:
-      "As chapters and scenes move elsewhere in Spinalith, Scene Writer follows the same connected structure so the draft reflects the story's current order.",
+      "Use the chapter and scene list beside the editor to move through the manuscript without losing where each piece belongs.",
     Icon: RefreshCcw,
   },
 ];
@@ -124,11 +124,11 @@ export function FeaturesSceneWriterSection() {
             </h2>
 
             <p className="features-detail-section__lede">
-              Planning and drafting do not have to happen in separate tools. Open a
-              scene, write it where it belongs, and keep the draft connected to the
-              chapters and structure around it. Whether you planned the scene ahead
-              of time or discovered it while writing, Scene Writer gives it a place
-              inside the same story you are already building.
+              Planning and drafting do not have to happen in separate tools. Whether
+              you mapped the scene weeks ago or discovered it five minutes ago, open
+              it where it belongs and write inside the same story you are already
+              building. Scene Writer keeps the draft connected to the chapters and
+              structure around it as the story changes.
             </p>
           </div>
         </div>
