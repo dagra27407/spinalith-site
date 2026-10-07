@@ -22,6 +22,7 @@ import { FeaturesHeroSection } from "../components/features/FeaturesHeroSection"
 import { FeaturesVisualPlanningSection } from "../components/features/FeaturesVisualPlanningSection";
 import { FeaturesNarrativeDNASection } from "../components/features/FeaturesNarrativeDNASection";
 import { FeaturesChapterPlannerSection } from "../components/features/FeaturesChapterPlannerSection";
+import { FeaturesSceneWriterSection } from "../components/features/FeaturesSceneWriterSection";
 import { FeaturesTemplatesSection } from "../components/features/FeaturesTemplatesSection";
 import { FeaturesExportSection } from "../components/features/FeaturesExportSection";
 // import { FeaturesConnectedWorkflowSection } from "../components/features/FeaturesConnectedWorkflowSection";
@@ -34,6 +35,7 @@ export function FeaturesPage() {
       <FeaturesVisualPlanningSection />
       <FeaturesNarrativeDNASection />
       <FeaturesChapterPlannerSection />
+      <FeaturesSceneWriterSection />
       <FeaturesTemplatesSection />
       <FeaturesExportSection />
       {/* <FeaturesConnectedWorkflowSection /> */}

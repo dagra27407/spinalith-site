@@ -54,6 +54,7 @@
 @import "./page/features/featuresVisualPlanning.css";
 @import "./page/features/featuresNarrativeDNA.css";
 @import "./page/features/featuresChapterPlanner.css";
+@import "./page/features/featuresSceneWriter.css";
 
 /* Pages / Contact */
 @import "./page/contact/contactPage.css";

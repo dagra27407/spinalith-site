@@ -46,10 +46,10 @@ export function FeaturesHeroSection() {
 
           <p className="features-hero__lede">
             Spinalith adapts to how you work. Plan every beat or discover the story as you go,
-            and keep your chapters, timelines, characters, and story details connected as the
-            story evolves. Whether you are rearranging events to see how the story plays out or
-            tracking the small details that matter, Spinalith fits into your workflow instead of
-            forcing you into one.
+            then write scenes inside the same connected workspace. Keep your chapters, timelines,
+            characters, drafts, and story details connected as the story evolves. Whether you are
+            rearranging events, drafting the next scene, or tracking the small details that matter,
+            Spinalith fits into your workflow instead of forcing you into one.
           </p>
 
           <div className="features-hero__actions">
