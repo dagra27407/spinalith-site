@@ -11,12 +11,11 @@
  * - Shows that writers can move through chapters and scenes while drafting.
  * - Explains how reorganizing scenes keeps the draft manuscript aligned with story structure.
  * - Shows that chapters and scenes can continue to grow while the writer is drafting.
- * - Presents a temporary feature video using the shared VideoFrame component.
+ * - Presents the Scene Writer feature demonstration using the shared VideoFrame component.
  *
  * Notes:
  * - The top row uses a video-left + copy-right composition to vary the Features-page rhythm.
  * - The second row contains six detailed Scene Writer callouts in two columns.
- * - The placeholder video should be replaced with a dedicated Scene Writer demonstration later.
  * - Shared feature typography and callout base styles live in:
  *   src/styles/page/features/featuresPage.css.
  * - Scene Writer layout styling lives in:
@@ -36,8 +35,8 @@ import {
 
 import { VideoFrame } from "../site/VideoFrame";
 
-const FEATURE_PLACEHOLDER_VIDEO =
-  "/assets/videos/features/spinalith-feature-placeholder-8s.MP4";
+const SCENE_WRITER_VIDEO =
+  "/assets/videos/features/features_SceneWriter.mp4";
 
 const sceneWriterCallouts = [
   {
@@ -107,9 +106,9 @@ export function FeaturesSceneWriterSection() {
         <div className="features-scene-writer__top-row">
           <div className="features-scene-writer__media">
             <VideoFrame
-              src={FEATURE_PLACEHOLDER_VIDEO}
-              ariaLabel="Spinalith Scene Writer feature demonstration placeholder"
-              ariaDescription="Placeholder video for the Scene Writer feature demonstration. The final demonstration will show a writer moving between chapters and scenes, drafting a scene, and keeping that draft connected as the story structure changes."
+              src={SCENE_WRITER_VIDEO}
+              ariaLabel="Spinalith Scene Writer feature demonstration"
+              ariaDescription="Demonstration: Scene Writer is open with the chapter and scene list visible beside the editor. A scene is selected and writing is added directly in the scene draft, showing that prose can be written inside the same connected story workspace."
               variant="productGlow"
             />
           </div>
